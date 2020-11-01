@@ -1,0 +1,3 @@
+export const SET_DEPARTMENT = "SET_DEPARTMENT";
+export const SET_CATEGORIES = "SET_CATEGORIES";
+export const SET_PROD_BY_DEPT_ID = "SET_PROD_BY_DEPT_ID"

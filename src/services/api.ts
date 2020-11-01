@@ -1,5 +1,5 @@
 class API {
-  mainUrl: string = "https://backendapi.turing.com/"
+  mainUrl: string = "https://backendapi.turing.com"
 
   async get(url: string) {
     try {
@@ -57,4 +57,8 @@ class API {
 
 }
 
-export default new API;
+const api = new API();
+
+export const getAllDepartments = () => api.get('/departments');
+export const getAllCategories = () => api.get('/categories');
+export const getProdByDepId = (id: number) => api.get(`/products/inDepartment/${id}`)
