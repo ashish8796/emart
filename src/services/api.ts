@@ -61,4 +61,6 @@ const api = new API();
 
 export const getAllDepartments = () => api.get('/departments');
 export const getAllCategories = () => api.get('/categories');
-export const getProdByDepId = (id: number) => api.get(`/products/inDepartment/${id}`)
+export const getProductByDepartmentId = (id: number) => api.get(`/products/inDepartment/${id}`)
+export const getProductByCategoryId = (id: string) => api.get(`/products/inCategory/${id}`)
+export const getProductById = (id: string) => api.get(`/products/${id}`)

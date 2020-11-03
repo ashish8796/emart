@@ -1,5 +1,5 @@
 import { SET_DEPARTMENT, SET_CATEGORIES, SET_PROD_BY_DEPT_ID } from "./actionTypes"
-import { getAllDepartments, getAllCategories, getProdByDepId } from "../../services/api";
+import { getAllDepartments, getAllCategories, getProductByDepartmentId, } from "../../services/api";
 import { Dispatch } from "redux";
 import { Categories, Department } from "./tsTypes";
 
@@ -31,7 +31,7 @@ export const setCategories = () => async (dispatch: Dispatch) => {
 
 export const setProdByDeptId = (id: number) => async (dispatch: Dispatch) => {
   try {
-    const data = await getProdByDepId(+id);
+    const data = await getProductByDepartmentId(+id);
     // console.log(data)
     dispatch({
       type: SET_PROD_BY_DEPT_ID,

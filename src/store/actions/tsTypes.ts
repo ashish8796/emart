@@ -1,3 +1,4 @@
+import { CategoryProductList, CategoryState } from "../reducers/category.reducer";
 import { HomeState } from "./../reducers/home.reducer";
 
 export type Department = {}
@@ -14,7 +15,8 @@ export type SetCategories = {
 }
 
 export interface State {
-  home: HomeState
+  home: HomeState;
+  category: CategoryState
 }
 
 export type SetProdByDeptId = {
@@ -24,4 +26,17 @@ export type SetProdByDeptId = {
       products: object[]
     }
   }
+}
+
+export type SetProductByCategoryId = {
+  type: string,
+  payload: {
+    data: CategoryProductList,
+    categoryName: string,
+  }
+}
+
+export type SetProductById = {
+  type: string,
+  payload: object
 }

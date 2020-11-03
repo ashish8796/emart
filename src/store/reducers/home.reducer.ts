@@ -8,8 +8,14 @@ export type RowsObj = {
   department_id?: number
 }
 
+export interface Department {
+  department_id: number,
+  name: string,
+  description: string
+}
+
 export interface HomeState {
-  departments: Array<object>,
+  departments: Array<Department>,
   categories: {
     rows: RowsObj[] | []
   }
@@ -44,6 +50,7 @@ function homeReducer(state = initialState, action: MainAction) {
 
     case SET_PROD_BY_DEPT_ID: {
       let obj = action.payload;
+      // console.log(obj)
       return {
         ...state,
         prodByDept: {

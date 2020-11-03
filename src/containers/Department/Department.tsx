@@ -3,15 +3,19 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { RowsObj } from "../../store/reducers/home.reducer";
+import { useHistory } from "react-router-dom";
+import { setProdByDeptId } from "../../store/actions/home.action";
 
 interface Props {
   el: RowsObj;
 }
 
-function Dept({ el }: Props) {
+function Department({ el }: Props) {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const [isHover, setIsHover] = useState(false);
   const [releventCats, setReleventCats] = useState<Array<RowsObj>>([]);
 
@@ -44,12 +48,20 @@ function Dept({ el }: Props) {
         {releventCats.length > 0 && (
           <Categories
             onMouseLeave={() => {
-              console.log("Working");
+              // console.log("Working");
               setReleventCats([]);
             }}
           >
             {releventCats.map((cat, i) => (
-              <Cat key={i}>{cat.name}</Cat>
+              <CategoryName
+                key={i}
+                onClick={() => {
+                  history.push(`/category/${cat.name + "/" + cat.category_id}`);
+                  setReleventCats([]);
+                }}
+              >
+                {cat.name}
+              </CategoryName>
             ))}
           </Categories>
         )}
@@ -97,7 +109,7 @@ const Categories = styled.div`
   background-color: #fff;
 `;
 
-const Cat = styled.p`
+const CategoryName = styled.p`
   font-weight: normal;
   margin: 10px 8px;
   font-family: Roboto, Arial, sans-serif;
@@ -107,4 +119,4 @@ const Cat = styled.p`
   }
 `;
 
-export default Dept;
+export default Department;
