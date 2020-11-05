@@ -2,7 +2,7 @@ import { SET_PRODUCT_BY_ID } from "../actions/actionTypes";
 import { SetProductById } from "../actions/tsTypes";
 
 
-interface ProductState {
+export interface ProductState {
   productId: object
 }
 

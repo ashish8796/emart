@@ -3,15 +3,8 @@ import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRupeeSign } from "@fortawesome/free-solid-svg-icons";
 import { useHistory } from "react-router-dom";
+import { Product } from "../../store/reducers/category.reducer";
 
-interface Product {
-  description?: string;
-  discounted_price?: string;
-  name?: string;
-  price?: string;
-  product_id?: number;
-  thumbnail?: string;
-}
 interface ProductProps {
   product: Product;
   first?: boolean;

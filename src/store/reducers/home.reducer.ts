@@ -1,5 +1,6 @@
 import { SET_CATEGORIES, SET_DEPARTMENT, SET_PROD_BY_DEPT_ID } from "../actions/actionTypes";
 import { SetCategories, SetDepartment, SetProdByDeptId } from "../actions/tsTypes";
+import { Product } from "./category.reducer";
 
 export type RowsObj = {
   category_id?: number,
@@ -21,7 +22,7 @@ export interface HomeState {
   }
   prodByDept: {
     [id: number]: {
-      products: object[]
+      products: Product[]
     }
   }
 }

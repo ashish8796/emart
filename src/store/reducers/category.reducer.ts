@@ -1,17 +1,22 @@
+
 import { SET_PRODUCT_BY_CATEGORY_ID } from "../actions/actionTypes";
 import { Categories, SetProductByCategoryId } from "./../actions/tsTypes"
 
-
 type MainAction = SetProductByCategoryId;
-export type Product = {
-  id: number;
-  name: string
+export interface Product {
+  description: string;
+  discounted_price: string;
+  name: string;
+  price: string;
+  product_id: number;
+  thumbnail: string;
+  image: string,
+  image_2: string,
 }
-
 export interface CategoryProductList {
   categoryId: string,
   count: number,
-  rows: Array<Product>
+  rows: Product[]
 }
 export interface CategoryState {
   categoriesProducts: {

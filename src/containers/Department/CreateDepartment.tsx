@@ -8,6 +8,7 @@ import {
   faChevronLeft,
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
+import { Product } from "../../store/reducers/category.reducer";
 
 interface DepartmentProps {
   id: number;
@@ -15,7 +16,7 @@ interface DepartmentProps {
 
 function CreateDepartment({ id }: DepartmentProps) {
   const { prodByDept } = useSelector((state: State) => state.home);
-  const [products, setProducts] = useState<Array<object>>([]);
+  const [products, setProducts] = useState<Array<Product>>([]);
   const [width, setWidth] = useState(0);
   const scrollElem = useRef<HTMLElement>(null!);
 
