@@ -29,7 +29,7 @@ function CreateProduct({ product, first }: ProductProps) {
         <ProductWrapper
           first={first}
           onClick={() => {
-            window.open(`/product/${product.name}/${product.product_id}`);
+            history.push(`/product/${product.name}/${product.product_id}`);
           }}
         >
           <ProductImage src={imgSrc} alt={product.thumbnail} />

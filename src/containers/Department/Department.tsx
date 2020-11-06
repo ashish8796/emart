@@ -116,6 +116,7 @@ const CategoryName = styled.p`
   &:hover {
     cursor: pointer;
     color: #0000c6;
+    // background-color: #ff9a76;
   }
 `;
 

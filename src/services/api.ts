@@ -1,3 +1,5 @@
+import { AddProduct } from "../store/actions/tsTypes";
+
 class API {
   mainUrl: string = "https://backendapi.turing.com"
 
@@ -63,10 +65,16 @@ export const getAllDepartments = () => api.get('/departments');
 
 export const getAllCategories = () => api.get('/categories');
 
-export const getProductByDepartmentId = (id: number) => api.get(`/products/inDepartment/${id}`)
+export const getProductByDepartmentId = (id: number) => api.get(`/products/inDepartment/${id}`);
 
-export const getProductByCategoryId = (id: string) => api.get(`/products/inCategory/${id}`)
+export const getProductByCategoryId = (id: string) => api.get(`/products/inCategory/${id}`);
 
-export const getProductById = (id?: string) => api.get(`/products/${id}`)
+export const getProductById = (id?: string) => api.get(`/products/${id}`);
 
 export const getReviewsByProductId = (id?: string) => api.get(`/products/${id}/reviews`);
+
+export const getShoppingCartId = () => api.get('/shoppingcart/generateUniqueId');
+
+export const postProductToShoppingCart = (data: AddProduct) => api.post(`/shoppingcart/add`, data);
+
+export const getAttributesByProductId = (id?: string) => api.get(`/attributes/inProduct/${id}`);

@@ -1,6 +1,8 @@
-import { CategoryProductList, CategoryState } from "../reducers/category.reducer";
+import { CategoryProductList, CategoryState, Product } from "../reducers/category.reducer";
+import { ShoppingCartState } from "../reducers/shopping.reducer";
 import { HomeState } from "./../reducers/home.reducer";
 import { ProductState } from "./../reducers/product.reducer"
+
 
 export type Department = {}
 export type Categories = object;
@@ -19,6 +21,7 @@ export interface State {
   home: HomeState;
   category: CategoryState;
   product: ProductState;
+  cart: ShoppingCartState;
 }
 
 export type SetProdByDeptId = {
@@ -51,4 +54,19 @@ export type SetProductById = {
     thumbnail: string,
     display: number
   }
+}
+
+export type SetShoppingCartId = {
+  type: string,
+  payload: string
+}
+export type AddProduct = {
+  cartId?: any;
+  productId: string | undefined;
+  attribute: object
+}
+
+export type AddProductInShoppingCart = {
+  type: string,
+  payload: Product
 }

@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import Department from "../Department/Department";
 import {
   setCategories,
@@ -54,8 +54,10 @@ function HeaderElement() {
           </SearchWrapper>
           <SystemWrapper>
             <Login>Login</Login>
-            <More>More</More>
-            <Cart>Cart</Cart>
+            {/* <More>More</More> */}
+            <Cart>
+              <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>Cart
+            </Cart>
           </SystemWrapper>
         </SearchHead>
         <DepartmentWrapper>
@@ -73,6 +75,10 @@ const Header = styled.header`
 
 const SearchHead = styled.div`
   display: flex;
+  position: fixed;
+  top: 0;
+  width: 100%;
+  z-index: 10;
 `;
 
 const SearchWrapper = styled.div`
@@ -160,8 +166,12 @@ const More = styled(Button)`
 
 const Cart = styled(Button)`
   background: none;
+  span {
+    margin-right: 10px;
+  }
 `;
 const DepartmentWrapper = styled.div`
+  margin-top: 3.5em;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
