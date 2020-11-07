@@ -63,10 +63,21 @@ export type SetShoppingCartId = {
 export type AddProduct = {
   cartId?: any;
   productId: string | undefined;
-  attribute: object
+  attribute: string
+}
+
+export type CartProcuct = {
+  attributes: string,
+  image: string,
+  item_id: number,
+  name: string,
+  product_id: number,
+  price: string,
+  quantity: number,
+  subtotal: string;
 }
 
 export type AddProductInShoppingCart = {
   type: string,
-  payload: Product
+  payload: CartProcuct[]
 }

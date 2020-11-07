@@ -2,7 +2,7 @@ import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { useLocation } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import {
   getAttributesByProductId,
@@ -32,6 +32,8 @@ interface Attribute {
 function ProductUI() {
   const location = useLocation();
   const dispatch = useDispatch();
+  const history = useHistory();
+
   const { cartId, productsList } = useSelector((state: State) => state.cart);
 
   const [productData, setProductData] = useState<Product>({
@@ -51,17 +53,18 @@ function ProductUI() {
   const productId = location.pathname.split("/").pop();
   const [mainImage, setMainImage] = useState("");
 
-  const productDiscountedPrice = Math.ceil(
-    Number(productData.discounted_price) * 75
-  );
-  const productPrice = Math.ceil(Number(productData.price) * 75);
+  const convertPrice = (price: string) => {
+    return Math.ceil(Number(price) * 75);
+  };
+
+  const productDiscountedPrice = convertPrice(productData.discounted_price);
+  const productPrice = convertPrice(productData.price);
   const off = productPrice - productDiscountedPrice;
 
   const averageRating =
     reviews.length > 0 &&
     reviews.reduce((acc, user) => (acc += user.rating), 0) / reviews.length;
 
-  console.log({ cartId, productsList });
   useEffect(() => {
     (async (productId) => {
       try {
@@ -69,7 +72,6 @@ function ProductUI() {
         const reviews = await getReviewsByProductId(productId);
         const attributes = await getAttributesByProductId(productId);
 
-        // console.log(attributes);
         if (data.thumbnail) {
           setMainImage(data.thumbnail);
           setProductData(data);
@@ -82,7 +84,27 @@ function ProductUI() {
     })(productId);
   }, []);
 
-  // useEffect(() => {}, []);
+  async function handleAddToCart() {
+    let shoppingCartId: any;
+
+    if (attribute.size && attribute.color) {
+      if (!cartId) {
+        shoppingCartId = await dispatch(setShoppingCartId());
+      }
+
+      dispatch(
+        addProductInShoppingCart({
+          cartId: !cartId ? shoppingCartId : cartId,
+          productId,
+          attribute: attribute.color + "-" + attribute.size,
+        })
+      );
+
+      history.push("/shoppingCart");
+    } else {
+      alert("Select Color and Size.");
+    }
+  }
 
   return (
     <>
@@ -191,20 +213,7 @@ function ProductUI() {
                 </AttributeWrapper>
 
                 <Option>
-                  <AddToCart
-                    onClick={async () => {
-                      const cartId = await dispatch(setShoppingCartId());
-                      console.log(cartId);
-                      const data = await dispatch(
-                        addProductInShoppingCart({
-                          cartId,
-                          productId,
-                          attribute,
-                        })
-                      );
-                      console.log(data);
-                    }}
-                  >
+                  <AddToCart onClick={handleAddToCart}>
                     <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>
                     ADD TO CART
                   </AddToCart>

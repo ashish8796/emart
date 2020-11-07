@@ -13,16 +13,19 @@ class API {
   }
 
   async post(url: string, data: any) {
+    console.log(fetch)
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "POST",
         headers: {
-          "content-type ": "application/json",
+          "content-type": "application/json",
         },
         body: JSON.stringify(data)
       });
+
       return await response.json();
     } catch (e) {
+
       return e;
     }
   }
@@ -75,6 +78,6 @@ export const getReviewsByProductId = (id?: string) => api.get(`/products/${id}/r
 
 export const getShoppingCartId = () => api.get('/shoppingcart/generateUniqueId');
 
-export const postProductToShoppingCart = (data: AddProduct) => api.post(`/shoppingcart/add`, data);
+export const postProductToShoppingCart = (data: any) => api.post(`/shoppingcart/add`, data);
 
 export const getAttributesByProductId = (id?: string) => api.get(`/attributes/inProduct/${id}`);

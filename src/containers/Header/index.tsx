@@ -10,11 +10,14 @@ import {
   setDepartments,
   setProdByDeptId,
 } from "../../store/actions/home.action";
-import { useHistory } from "react-router-dom";
+import { useHistory, useLocation } from "react-router-dom";
 
 function HeaderElement() {
   const dispatch = useDispatch();
   const history = useHistory();
+  const location = useLocation();
+
+  // console.log(history);
 
   const { departments } = useSelector((state: State) => state.home);
 
@@ -55,15 +58,24 @@ function HeaderElement() {
           <SystemWrapper>
             <Login>Login</Login>
             {/* <More>More</More> */}
-            <Cart>
-              <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>Cart
-            </Cart>
+
+            {location.pathname !== "/shoppingCart" && (
+              <Cart
+                onClick={() => {
+                  history.push("/shoppingCart");
+                }}
+              >
+                <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>Cart
+              </Cart>
+            )}
           </SystemWrapper>
         </SearchHead>
-        <DepartmentWrapper>
-          {departments.length > 0 &&
-            departments.map((el, i) => <Department el={el} key={i} />)}
-        </DepartmentWrapper>
+        {location.pathname !== "/shoppingCart" && (
+          <DepartmentWrapper>
+            {departments.length > 0 &&
+              departments.map((el, i) => <Department el={el} key={i} />)}
+          </DepartmentWrapper>
+        )}
       </Header>
     </>
   );
@@ -167,7 +179,7 @@ const More = styled(Button)`
 const Cart = styled(Button)`
   background: none;
   span {
-    margin-right: 10px;
+    margin-right: 5px;
   }
 `;
 const DepartmentWrapper = styled.div`

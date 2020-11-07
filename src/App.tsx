@@ -8,6 +8,7 @@ import store from "./store";
 import HeaderElement from "./containers/Header";
 import CategoryProducts from "./containers/CategoryProducts";
 import ProductUI from "./containers/Product";
+import ShoppingCart from "./containers/ShoppingCart";
 
 function App() {
   return (
@@ -18,9 +19,11 @@ function App() {
           <Route path="/product/:slug/:product_id" component={ProductUI} />
           <Route
             path="/category/:category_name/:category_id"
-            target="_blank"
             component={CategoryProducts}
           />
+          <Route path="/shoppingCart">
+            <ShoppingCart />
+          </Route>
           <Route exact path="/">
             <Home />
           </Route>

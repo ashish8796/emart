@@ -22,11 +22,8 @@ export const setShoppingCartId = () => async (dispatch: Dispatch): Promise<strin
 
 export const addProductInShoppingCart = (obj: AddProduct) => async (dispatch: Dispatch) => {
   try {
-    console.log(obj)
-    const data = await postProductToShoppingCart(obj)
-
-    console.log(data)
-
+    const data = await postProductToShoppingCart({ cart_id: obj.cartId, product_id: obj.productId, attributes: obj.attribute })
+    // console.log(data)
     dispatch({
       type: ADD_PRODUCT_IN_SHOPPING_CART,
       payload: data

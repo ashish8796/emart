@@ -1,10 +1,9 @@
 import { ADD_PRODUCT_IN_SHOPPING_CART, SET_SHOPPING_CART_ID } from "../actions/actionTypes";
-import { AddProductInShoppingCart, SetShoppingCartId } from "../actions/tsTypes";
-import { Product } from "./category.reducer";
+import { AddProductInShoppingCart, CartProcuct, SetShoppingCartId } from "../actions/tsTypes";
 
 export interface ShoppingCartState {
   cartId: string
-  productsList: Product[]
+  productsList: CartProcuct[]
 }
 
 const intialState: ShoppingCartState = {
@@ -21,7 +20,7 @@ function shoppingCartReducer(state = intialState, action: MainAction) {
     }
 
     case ADD_PRODUCT_IN_SHOPPING_CART: {
-      return { ...state, productsList: [...state.productsList, action.payload] }
+      return { ...state, productsList: action.payload }
     }
 
     default: return state;
