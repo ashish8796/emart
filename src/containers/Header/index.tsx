@@ -18,7 +18,8 @@ function HeaderElement() {
   const location = useLocation();
 
   // console.log(history);
-
+  const showDepartments =
+    location.pathname !== "/shoppingCart" && location.pathname !== "/login";
   const { departments } = useSelector((state: State) => state.home);
 
   useEffect(() => {
@@ -32,6 +33,10 @@ function HeaderElement() {
         dispatch(setProdByDeptId(department.department_id));
       });
   }, [departments]);
+
+  const handleLoginClick = () => {
+    history.push("/login");
+  };
 
   return (
     <>
@@ -56,10 +61,10 @@ function HeaderElement() {
             </SearchForm>
           </SearchWrapper>
           <SystemWrapper>
-            <Login>Login</Login>
+            {showDepartments && <Login onClick={handleLoginClick}>Login</Login>}
             {/* <More>More</More> */}
 
-            {location.pathname !== "/shoppingCart" && (
+            {showDepartments && (
               <Cart
                 onClick={() => {
                   history.push("/shoppingCart");
@@ -70,7 +75,7 @@ function HeaderElement() {
             )}
           </SystemWrapper>
         </SearchHead>
-        {location.pathname !== "/shoppingCart" && (
+        {showDepartments && (
           <DepartmentWrapper>
             {departments.length > 0 &&
               departments.map((el, i) => <Department el={el} key={i} />)}

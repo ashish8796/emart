@@ -9,6 +9,7 @@ import HeaderElement from "./containers/Header";
 import CategoryProducts from "./containers/CategoryProducts";
 import ProductUI from "./containers/Product";
 import ShoppingCart from "./containers/ShoppingCart";
+import LoginAndSignUp from "./containers/Login";
 
 function App() {
   return (
@@ -23,6 +24,9 @@ function App() {
           />
           <Route path="/shoppingCart">
             <ShoppingCart />
+          </Route>
+          <Route path="/login">
+            <LoginAndSignUp />
           </Route>
           <Route exact path="/">
             <Home />
