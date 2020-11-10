@@ -1,5 +1,6 @@
 import { CategoryProductList, CategoryState, Product } from "../reducers/category.reducer";
 import { ShoppingCartState } from "../reducers/shopping.reducer";
+import { UserState } from "../reducers/user.reducer";
 import { HomeState } from "./../reducers/home.reducer";
 import { ProductState } from "./../reducers/product.reducer"
 
@@ -22,6 +23,7 @@ export interface State {
   category: CategoryState;
   product: ProductState;
   cart: ShoppingCartState;
+  user: UserState
 }
 
 export type SetProdByDeptId = {
@@ -80,4 +82,15 @@ export type CartProcuct = {
 export type AddProductInShoppingCart = {
   type: string,
   payload: CartProcuct[]
+}
+
+export type UserDetails = {
+  name: string,
+  email: string,
+  password: string
+}
+
+export type LoginDetails = {
+  email: string,
+  password: string
 }

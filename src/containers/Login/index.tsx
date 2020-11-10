@@ -1,21 +1,22 @@
 import { url } from "inspector";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 import styled from "styled-components";
+import { State } from "../../store/actions/tsTypes";
 import LoginPage from "./login.page";
 import SignUp from "./signUp.page";
 
 function LoginAndSignUp() {
   const [isLogin, setIsLogin] = useState<boolean>(false);
-  // window.location.pathname = "/signUp";
+  const { user } = useSelector((state: State) => state);
+
+  useEffect(() => {
+    console.log(user);
+    "accessToken" in user && setIsLogin(true);
+  }, [user]);
 
   return (
-    <LoginAndSignUpContainer
-    // style={{
-    //   backgroundImage: `url(${
-    //     require("./../../assets/images/login_image/login.png").default
-    //   })`,
-    // }}
-    >
+    <LoginAndSignUpContainer>
       <img
         src={require("./../../assets/images/login_image/login.png").default}
       />

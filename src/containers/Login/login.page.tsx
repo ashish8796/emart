@@ -1,18 +1,45 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { loginTheUser } from "../../store/actions/user.action";
 
 interface LoginPageProps {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
 }
 
 function LoginPage({ setIsLogin }: LoginPageProps) {
+  const dispatch = useDispatch();
+  const history = useHistory();
+  const [flipHeading, setFlipHeading] = useState(false);
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [isLoder, setIsLoder] = useState(false);
+
   const handleSignUpClick = () => {
     setIsLogin(false);
   };
-  const [flipHeading, setFlipHeading] = useState(false);
 
-  const handleLoginForm = (event: { preventDefault: () => void }) => {
+  const handleLoginForm = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    setIsLoder(true);
+
+    const loginDetails = { email: userName, password };
+    const data = await dispatch(loginTheUser(loginDetails));
+
+    "accessToken" in data && history.push("/");
+  };
+
+  const handleUsername = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setUserName(event.target.value);
+  };
+
+  const handlePassword = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setPassword(event.target.value);
   };
 
   useEffect(() => {
@@ -34,23 +61,31 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
           className="animate__animated animate__flip"
           onSubmit={handleLoginForm}
         >
-          <LoginInput type="text" id="log-in-username" required />
-          <LoginLabel htmlFor="log-in-username">Username Or E-mail</LoginLabel>
+          <LoginInput
+            type="text"
+            id="log-in-username"
+            required
+            onChange={handleUsername}
+          />
+          <LoginLabel htmlFor="log-in-username">E-mail</LoginLabel>
 
-          <LoginInput type="text" id="log-in-password" required />
+          <LoginInput
+            type="password"
+            id="log-in-password"
+            required
+            onChange={handlePassword}
+          />
           <LoginLabel htmlFor="password">Password</LoginLabel>
 
           <LoginSubmit type="submit" onSubmit={handleLoginForm}>
+            <Rotate isLoad={isLoder}></Rotate>
             Log In
           </LoginSubmit>
         </LoginForm>
 
-        <SignUpButton
-          className="animate__animated animate__flip"
-          onClick={handleSignUpClick}
-        >
+        <SignUpButton className="animate__animated animate__flip">
           <span>New User?</span>
-          <span>Sign Up</span>
+          <span onClick={handleSignUpClick}>Sign Up</span>
         </SignUpButton>
       </LoginWrapper>
     </>
@@ -122,6 +157,31 @@ const LoginSubmit = styled.button`
   &:hover {
     cursor: pointer;
     box-shadow: 4px 6px 4px 2px #022f3b;
+  }
+`;
+type Loder = {
+  isLoad: boolean;
+};
+
+const Rotate = styled.div`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin: 0 10px -2px -18px;
+  border: 2px solid #4af74a;
+  border-top: 2px solid ${(state: Loder) => (state.isLoad ? "#fff" : "#4af74a")};
+  border-right: 2px solid
+    ${(state: Loder) => (state.isLoad ? "#fff" : "#4af74a")};
+  border-radius: 50%;
+  animation: rotate 0.8s linear infinite;
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 

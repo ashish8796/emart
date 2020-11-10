@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { registerUser } from "../../store/actions/user.action";
 
 interface SignUpProps {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -8,14 +10,56 @@ interface SignUpProps {
 
 function SignUp({ setIsLogin }: SignUpProps) {
   const history = useHistory();
+  const dispatch = useDispatch();
   const [flipHeading, setFlipHeading] = useState(false);
+  const [name, setName] = useState<string>("");
+  const [userName, setUserName] = useState<string>("");
+  const [password, setPassword] = useState<string>("");
+  const [email, setEmail] = useState<string>("");
+  const [check, setCheck] = useState<boolean>(false);
+  const [isSignUpClicked, setIsSignUpClicked] = useState(false);
 
   const handleLogInClick = () => {
     setIsLogin(true);
   };
 
-  const handleSignUpForm = (event: { preventDefault: () => void }) => {
+  const handleName = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setName(event.target.value);
+  };
+
+  const handleEmail = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setEmail(event.target.value);
+  };
+
+  const handleCheck = (event: {
+    target: { checked: React.SetStateAction<boolean> };
+  }) => {
+    console.log(event.target.checked);
+    setCheck(event.target.checked);
+  };
+
+  const handleUsername = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setUserName(event.target.value);
+  };
+
+  const handlePassword = (event: {
+    target: { value: React.SetStateAction<string> };
+  }) => {
+    setPassword(event.target.value);
+  };
+
+  const handleSignUpForm = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
+    setIsSignUpClicked(true);
+    const userDetails = { name, email, password };
+    const data = await dispatch(registerUser(userDetails));
+    "accessToken" in data && setIsLogin(true);
   };
 
   useEffect(() => {
@@ -40,6 +84,7 @@ function SignUp({ setIsLogin }: SignUpProps) {
           id="full-name"
           placeholder="Ashish    Saini"
           required
+          onChange={handleName}
         />
         <label htmlFor="first-name">First & last name</label>
 
@@ -48,36 +93,53 @@ function SignUp({ setIsLogin }: SignUpProps) {
           id="email"
           placeholder="******@gmail.com"
           required
+          onChange={handleEmail}
         />
         <label htmlFor="email">E-mail</label>
 
-        <Input type="text" id="username" placeholder="Username" required />
-        <label htmlFor="user-name">Username</label>
+        {/* <Input
+          type="text"
+          id="username"
+          placeholder="Username"
+          required
+          onChange={handleUsername}
+        />
+        <label htmlFor="user-name">Username</label> */}
 
-        <Input type="password" id="password" required />
+        <Input
+          type="password"
+          id="password"
+          required
+          onChange={handlePassword}
+        />
         <label htmlFor="passward">Password</label>
 
         <TermsAndConditions>
-          <input type="checkbox" name="checkbox" id="checkbox" />
+          <input
+            type="checkbox"
+            name="checkbox"
+            id="checkbox"
+            onChange={handleCheck}
+            required
+          />
           <p>Please accept term and conditions.</p>
         </TermsAndConditions>
 
         <Submit type="submit" id="submit" onSubmit={handleSignUpForm}>
-          SIGN ME UP
+          <Rotate isLoad={isSignUpClicked}></Rotate> SIGN ME UP
         </Submit>
       </SignUpForm>
 
       {/* <!-- Log-in Link --> */}
-      <LogInButton
-        className="animate__animated animate__flip"
-        onClick={handleLogInClick}
-      >
-        Log In
+      <LogInButton className="animate__animated animate__flip">
+        Already Registered? <span onClick={handleLogInClick}>Log In</span>
       </LogInButton>
     </SignUpWrapper>
   );
 }
-
+type Loder = {
+  isLoad: boolean;
+};
 const SignUpWrapper = styled.div`
   font-family: "Maven Pro", sans-serif;
   color: #fff;
@@ -171,6 +233,7 @@ const TermsAndConditions = styled.div``;
 
 const Button = styled.button`
   width: 35%;
+  height: fit-content;
   padding: 8px;
   border: none;
   background: #4af74a;
@@ -189,19 +252,42 @@ const Button = styled.button`
 `;
 
 const Submit = styled(Button)``;
+const Rotate = styled.div`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin: 0 10px -2px -18px;
+  border: 2px solid #4af74a;
+  border-top: 2px solid ${(state: Loder) => (state.isLoad ? "#fff" : "#4af74a")};
+  border-right: 2px solid
+    ${(state: Loder) => (state.isLoad ? "#fff" : "#4af74a")};
+  border-radius: 50%;
+  animation: rotate 0.8s linear infinite;
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 const LogInButton = styled.p`
-  color: #00fffef5;
   position: absolute;
-  text-decoration: underline;
-  left: 25%;
+  left: 18%;
   bottom: 10%;
   padding: 3px;
   font-size: 20px;
   animation-duration: 0.8s;
+  color: #00fffef5;
 
-  &:hover {
-    cursor: pointer;
+  span {
+    text-decoration: underline;
+    &:hover {
+      cursor: pointer;
+    }
   }
 `;
 

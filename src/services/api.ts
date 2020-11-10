@@ -1,11 +1,18 @@
-import { AddProduct } from "../store/actions/tsTypes";
+import { AddProduct, LoginDetails, UserDetails } from "../store/actions/tsTypes";
 
 class API {
   mainUrl: string = "https://backendapi.turing.com"
+  accessToken: string | null = localStorage.hasOwnProperty('access-token') ? localStorage.getItem('access-token') : '';
 
   async get(url: string) {
     try {
-      const response = await fetch(this.mainUrl + url);
+      const response = await fetch(this.mainUrl + url, {
+        method: "GET",
+        headers: {
+          "content-type": "application/json",
+          "Authorization": this.accessToken
+        }
+      });
       return await response.json();
     } catch (e) {
       return e;
@@ -81,3 +88,9 @@ export const getShoppingCartId = () => api.get('/shoppingcart/generateUniqueId')
 export const postProductToShoppingCart = (data: any) => api.post(`/shoppingcart/add`, data);
 
 export const getAttributesByProductId = (id?: string) => api.get(`/attributes/inProduct/${id}`);
+
+export const registerNewUser = (data: UserDetails) => api.post(`/customers`, data);
+
+export const loginUser = (data: LoginDetails) => api.post('/customers/login', data);
+
+export const getUserDetails = (data) => api.get('/customer')
