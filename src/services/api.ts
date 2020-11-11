@@ -10,7 +10,7 @@ class API {
         method: "GET",
         headers: {
           "content-type": "application/json",
-          "Authorization": this.accessToken
+
         }
       });
       return await response.json();
