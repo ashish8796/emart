@@ -1,18 +1,17 @@
 import { AddProduct, LoginDetails, UserDetails } from "../store/actions/tsTypes";
 
+const accessToken: string | null | undefined = localStorage.getItem('emart-token');
+const headers = new Headers({
+  "content-type": "application/json",
+});
+accessToken && headers.append("USER-KEY", accessToken)
+
 class API {
   mainUrl: string = "https://backendapi.turing.com"
-  accessToken: string | null = localStorage.hasOwnProperty('access-token') ? localStorage.getItem('access-token') : '';
 
   async get(url: string) {
     try {
-      const response = await fetch(this.mainUrl + url, {
-        method: "GET",
-        headers: {
-          "content-type": "application/json",
-
-        }
-      });
+      const response = await fetch(this.mainUrl + url, { headers });
       return await response.json();
     } catch (e) {
       return e;
@@ -93,4 +92,4 @@ export const registerNewUser = (data: UserDetails) => api.post(`/customers`, dat
 
 export const loginUser = (data: LoginDetails) => api.post('/customers/login', data);
 
-export const getUserDetails = (data) => api.get('/customer')
+export const getUserDetails = () => api.get('/customer')

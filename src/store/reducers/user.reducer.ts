@@ -23,7 +23,7 @@ export interface UserState {
 }
 
 const initialState: UserState = {
-  accessToken: localStorage.hasOwnProperty('access-token') ? localStorage.getItem('access-token') : '',
+  accessToken: localStorage.hasOwnProperty('emart-token') ? localStorage.getItem('emart-token') : '',
   customer: {
     customer_id: 0,
     name: "",

@@ -1,6 +1,7 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { getUserDetails } from "../../services/api";
 import { State } from "../../store/actions/tsTypes";
 
 import CreateDepartment from "../Department/CreateDepartment";
@@ -16,6 +17,10 @@ function Home() {
 
   useEffect(() => {
     console.log(accessToken);
+    (async () => {
+      const data = await getUserDetails();
+      console.log(data);
+    })();
   }, []);
 
   return (
