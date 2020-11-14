@@ -1,4 +1,4 @@
-import { LOGIN_USER, REGISTER_USER } from "../actions/actionTypes";
+import { LOGIN_USER, REGISTER_USER, SET_USER_DETAILS } from "../actions/actionTypes";
 
 export type Customer = {
   customer_id: number,
@@ -57,7 +57,14 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: action.payload.customer.schema, accessToken
+        ...state, customer: action.payload.customer, accessToken
+      }
+    }
+
+    case SET_USER_DETAILS: {
+
+      return {
+        ...state, customer: action.payload
       }
     }
 

@@ -1,27 +1,19 @@
 import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import { getUserDetails } from "../../services/api";
 import { State } from "../../store/actions/tsTypes";
+import { setUsesrDetails } from "../../store/actions/user.action";
 
 import CreateDepartment from "../Department/CreateDepartment";
 
 function Home() {
-  // const dispatch = useDispatch();
+  const dispatch = useDispatch();
   const { departments, customer, accessToken } = useSelector(
     (state: State) => ({
       ...state.home,
       ...state.user,
     })
   );
-
-  useEffect(() => {
-    console.log(accessToken);
-    (async () => {
-      const data = await getUserDetails();
-      console.log(data);
-    })();
-  }, []);
 
   return (
     <>

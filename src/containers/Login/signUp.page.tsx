@@ -66,6 +66,15 @@ function SignUp({ setIsLogin }: SignUpProps) {
     setTimeout(() => {
       setFlipHeading(true);
     }, 600);
+
+    return () => {
+      setName("");
+      setEmail("");
+      setPassword("");
+      setFlipHeading(false);
+      setCheck(false);
+      setIsSignUpClicked(false);
+    };
   }, []);
 
   return (

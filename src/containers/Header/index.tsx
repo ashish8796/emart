@@ -1,9 +1,15 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { faSearch, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import {
+  faArrowDown,
+  faChevronDown,
+  faChevronUp,
+  faSearch,
+  faShoppingCart,
+} from "@fortawesome/free-solid-svg-icons";
 import Department from "../Department/Department";
 import {
   setCategories,
@@ -11,16 +17,29 @@ import {
   setProdByDeptId,
 } from "../../store/actions/home.action";
 import { useHistory, useLocation } from "react-router-dom";
+import { setUsesrDetails } from "../../store/actions/user.action";
 
 function HeaderElement() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const [nameHover, setNameHover] = useState(false);
 
   // console.log(history);
   const showDepartments =
     location.pathname !== "/shoppingCart" && location.pathname !== "/login";
-  const { departments } = useSelector((state: State) => state.home);
+  const { departments, customer, accessToken } = useSelector(
+    (state: State) => ({
+      ...state.home,
+      ...state.user,
+    })
+  );
+
+  useEffect(() => {
+    (async () => {
+      !customer.name && accessToken && (await dispatch(setUsesrDetails()));
+    })();
+  }, []);
 
   useEffect(() => {
     dispatch(setDepartments());
@@ -33,6 +52,8 @@ function HeaderElement() {
         dispatch(setProdByDeptId(department.department_id));
       });
   }, [departments]);
+
+  // console.log(customer);
 
   const handleLoginClick = () => {
     history.push("/login");
@@ -61,7 +82,36 @@ function HeaderElement() {
             </SearchForm>
           </SearchWrapper>
           <SystemWrapper>
-            {showDepartments && <Login onClick={handleLoginClick}>Login</Login>}
+            {showDepartments && (
+              <LoginWrapper>
+                {" "}
+                {customer.name ? (
+                  <>
+                    <p
+                      onMouseOver={() => {
+                        setNameHover(true);
+                      }}
+                    >
+                      {customer.name.slice(0, 13)}{" "}
+                      <FontAwesomeIcon
+                        icon={nameHover ? faChevronUp : faChevronDown}
+                      />
+                    </p>
+                    {nameHover && (
+                      <LogOut
+                        onMouseLeave={() => {
+                          setNameHover(false);
+                        }}
+                      >
+                        Log Out
+                      </LogOut>
+                    )}
+                  </>
+                ) : (
+                  <Login onClick={handleLoginClick}>Login</Login>
+                )}
+              </LoginWrapper>
+            )}
             {/* <More>More</More> */}
 
             {showDepartments && (
@@ -88,6 +138,7 @@ function HeaderElement() {
 
 const Header = styled.header`
   border-bottom: 1px solid #c1c0c0;
+  font-family: Roboto, Arial, sans-serif;
 `;
 
 const SearchHead = styled.div`
@@ -100,7 +151,6 @@ const SearchHead = styled.div`
 
 const SearchWrapper = styled.div`
   // border: 1px solid red;
-  font-family: Roboto, Arial, sans-serif;
   flex-basis: 62%;
   display: flex;
   justify-content: flex-end;
@@ -159,6 +209,7 @@ const SystemWrapper = styled.div`
 `;
 
 const Button = styled.button`
+  height: 40px;
   width: 120px;
   font-size: 18px;
   margin: 10px;
@@ -170,6 +221,26 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const LoginWrapper = styled.div`
+  position: relative;
+  margin: auto;
+  p {
+    color: #fff;
+    font-size: 20px;
+
+    &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+const LogOut = styled(Button)`
+  position: absolute;
+  color: blue;
+  // top: 30px;
+  // background: ;
 `;
 
 const Login = styled(Button)`

@@ -46,6 +46,13 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
     setTimeout(() => {
       setFlipHeading(true);
     }, 600);
+
+    return () => {
+      setUserName("");
+      setPassword("");
+      setFlipHeading(false);
+      setIsLoder(false);
+    };
   }, []);
 
   return (

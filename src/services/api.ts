@@ -14,12 +14,12 @@ class API {
       const response = await fetch(this.mainUrl + url, { headers });
       return await response.json();
     } catch (e) {
-      return e;
+      console.log(e);
     }
   }
 
   async post(url: string, data: any) {
-    console.log(fetch)
+    // console.log(fetch)
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "POST",
@@ -32,7 +32,7 @@ class API {
       return await response.json();
     } catch (e) {
 
-      return e;
+      console.log(e);
     }
   }
 
@@ -47,7 +47,7 @@ class API {
       });
       return await response.json();
     } catch (e) {
-      return e;
+      console.log(e);
     }
   }
 
@@ -62,7 +62,7 @@ class API {
       });
       return await response.json();
     } catch (e) {
-      return e;
+      console.log(e);
     }
   }
 
