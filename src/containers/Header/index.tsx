@@ -4,7 +4,6 @@ import { State } from "../../store/actions/tsTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 import {
-  faArrowDown,
   faChevronDown,
   faChevronUp,
   faSearch,
