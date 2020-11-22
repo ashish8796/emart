@@ -1,4 +1,4 @@
-import { LOGIN_USER, REGISTER_USER, SET_USER_DETAILS } from "../actions/actionTypes";
+import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_DETAILS } from "../actions/actionTypes";
 
 export type Customer = {
   customer_id: number,
@@ -65,6 +65,27 @@ function userReducer(state = initialState, action: any) {
 
       return {
         ...state, customer: action.payload
+      }
+    }
+
+    case LOG_OUT_USER: {
+      return {
+        ...state, customer: {
+          customer_id: 0,
+          name: "",
+          email: "",
+          address_1: "",
+          address_2: "",
+          city: "",
+          region: "",
+          postal_code: "",
+          country: "",
+          shipping_region_id: 0,
+          day_phone: "",
+          eve_phone: "",
+          mob_phone: "",
+          credit_card: "",
+        }
       }
     }
 

@@ -13,7 +13,6 @@ function SignUp({ setIsLogin }: SignUpProps) {
   const dispatch = useDispatch();
   const [flipHeading, setFlipHeading] = useState(false);
   const [name, setName] = useState<string>("");
-  const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
   const [check, setCheck] = useState<boolean>(false);
@@ -40,12 +39,6 @@ function SignUp({ setIsLogin }: SignUpProps) {
   }) => {
     console.log(event.target.checked);
     setCheck(event.target.checked);
-  };
-
-  const handleUsername = (event: {
-    target: { value: React.SetStateAction<string> };
-  }) => {
-    setUserName(event.target.value);
   };
 
   const handlePassword = (event: {
@@ -105,15 +98,6 @@ function SignUp({ setIsLogin }: SignUpProps) {
           onChange={handleEmail}
         />
         <label htmlFor="email">E-mail</label>
-
-        {/* <Input
-          type="text"
-          id="username"
-          placeholder="Username"
-          required
-          onChange={handleUsername}
-        />
-        <label htmlFor="user-name">Username</label> */}
 
         <Input
           type="password"
@@ -285,7 +269,7 @@ const Rotate = styled.div`
 
 const LogInButton = styled.p`
   position: absolute;
-  left: 18%;
+  left: 16%;
   bottom: 10%;
   padding: 3px;
   font-size: 20px;

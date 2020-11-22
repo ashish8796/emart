@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { getUserDetails, loginUser, registerNewUser } from "../../services/api";
-import { LOGIN_USER, REGISTER_USER, SET_USER_DETAILS } from "./actionTypes";
+import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_DETAILS } from "./actionTypes";
 import { LoginDetails, UserDetails } from "./tsTypes";
 
 export const registerUser = (userDetails: UserDetails) => async (dispatch: Dispatch) => {
@@ -44,5 +44,10 @@ export const setUsesrDetails = () => async (dispatch: Dispatch) => {
   } catch (error) {
 
   }
+}
 
+export const setLogOutUser = () => {
+  return {
+    type: LOG_OUT_USER,
+  }
 }

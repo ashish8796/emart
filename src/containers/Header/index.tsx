@@ -16,7 +16,10 @@ import {
   setProdByDeptId,
 } from "../../store/actions/home.action";
 import { useHistory, useLocation } from "react-router-dom";
-import { setUsesrDetails } from "../../store/actions/user.action";
+import {
+  setLogOutUser,
+  setUsesrDetails,
+} from "../../store/actions/user.action";
 
 function HeaderElement() {
   const dispatch = useDispatch();
@@ -43,6 +46,10 @@ function HeaderElement() {
   useEffect(() => {
     dispatch(setDepartments());
     dispatch(setCategories());
+
+    return () => {
+      setNameHover(false);
+    };
   }, []);
 
   useEffect(() => {
@@ -55,6 +62,12 @@ function HeaderElement() {
   // console.log(customer);
 
   const handleLoginClick = () => {
+    history.push("/login");
+  };
+
+  const handleLogOutClick = () => {
+    localStorage.removeItem("emart-token");
+    dispatch(setLogOutUser());
     history.push("/login");
   };
 
@@ -98,6 +111,7 @@ function HeaderElement() {
                     </p>
                     {nameHover && (
                       <LogOut
+                        onClick={handleLogOutClick}
                         onMouseLeave={() => {
                           setNameHover(false);
                         }}
@@ -111,7 +125,6 @@ function HeaderElement() {
                 )}
               </LoginWrapper>
             )}
-            {/* <More>More</More> */}
 
             {showDepartments && (
               <Cart
