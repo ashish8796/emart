@@ -34,79 +34,102 @@ function ShoppingCart() {
   return (
     <>
       <CartWrapper>
-        <ProductSection>
-          {productsList.map((product, i) => (
-            <ProductCart key={i}>
-              <div>
-                <ProductImg
+        {productsList.length ? (
+          <>
+            <ProductSection>
+              {productsList.map((product, i) => (
+                <ProductCart key={i}>
+                  <div>
+                    <ProductImg
+                      src={
+                        require(`./../../assets/images/product_images/${product.image}`)
+                          .default
+                      }
+                    />
+                  </div>
+                  <ProductDetails>
+                    <div>
+                      <p>{product.name}</p>
+                      <p>
+                        <span>&#8377;{convertPrice(product.price)}</span>
+                      </p>
+                    </div>
+
+                    <p>
+                      <span>Size: {product.attributes.split("-")[1]}</span>
+                      <span>Color: {product.attributes.split("-")[0]}</span>
+                    </p>
+
+                    <p>
+                      <span>Quantity: {product.quantity}</span>
+                    </p>
+
+                    <Remove>Remove</Remove>
+                  </ProductDetails>
+                </ProductCart>
+              ))}
+
+              <PlaceOrder>
+                <button>Place Order</button>
+              </PlaceOrder>
+            </ProductSection>
+
+            <BalanceSection>
+              <p>PRICE DETAILS</p>
+              <hr />
+
+              <p>
+                <span>
+                  Price ({productsList.length}{" "}
+                  {productsList.length > 1 ? "items" : "item"})
+                </span>
+                <span>
+                  &#8377;
+                  {productsList.reduce(
+                    (acc, cv) => (acc += convertPrice(cv.price)),
+                    0
+                  )}
+                </span>
+              </p>
+
+              <p>
+                <span>Delivery charges</span>
+                <span>&#8377;00</span>
+              </p>
+              <hr />
+              <p>
+                <Amount>Total Amount</Amount>
+                <span>
+                  &#8377;
+                  {productsList.reduce(
+                    (acc, cv) => (acc += convertPrice(cv.price)),
+                    0
+                  )}
+                </span>
+              </p>
+              <hr />
+            </BalanceSection>
+          </>
+        ) : (
+          <EmptyCart>
+            {localStorage.hasOwnProperty("emart-token") ? (
+              <LogedIn>
+                <img
                   src={
-                    require(`./../../assets/images/product_images/${product.image}`)
+                    require("./../../assets/images/cart_image/shopNow.png")
                       .default
                   }
+                  alt="Shop Now"
                 />
-              </div>
-              <ProductDetails>
-                <div>
-                  <p>{product.name}</p>
-                  <p>
-                    <span>&#8377;{convertPrice(product.price)}</span>
-                  </p>
-                </div>
-
-                <p>
-                  <span>Size: {product.attributes.split("-")[1]}</span>
-                  <span>Color: {product.attributes.split("-")[0]}</span>
-                </p>
-
-                <p>
-                  <span>Quantity: {product.quantity}</span>
-                </p>
-
-                <Remove>Remove</Remove>
-              </ProductDetails>
-            </ProductCart>
-          ))}
-
-          <PlaceOrder>
-            <button>Place Order</button>
-          </PlaceOrder>
-        </ProductSection>
-
-        <BalanceSection>
-          <p>PRICE DETAILS</p>
-          <hr />
-
-          <p>
-            <span>
-              Price ({productsList.length}{" "}
-              {productsList.length > 1 ? "items" : "item"})
-            </span>
-            <span>
-              &#8377;
-              {productsList.reduce(
-                (acc, cv) => (acc += convertPrice(cv.price)),
-                0
-              )}
-            </span>
-          </p>
-
-          <p>
-            <span>Delivery charges</span>
-            <span>&#8377;00</span>
-          </p>
-          <hr />
-          <p>
-            <Amount>Total Amount</Amount>
-            <span>
-              &#8377;
-              {productsList.reduce(
-                (acc, cv) => (acc += convertPrice(cv.price)),
-                0
-              )}
-            </span>
-          </p>
-          <hr />
-        </BalanceSection>
+                <p>Your Cart is empty!</p>
+                <p>Add items to it now.</p>
+                <button>Shop Now</button>
+              </LogedIn>
+            ) : (
+              <LogedOut></LogedOut>
+            )}
+          </EmptyCart>
+        )}
       </CartWrapper>
     </>
   );
@@ -250,5 +273,34 @@ const BalanceSection = styled.section`
 const Amount = styled.span`
   font-weight: bold;
 `;
+
+const EmptyCart = styled.div`
+  width: 100%;
+  height: 80vh;
+  background-color: #fff;
+  // border: 2px solid red;
+`;
+
+const LogedIn = styled.div`
+  height: 100%;
+  // border: 2px solid yellow;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  img {
+    width: 300px;
+    margin: 4em 0 1em 0;
+  }
+
+  p:nth-child(2) {
+    font-size: 14px;
+  }
+
+  p:first-of-type {
+    font-size: 20px;
+  }
+`;
+const LogedOut = styled.div``;
 
 export default ShoppingCart;

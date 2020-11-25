@@ -92,4 +92,6 @@ export const registerNewUser = (data: UserDetails) => api.post(`/customers`, dat
 
 export const loginUser = (data: LoginDetails) => api.post('/customers/login', data);
 
-export const getUserDetails = () => api.get('/customer')
+export const getUserDetails = () => api.get('/customer');
+
+export const getProductsInShoppingCart = (cartId: string) => api.get(`/shoppingcart/${cartId}`)

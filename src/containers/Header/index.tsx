@@ -20,6 +20,7 @@ import {
   setLogOutUser,
   setUsesrDetails,
 } from "../../store/actions/user.action";
+import { setProductsInShoppingCart } from "../../store/actions/shoppingCart.action";
 
 function HeaderElement() {
   const dispatch = useDispatch();
@@ -30,16 +31,22 @@ function HeaderElement() {
   // console.log(history);
   const showDepartments =
     location.pathname !== "/shoppingCart" && location.pathname !== "/login";
-  const { departments, customer, accessToken } = useSelector(
-    (state: State) => ({
-      ...state.home,
-      ...state.user,
-    })
-  );
+  const {
+    departments,
+    customer,
+    accessToken,
+    cartId,
+    productsList,
+  } = useSelector((state: State) => ({
+    ...state.home,
+    ...state.user,
+    ...state.cart,
+  }));
 
   useEffect(() => {
     (async () => {
       !customer.name && accessToken && (await dispatch(setUsesrDetails()));
+      cartId && (await dispatch(setProductsInShoppingCart(cartId)));
     })();
   }, []);
 
@@ -69,6 +76,10 @@ function HeaderElement() {
     localStorage.removeItem("emart-token");
     dispatch(setLogOutUser());
     history.push("/login");
+  };
+
+  const handleCartClick = () => {
+    history.push("/shoppingCart");
   };
 
   return (
@@ -127,11 +138,7 @@ function HeaderElement() {
             )}
 
             {showDepartments && (
-              <Cart
-                onClick={() => {
-                  history.push("/shoppingCart");
-                }}
-              >
+              <Cart onClick={handleCartClick}>
                 <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>Cart
               </Cart>
             )}

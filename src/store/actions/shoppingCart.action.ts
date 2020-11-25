@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
-import { getShoppingCartId, postProductToShoppingCart } from "../../services/api";
-import { ADD_PRODUCT_IN_SHOPPING_CART, SET_SHOPPING_CART_ID } from "./actionTypes";
+import { getProductsInShoppingCart, getShoppingCartId, postProductToShoppingCart } from "../../services/api";
+import { ADD_PRODUCT_IN_SHOPPING_CART, SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART, SET_SHOPPING_CART_ID } from "./actionTypes";
 import { AddProduct } from "./tsTypes";
 
 export const setShoppingCartId = () => async (dispatch: Dispatch): Promise<string> => {
@@ -29,6 +29,18 @@ export const addProductInShoppingCart = (obj: AddProduct) => async (dispatch: Di
       payload: data
     })
     return data;
+  } catch (error) {
+
+  }
+}
+
+export const setProductsInShoppingCart = (cartId: string) => async (dispatch: Dispatch) => {
+  try {
+    const data = await getProductsInShoppingCart(cartId);
+    dispatch({
+      type: SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART,
+      payload: data
+    })
   } catch (error) {
 
   }
