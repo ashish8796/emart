@@ -46,6 +46,7 @@ function HeaderElement() {
   useEffect(() => {
     (async () => {
       !customer.name && accessToken && (await dispatch(setUsesrDetails()));
+      console.log(cartId);
       cartId && (await dispatch(setProductsInShoppingCart(cartId)));
     })();
   }, []);
@@ -66,7 +67,7 @@ function HeaderElement() {
       });
   }, [departments]);
 
-  // console.log(customer);
+  // console.log(cartId);
 
   const handleLoginClick = () => {
     history.push("/login");
@@ -74,6 +75,7 @@ function HeaderElement() {
 
   const handleLogOutClick = () => {
     localStorage.removeItem("emart-token");
+    localStorage.removeItem("secondry_cart_id");
     dispatch(setLogOutUser());
     history.push("/login");
   };

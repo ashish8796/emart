@@ -1,4 +1,4 @@
-import { AddProduct, LoginDetails, UserDetails } from "../store/actions/tsTypes";
+import { LoginDetails, UserDetails } from "../store/actions/tsTypes";
 
 const accessToken: string | null | undefined = localStorage.getItem('emart-token');
 const headers = new Headers({
@@ -11,6 +11,7 @@ class API {
 
   async get(url: string) {
     try {
+      // console.log(this.mainUrl + url)
       const response = await fetch(this.mainUrl + url, { headers });
       return await response.json();
     } catch (e) {
@@ -94,4 +95,6 @@ export const loginUser = (data: LoginDetails) => api.post('/customers/login', da
 
 export const getUserDetails = () => api.get('/customer');
 
-export const getProductsInShoppingCart = (cartId: string) => api.get(`/shoppingcart/${cartId}`)
+export const getProductsInShoppingCart = (cartId: string) => api.get("/shoppingcart/" + cartId)
+
+export const deleteProductfromCart = (itemId: number) => api.delete('/shoppingcart/removeProduct/' + itemId, itemId)

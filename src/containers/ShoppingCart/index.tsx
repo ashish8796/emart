@@ -1,9 +1,12 @@
 import React from "react";
 import { useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { State } from "../../store/actions/tsTypes";
+import CreateProductInCart from "./CreateProductInCart";
 
 function ShoppingCart() {
+  const history = useHistory();
   const { cartId, productsList } = useSelector((state: State) => state.cart);
 
   const convertPrice = (price: string) => {
@@ -19,7 +22,8 @@ function ShoppingCart() {
     );
   };
 
-  console.log(productsList[0]);
+  console.log(productsList);
+
   const product = {
     attributes: "Black-XL",
     image: "easter-rebellion.gif",
@@ -31,6 +35,14 @@ function ShoppingCart() {
     subtotal: "16.95",
   };
 
+  const handleLogin = () => {
+    history.push("/login");
+  };
+
+  const handleShopNow = () => {
+    history.push("/");
+  };
+
   return (
     <>
       <CartWrapper>
@@ -38,35 +50,7 @@ function ShoppingCart() {
           <>
             <ProductSection>
               {productsList.map((product, i) => (
-                <ProductCart key={i}>
-                  <div>
-                    <ProductImg
-                      src={
-                        require(`./../../assets/images/product_images/${product.image}`)
-                          .default
-                      }
-                    />
-                  </div>
-                  <ProductDetails>
-                    <div>
-                      <p>{product.name}</p>
-                      <p>
-                        <span>&#8377;{convertPrice(product.price)}</span>
-                      </p>
-                    </div>
-
-                    <p>
-                      <span>Size: {product.attributes.split("-")[1]}</span>
-                      <span>Color: {product.attributes.split("-")[0]}</span>
-                    </p>
-
-                    <p>
-                      <span>Quantity: {product.quantity}</span>
-                    </p>
-
-                    <Remove>Remove</Remove>
-                  </ProductDetails>
-                </ProductCart>
+                <CreateProductInCart product={product} key={i} />
               ))}
 
               <PlaceOrder>
@@ -112,21 +96,25 @@ function ShoppingCart() {
           </>
         ) : (
           <EmptyCart>
+            <MyCart>My Cart</MyCart>
+            <img
+              src={
+                require("./../../assets/images/cart_image/shopNow.png").default
+              }
+              alt="Shop Now"
+            />
             {localStorage.hasOwnProperty("emart-token") ? (
               <LogedIn>
-                <img
-                  src={
-                    require("./../../assets/images/cart_image/shopNow.png")
-                      .default
-                  }
-                  alt="Shop Now"
-                />
                 <p>Your Cart is empty!</p>
                 <p>Add items to it now.</p>
-                <button>Shop Now</button>
+                <ShopNow onClick={handleShopNow}>Shop Now</ShopNow>
               </LogedIn>
             ) : (
-              <LogedOut></LogedOut>
+              <LogedOut>
+                <p>Missing Cart items?</p>
+                <p>Login to see the items you added previously</p>
+                <LoginButton onClick={handleLogin}>Login</LoginButton>
+              </LogedOut>
             )}
           </EmptyCart>
         )}
@@ -154,72 +142,6 @@ const ProductSection = styled.section`
   border: 1px solid #e5e2e2;
 `;
 
-const ProductCart = styled.div`
-  display: flex;
-  flex-direction: row;
-  margin: 3em 0;
-
-  &:first-of-type {
-    margin: 20px 0;
-  }
-
-  &:nth-last-child(2) {
-    margin-bottom: 5em;
-  }
-`;
-
-const ProductImg = styled.img`
-  border-radius: 3px;
-`;
-
-const ProductDetails = styled.div`
-  width: 100%;
-  margin: 0 20px;
-  padding-left: 30px;
-
-  p:first-child {
-    margin: 3px 0 10px 0;
-  }
-
-  p:nth-child(2) {
-    font-size: 16px;
-    color: gray;
-    span:first-child {
-      margin-right: 2em;
-    }
-  }
-
-  p:nth-child(3) {
-    margin: 10px 0;
-  }
-
-  & > div {
-    // border: 2px solid red;
-    display: flex;
-    font-size: 23px;
-    justify-content: space-between;
-    align-items: center;
-
-    p:nth-child(2) {
-      color: black;
-      font-size: 23px;
-    }
-  }
-`;
-const Remove = styled.button`
-  font-size: 20px;
-  border: none;
-  outline: none;
-  padding: 5px 20px 5px 0;
-  margin-top: 3em;
-  background: none;
-
-  &:hover {
-    cursor: pointer;
-    color: red;
-    // text-decoration: underline;
-  }
-`;
 const PlaceOrder = styled.div`
   width: 58.9%;
   background-color: #fff;
@@ -279,28 +201,70 @@ const EmptyCart = styled.div`
   height: 80vh;
   background-color: #fff;
   // border: 2px solid red;
-`;
-
-const LogedIn = styled.div`
-  height: 100%;
-  // border: 2px solid yellow;
+  position: relative;
   display: flex;
   flex-direction: column;
   align-items: center;
+  text-align: center;
 
   img {
     width: 300px;
     margin: 4em 0 1em 0;
   }
+`;
+
+const MyCart = styled.p`
+  position: absolute;
+  left: 30px;
+  top: 30px;
+  font-size: 20px;
+  font-weight: bold;
+`;
+
+const Button = styled.button`
+  font-size: 18px;
+  padding: 6px 40px;
+  border: none;
+  background: none;
+  background-color: #de5e07;
+  border-radius: 2px;
+  color: #fff;
+  margin: 20px 0;
+  outline: none;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const LogedIn = styled.div`
+  height: 100%;
 
   p:nth-child(2) {
     font-size: 14px;
+    margin: 10px 0;
   }
 
   p:first-of-type {
     font-size: 20px;
   }
 `;
-const LogedOut = styled.div``;
+
+const LogedOut = styled.div`
+  // border: 2px solid blue;
+
+  p:first-child {
+    font-size: 20px;
+    margin: 10px 0;
+  }
+
+  p:nth-child(2) {
+    margin: 10px 0;
+    font-size: 14px;
+  }
+`;
+
+const LoginButton = styled(Button)``;
+const ShopNow = styled(Button)``;
 
 export default ShoppingCart;

@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { getProductsInShoppingCart, getShoppingCartId, postProductToShoppingCart } from "../../services/api";
-import { ADD_PRODUCT_IN_SHOPPING_CART, SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART, SET_SHOPPING_CART_ID } from "./actionTypes";
+import { ADD_PRODUCT_IN_SHOPPING_CART, REMOVE_PRODUCT_FROM_CART, SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART, SET_SHOPPING_CART_ID } from "./actionTypes";
 import { AddProduct } from "./tsTypes";
 
 export const setShoppingCartId = () => async (dispatch: Dispatch): Promise<string> => {
@@ -36,10 +36,27 @@ export const addProductInShoppingCart = (obj: AddProduct) => async (dispatch: Di
 
 export const setProductsInShoppingCart = (cartId: string) => async (dispatch: Dispatch) => {
   try {
-    const data = await getProductsInShoppingCart(cartId);
+
+    // console.log(cartId);
+    const data_secondry = localStorage.getItem("secondry_cart_id") ? await getProductsInShoppingCart(localStorage.getItem("secondry_cart_id") as string) : []
+    const data_primary = await getProductsInShoppingCart(cartId);
+
     dispatch({
       type: SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART,
-      payload: data
+      payload: data_secondry.length ? [...data_secondry, ...data_primary] : data_primary
+    })
+  } catch (error) {
+
+  }
+}
+
+export const removeProductFromCart = (itemId: number) => async (dispatch: Dispatch) => {
+  try {
+    const data = await removeProductFromCart(itemId);
+    console.log(data);
+    dispatch({
+      type: REMOVE_PRODUCT_FROM_CART,
+      payload: itemId
     })
   } catch (error) {
 
