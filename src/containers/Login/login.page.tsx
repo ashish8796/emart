@@ -24,6 +24,14 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
     event.preventDefault();
     setIsLoder(true);
 
+    if (!("primary_cart_id" in localStorage)) {
+      localStorage.setItem(
+        "primary_cart_id",
+        localStorage.getItem("secondry_cart_id") as string
+      );
+      localStorage.removeItem("secondry_cart_id");
+    }
+
     const loginDetails = { email: userName, password };
     const data = await dispatch(loginTheUser(loginDetails));
 

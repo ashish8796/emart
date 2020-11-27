@@ -18,7 +18,7 @@ function shoppingCartReducer(state = intialState, action: MainAction) {
     case SET_SHOPPING_CART_ID: {
       const cartId = action.payload as string;
 
-      "emart-token" in localStorage ? localStorage.setItem("primary_cart_id", cartId) : localStorage.setItem("secondry_cart_id", cartId);
+      !("emart-token" in localStorage) && localStorage.setItem("secondry_cart_id", cartId);
 
       return { ...state, cartId: action.payload };
     }

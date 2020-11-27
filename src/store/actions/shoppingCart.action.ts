@@ -38,12 +38,12 @@ export const setProductsInShoppingCart = (cartId: string) => async (dispatch: Di
   try {
 
     // console.log(cartId);
-    const data_secondry = localStorage.getItem("secondry_cart_id") ? await getProductsInShoppingCart(localStorage.getItem("secondry_cart_id") as string) : []
+    // const data_secondry = localStorage.getItem("secondry_cart_id") ? await getProductsInShoppingCart(localStorage.getItem("secondry_cart_id") as string) : []
     const data_primary = await getProductsInShoppingCart(cartId);
 
     dispatch({
       type: SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART,
-      payload: data_secondry.length ? [...data_secondry, ...data_primary] : data_primary
+      payload: data_primary
     })
   } catch (error) {
 
