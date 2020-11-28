@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_DETAILS } from "../actions/actionTypes";
+import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS } from "../actions/actionTypes";
 
 export type Customer = {
   customer_id: number,
@@ -52,6 +52,7 @@ function userReducer(state = initialState, action: any) {
         ...state, customer: action.payload.customer, accessToken
       }
     }
+
     case LOGIN_USER: {
       const accessToken = action.payload.accessToken
       localStorage.setItem("emart-token", accessToken)
@@ -86,6 +87,18 @@ function userReducer(state = initialState, action: any) {
           mob_phone: "",
           credit_card: "",
         }
+      }
+    }
+
+    case SET_USER_ADDRESS: {
+      return {
+        ...state, customer: action.payload
+      }
+    }
+
+    case SET_USER_CREDIT_CARD: {
+      return {
+        ...state, customer: action.payload
       }
     }
 

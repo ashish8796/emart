@@ -9,10 +9,12 @@ import {
   getProductById,
   getReviewsByProductId,
 } from "../../services/api";
+
 import {
   addProductInShoppingCart,
   setShoppingCartId,
 } from "../../store/actions/shoppingCart.action";
+
 import { State } from "../../store/actions/tsTypes";
 import { Product } from "../../store/reducers/category.reducer";
 
@@ -34,7 +36,10 @@ function ProductUI() {
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { cartId, productsList } = useSelector((state: State) => state.cart);
+  const { cartId, customer, productsList } = useSelector((state: State) => ({
+    ...state.cart,
+    ...state.user,
+  }));
 
   const [productData, setProductData] = useState<Product>({
     product_id: 0,
@@ -103,6 +108,15 @@ function ProductUI() {
       history.push("/shoppingCart");
     } else {
       alert("Select Color and Size.");
+    }
+  }
+
+  function handleBuyNowClick() {
+    console.log(customer);
+    if (!("emart-token" in localStorage)) {
+      history.push("/login");
+    } else {
+      history.push("/user");
     }
   }
 
@@ -217,7 +231,7 @@ function ProductUI() {
                     <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>
                     ADD TO CART
                   </AddToCart>
-                  <BuyNow>BUY NOW</BuyNow>
+                  <BuyNow onClick={handleBuyNowClick}>BUY NOW</BuyNow>
                 </Option>
 
                 <ProductDescription>

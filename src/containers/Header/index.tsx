@@ -42,7 +42,7 @@ function HeaderElement() {
     ...state.cart,
   }));
 
-  console.log(customer);
+  // console.log(customer);
   useEffect(() => {
     (async () => {
       !customer.name && accessToken && (await dispatch(setUsesrDetails()));

@@ -10,6 +10,7 @@ import CategoryProducts from "./containers/CategoryProducts";
 import ProductUI from "./containers/Product";
 import ShoppingCart from "./containers/ShoppingCart";
 import LoginAndSignUp from "./containers/Login";
+import User from "./containers/User";
 
 function App() {
   return (
@@ -17,6 +18,7 @@ function App() {
       <Router>
         <HeaderElement />
         <Switch>
+          <Route path="/user" component={User} />
           <Route path="/product/:slug/:product_id" component={ProductUI} />
           <Route
             path="/category/:category_name/:category_id"

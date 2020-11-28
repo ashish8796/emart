@@ -15,6 +15,8 @@ function Home() {
     })
   );
 
+  // console.log(departments);
+
   return (
     <>
       <MainWrapper>

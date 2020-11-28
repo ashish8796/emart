@@ -56,9 +56,7 @@ class API {
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "PUT",
-        headers: {
-          "content-type ": "application/json",
-        },
+        headers: { ...headers },
         body: JSON.stringify(data)
       });
       return await response.json();
@@ -95,6 +93,12 @@ export const loginUser = (data: LoginDetails) => api.post('/customers/login', da
 
 export const getUserDetails = () => api.get('/customer');
 
-export const getProductsInShoppingCart = (cartId: string) => api.get("/shoppingcart/" + cartId)
+export const getProductsInShoppingCart = (cartId: string) => api.get("/shoppingcart/" + cartId);
 
-export const deleteProductfromCart = (itemId: number) => api.delete('/shoppingcart/removeProduct/' + itemId, itemId)
+export const deleteProductfromCart = (itemId: number) => api.delete('/shoppingcart/removeProduct/' + itemId, itemId);
+
+export const putUserAddress = (data: any) => api.put("/customers/address", data);
+
+export const putCreditCart = (data: any) => api.put("/customers/creditCard", data);
+
+export const getRegion = () => api.get("/shipping/regions");
