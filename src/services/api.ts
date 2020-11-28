@@ -102,3 +102,5 @@ export const putUserAddress = (data: any) => api.put("/customers/address", data)
 export const putCreditCart = (data: any) => api.put("/customers/creditCard", data);
 
 export const getRegion = () => api.get("/shipping/regions");
+
+export const putUserDetails = (data: any) => api.put("/customer", data);

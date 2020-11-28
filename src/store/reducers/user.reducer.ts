@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS } from "../actions/actionTypes";
+import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "../actions/actionTypes";
 
 export type Customer = {
   customer_id: number,
@@ -97,6 +97,12 @@ function userReducer(state = initialState, action: any) {
     }
 
     case SET_USER_CREDIT_CARD: {
+      return {
+        ...state, customer: action.payload
+      }
+    }
+
+    case UPDATE_USER_DETAILS: {
       return {
         ...state, customer: action.payload
       }

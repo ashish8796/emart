@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
-import { getUserDetails, loginUser, putCreditCart, putUserAddress, registerNewUser } from "../../services/api";
-import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS } from "./actionTypes";
+import { getUserDetails, loginUser, putCreditCart, putUserAddress, putUserDetails, registerNewUser } from "../../services/api";
+import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "./actionTypes";
 import { LoginDetails, UserDetails } from "./tsTypes";
 
 export const registerUser = (userDetails: UserDetails) => async (dispatch: Dispatch) => {
@@ -64,13 +64,26 @@ export const setUserAddress = (obj: any) => async (dispatch: Dispatch) => {
   }
 }
 
-export const setUserCreditCard = (obj: any) => async (dispatch: Dispatch) => {
+export const setUserCreditCard = (creditCardNumber: string) => async (dispatch: Dispatch) => {
   try {
-    const data = await putCreditCart(obj);
+    const data = await putCreditCart(creditCardNumber);
     dispatch({
       type: SET_USER_CREDIT_CARD,
       payload: data
     })
+  } catch (error) {
+
+  }
+}
+
+export const updateUserDetails = (obj: any) => async (dispatch: Dispatch) => {
+  try {
+    const data = putUserDetails(obj);
+    dispatch({
+      type: UPDATE_USER_DETAILS,
+      payload: data
+    })
+
   } catch (error) {
 
   }
