@@ -10,7 +10,7 @@ import UserDetails from "./UserDetails";
 
 function User() {
   const { customer } = useSelector((state: State) => state.user);
-  const [editAddress, setEditAddress] = useState(false);
+  const [editShippingDetails, setShippingDetails] = useState<string>("");
 
   useEffect(() => {
     if (
@@ -19,7 +19,7 @@ function User() {
       !customer.country &&
       !customer.postal_code
     ) {
-      setEditAddress(true);
+      setShippingDetails("address");
     }
   }, []);
 
@@ -51,7 +51,13 @@ function User() {
           {customer.name} <span>{customer.email}</span>
         </p>
       </UserName>
-      {editAddress && <UserDetails />}
+      {editShippingDetails === "address" && (
+        <AddressDetails editShippingDetails={setShippingDetails} />
+      )}
+      {editShippingDetails === "credential" && (
+        <Credientials editShippingDetails={setShippingDetails} />
+      )}
+      {editShippingDetails === "userDetails" && <UserDetails />}
     </UserContainer>
   );
 }

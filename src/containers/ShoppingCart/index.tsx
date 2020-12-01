@@ -43,6 +43,10 @@ function ShoppingCart() {
     history.push("/");
   };
 
+  const handlePlaceOrder = () => {
+    history.push("/order");
+  };
+
   return (
     <>
       <CartWrapper>
@@ -54,7 +58,7 @@ function ShoppingCart() {
               ))}
 
               <PlaceOrder>
-                <button>Place Order</button>
+                <button onClick={handlePlaceOrder}>Place Order</button>
               </PlaceOrder>
             </ProductSection>
 

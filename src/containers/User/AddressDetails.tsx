@@ -1,13 +1,16 @@
-import { faArrowDown, faChevronDown } from "@fortawesome/free-solid-svg-icons";
+import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getRegion } from "../../services/api";
+import { State } from "../../store/actions/tsTypes";
 import { setUserAddress } from "../../store/actions/user.action";
 
-function AddressDetails() {
+function AddressDetails({ editShippingDetails }: any) {
   const dispatch = useDispatch();
+  const { customer } = useSelector((state: State) => state.user);
+
   const [regionOption, setRegionOption] = useState([
     { shipping_region_id: 1, shipping_region: "Please Select" },
   ]);
@@ -20,22 +23,22 @@ function AddressDetails() {
   const [shippingRegion, setShippingRegion] = useState<string>("");
   const [shippingRegionId, setShippingRegionId] = useState<number>();
 
-  const customer = {
-    customer_id: 89968,
-    name: "Ashish Kumar Saini",
-    email: "ashishsaini.ak143@gmail.com",
-    address_1: null,
-    address_2: null,
-    city: null,
-    country: null,
-    credit_card: null,
-    day_phone: null,
-    eve_phone: null,
-    mob_phone: null,
-    postal_code: null,
-    region: null,
-    shipping_region_id: "",
-  };
+  // const customer = {
+  //   customer_id: 89968,
+  //   name: "Ashish Kumar Saini",
+  //   email: "ashishsaini.ak143@gmail.com",
+  //   address_1: null,
+  //   address_2: null,
+  //   city: null,
+  //   country: null,
+  //   credit_card: null,
+  //   day_phone: null,
+  //   eve_phone: null,
+  //   mob_phone: null,
+  //   postal_code: null,
+  //   region: null,
+  //   shipping_region_id: "",
+  // };
 
   const hancleSelectClick = async () => {
     if (regionOption.length === 1) {
@@ -83,6 +86,7 @@ function AddressDetails() {
     };
 
     dispatch(setUserAddress(addressObj));
+    editShippingDetails("credential");
   };
 
   return (

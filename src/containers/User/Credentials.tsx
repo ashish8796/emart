@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { setUserCreditCard } from "../../store/actions/user.action";
 
-function Credientials() {
+function Credientials({ editShippingDetails }: any) {
   const dispatch = useDispatch();
   const [creditCard, setCreditCard] = useState<string>("");
   const [confirmNumber, setConfirmNumber] = useState<string>("");
@@ -19,6 +19,8 @@ function Credientials() {
 
     if (creditCard === confirmNumber) {
       dispatch(setUserCreditCard(creditCard));
+
+      editShippingDetails("userDetails");
     }
   };
 

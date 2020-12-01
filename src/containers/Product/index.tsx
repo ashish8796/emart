@@ -105,7 +105,7 @@ function ProductUI() {
         })
       );
 
-      history.push("/shoppingCart");
+      history.push("/cart");
     } else {
       alert("Select Color and Size.");
     }
@@ -231,7 +231,7 @@ function ProductUI() {
                     <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>
                     ADD TO CART
                   </AddToCart>
-                  <BuyNow onClick={handleBuyNowClick}>BUY NOW</BuyNow>
+                  {/* <BuyNow onClick={handleBuyNowClick}>BUY NOW</BuyNow> */}
                 </Option>
 
                 <ProductDescription>

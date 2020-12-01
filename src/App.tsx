@@ -11,6 +11,7 @@ import ProductUI from "./containers/Product";
 import ShoppingCart from "./containers/ShoppingCart";
 import LoginAndSignUp from "./containers/Login";
 import User from "./containers/User";
+import Orders from "./containers/Order";
 
 function App() {
   return (
@@ -20,11 +21,12 @@ function App() {
         <Switch>
           <Route path="/user" component={User} />
           <Route path="/product/:slug/:product_id" component={ProductUI} />
+          <Route path="/order" component={Orders} />
           <Route
             path="/category/:category_name/:category_id"
             component={CategoryProducts}
           />
-          <Route path="/shoppingCart">
+          <Route path="/cart">
             <ShoppingCart />
           </Route>
           <Route path="/login">

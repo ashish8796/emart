@@ -4,7 +4,8 @@ const accessToken: string | null | undefined = localStorage.getItem('emart-token
 const headers = new Headers({
   "content-type": "application/json",
 });
-accessToken && headers.append("USER-KEY", accessToken)
+accessToken && headers.append("USER-KEY", accessToken);
+
 
 class API {
   mainUrl: string = "https://backendapi.turing.com"
@@ -54,9 +55,10 @@ class API {
 
   async put(url: string, data: any) {
     try {
+      console.log(headers)
       const response = await fetch(this.mainUrl + url, {
         method: "PUT",
-        headers: { ...headers },
+        headers: headers,
         body: JSON.stringify(data)
       });
       return await response.json();
