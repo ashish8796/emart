@@ -1,10 +1,16 @@
-import React, { useEffect, useState } from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { getRegion } from "../../services/api";
 
-function Address() {
+interface AddressProps {}
+
+export interface AddessHandler {
+  getAddressState: () => object;
+}
+
+const Address = forwardRef<AddessHandler, AddressProps>((props, ref) => {
   const [regionOption, setRegionOption] = useState([
     { shipping_region_id: 1, shipping_region: "Please Select" },
   ]);
@@ -45,23 +51,58 @@ function Address() {
     const shippingId = regionOption.find(
       (obj) => obj.shipping_region === region
     )?.shipping_region_id;
+
+    setRegionOption((state) => {
+      state[0] = { ...state[0], shipping_region: region };
+      return state;
+    });
     setShippingRegion(region);
     setShippingRegionId(shippingId);
   };
+
+  const getAddressState = () => {
+    return {
+      city,
+      country,
+      postalCode,
+      addressLine1,
+      addressLine2,
+      shippingRegion,
+      shippingRegionId,
+    };
+  };
+
+  useImperativeHandle(ref, () => ({
+    getAddressState,
+  }));
 
   return (
     <AddressBox>
       <p>Add Delivery Address</p>
 
-      <Input type="text" required onChange={handleAddressLine1} />
+      <Input
+        type="text"
+        value={addressLine1}
+        required
+        onChange={handleAddressLine1}
+      />
       <Label>Address Line 1</Label>
-      <Input type="text" onChange={handleAddressLine2} />
+
+      <Input type="text" value={addressLine2} onChange={handleAddressLine2} />
       <Label>Address Line 2</Label>
-      <Input type="text" required onChange={handleCity} />
+
+      <Input type="text" value={city} required onChange={handleCity} />
       <Label>City</Label>
-      <Input type="text" required onChange={handleCountry} />
+
+      <Input type="text" value={country} required onChange={handleCountry} />
       <Label>Country</Label>
-      <Input type="number" required onChange={handlePostalCode} />
+
+      <Input
+        type="number"
+        value={postalCode}
+        required
+        onChange={handlePostalCode}
+      />
       <Label>Postal Code</Label>
 
       <SelectRegion>
@@ -84,7 +125,7 @@ function Address() {
       </SelectRegion>
     </AddressBox>
   );
-}
+});
 
 const AddressBox = styled.div``;
 const AddressForm = styled.form``;
