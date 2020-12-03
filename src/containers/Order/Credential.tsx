@@ -4,7 +4,7 @@ import styled from "styled-components";
 interface CredentialProps {}
 
 interface CredentialObj {
-  creditCard: string;
+  credit_Card: string;
   confirmNumber: string;
 }
 
@@ -26,7 +26,7 @@ const Credential = forwardRef<CredentialHanler, CredentialProps>(
 
     const getCredentialState = () => {
       return {
-        creditCard,
+        credit_Card: creditCard,
         confirmNumber,
       };
     };
@@ -37,21 +37,51 @@ const Credential = forwardRef<CredentialHanler, CredentialProps>(
 
     return (
       <CredentialBox>
-        <CreditCardNumber type={"text"} required onChange={handleCrediInput} />
-        <Label>Enter Credit Card Number</Label>
+        <p>Credentials</p>
 
-        <ConfirmNumber type={"text"} required onChange={handleConfirmNumber} />
-        <Label>Confirm Credit Card Number</Label>
+        <CreditCardNumber
+          type={"text"}
+          required
+          onChange={handleCrediInput}
+          placeholder={"Enter Credit Card Number"}
+        />
+
+        <ConfirmNumber
+          type={"text"}
+          required
+          onChange={handleConfirmNumber}
+          placeholder={"Confirm Credit Card Number"}
+        />
       </CredentialBox>
     );
   }
 );
 
-const FlexStyle = styled.div``;
-const Input = styled.input``;
-const Label = styled.label``;
-const CredentialBox = styled(FlexStyle)``;
-const CreditCardNumber = styled(Input)``;
-const ConfirmNumber = styled(Input)``;
+const FlexStyle = styled.div`
+  display: flex;
+  flex-direction: column;
+`;
+
+const Input = styled.input`
+  width: 250px;
+  margin: 10px 0;
+  outline: none;
+  border: none;
+  border-bottom: 2px solid grey;
+  font-size: 18px;
+`;
+
+const CredentialBox = styled(FlexStyle)`
+  p {
+    color: #585656;
+    font-weight: bold;
+  }
+`;
+const CreditCardNumber = styled(Input)`
+  margin: 20px 10px;
+`;
+const ConfirmNumber = styled(Input)`
+  margin: 10px;
+`;
 
 export default Credential;

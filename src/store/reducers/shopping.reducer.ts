@@ -7,7 +7,9 @@ export interface ShoppingCartState {
 }
 
 const intialState: ShoppingCartState = {
-  cartId: "emart-token" in localStorage ? "primary_cart_id" in localStorage ? localStorage.getItem('primary_cart_id') : '' : "secondry_cart_id" in localStorage ? localStorage.getItem("secondry_cart_id") : "",
+  // cartId: "emart-token" in localStorage ? "primary_cart_id" in localStorage ? localStorage.getItem('primary_cart_id') : '' : "secondry_cart_id" in localStorage ? localStorage.getItem("secondry_cart_id") : "",
+
+  cartId: "emart-token" in localStorage ? localStorage.getItem('primary_cart_id') : "",
   productsList: []
 }
 
@@ -18,7 +20,7 @@ function shoppingCartReducer(state = intialState, action: MainAction) {
     case SET_SHOPPING_CART_ID: {
       const cartId = action.payload as string;
 
-      !("emart-token" in localStorage) && localStorage.setItem("secondry_cart_id", cartId);
+      !("primary_cart_id" in localStorage) && localStorage.setItem("primary_cart_id", cartId);
 
       return { ...state, cartId: action.payload };
     }

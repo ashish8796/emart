@@ -24,16 +24,18 @@ function ShoppingCart() {
 
   console.log(productsList);
 
-  const product = {
-    attributes: "Black-XL",
-    image: "easter-rebellion.gif",
-    item_id: 63762,
-    name: "Easter Rebellion",
-    price: "16.95",
-    product_id: 30,
-    quantity: 1,
-    subtotal: "16.95",
-  };
+  // const product = {
+  //   attributes: "Black-XL",
+  //   image: "easter-rebellion.gif",
+  //   item_id: 63762,
+  //   name: "Easter Rebellion",
+  //   price: "16.95",
+  //   product_id: 30,
+  //   quantity: 1,
+  //   subtotal: "16.95",
+  // };
+
+  console.log(productsList);
 
   const handleLogin = () => {
     history.push("/login");

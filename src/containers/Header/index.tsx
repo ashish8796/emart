@@ -81,7 +81,7 @@ function HeaderElement() {
   };
 
   const handleCartClick = () => {
-    history.push("/shoppingCart");
+    history.push("/cart");
   };
 
   return (

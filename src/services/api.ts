@@ -59,7 +59,7 @@ class API {
       const response = await fetch(this.mainUrl + url, {
         method: "PUT",
         headers: headers,
-        body: JSON.stringify(data)
+        body: typeof (data) === "string" ? data : JSON.stringify(data)
       });
       return await response.json();
     } catch (e) {
@@ -106,3 +106,5 @@ export const putCreditCart = (data: any) => api.put("/customers/creditCard", dat
 export const getRegion = () => api.get("/shipping/regions");
 
 export const putUserDetails = (data: any) => api.put("/customer", data);
+
+export const postCreateOrder = (data: any) => api.post("/orders", data)
