@@ -25,9 +25,7 @@ class API {
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "POST",
-        headers: {
-          "content-type": "application/json",
-        },
+        headers: headers,
         body: JSON.stringify(data)
       });
 
@@ -107,4 +105,12 @@ export const getRegion = () => api.get("/shipping/regions");
 
 export const putUserDetails = (data: any) => api.put("/customer", data);
 
-export const postCreateOrder = (data: any) => api.post("/orders", data)
+export const getShippingOption = (shippingId: number) => api.get("/shipping/regions/" + shippingId);
+
+export const postCreateOrder = (data: any) => api.post("/orders", data);
+
+export const getOrderInfoById = (order_id: number) => api.get("/orders/" + order_id);
+
+export const getAllOrders = () => api.get("/orders/inCustomer");
+
+export const getShortDetailOfOrder = (orderId: number) => api.get("/orders/shortDetail/" + orderId)

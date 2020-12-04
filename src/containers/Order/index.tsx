@@ -6,12 +6,13 @@ import styled from "styled-components";
 import { State } from "../../store/actions/tsTypes";
 import {
   setUserAddress,
-  setUserCreditCard,
   updateUserDetails,
 } from "../../store/actions/user.action";
 import Address from "./Address";
 import Credential from "./Credential";
 import ContactNums from "./ContactNumber";
+import { getShippingOption } from "../../services/api";
+import ShippingAddresses from "./ShippingAddresses";
 
 function Orders() {
   const dispatch = useDispatch();
@@ -36,6 +37,10 @@ function Orders() {
     ) {
       setAddShippingDetails(true);
     }
+
+    return () => {
+      setAddShippingDetails(false);
+    };
   }, []);
 
   const handleOrderForm = (event: any) => {
@@ -62,14 +67,6 @@ function Orders() {
       // dispatch(setUserCreditCard(credentialObj.credit_Card));
       dispatch(updateUserDetails(userDetails));
     }
-  };
-
-  const handleConfirmOrder = () => {
-    const orderData = {
-      cart_id: cartId,
-      shipping_id: customer.shipping_region_id,
-    };
-    // dispatch();
   };
 
   return (
@@ -101,28 +98,7 @@ function Orders() {
           </Submit>
         </OrderForm>
       ) : (
-        <>
-          <DeliveryAddress>
-            <AddressHeading>Shipping Address</AddressHeading>
-            <p>{customer.address_1},</p>
-            <p>{customer.address_2 && customer.address_2 + " ,"}</p>
-            <p>
-              {customer.city} (<span>{customer.postal_code}</span>),
-            </p>
-            <p>
-              {customer.country} ({customer.region})
-            </p>
-
-            <Contact>Contact Number</Contact>
-            <p>{customer.mob_phone}</p>
-          </DeliveryAddress>
-
-          <DeliveryOption></DeliveryOption>
-
-          <ConfirmOrder>
-            <button onClick={handleConfirmOrder}>Confirm Order</button>
-          </ConfirmOrder>
-        </>
+        <ShippingAddresses />
       )}
     </OrdersContainer>
   );
@@ -159,6 +135,7 @@ const UserName = styled(FlexStyle)`
     }
   }
 `;
+
 const OrderForm = styled.form`
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -166,49 +143,6 @@ const OrderForm = styled.form`
   grid-gap: 0 5em;
   justify-content: space-between;
   align-itmes: space-between;
-`;
-
-const DeliveryAddress = styled.div`
-  p {
-    margin-bottom: 8px;
-  }
-`;
-
-const AddressHeading = styled.p`
-  color: #585656;
-  font-weight: bold;
-`;
-
-const Contact = styled.p`
-  color: #585656;
-  font-weight: bold;
-  margin-top: 30px;
-`;
-
-const DeliveryOption = styled.div``;
-
-const ConfirmOrder = styled.div`
-  // border: 2px solid red;
-  position: relative;
-  margin-top: 3em;
-  height: 60px;
-
-  button {
-    position: absolute;
-    right: 0;
-    margin-right: 2em;
-    outline: none;
-    border: none;
-    font-size: 20px;
-    padding: 10px 20px;
-    background: #fc8621;
-    color: #fff;
-    border-radius: 3px;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
 `;
 
 const Submit = styled.button``;
