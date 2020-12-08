@@ -11,7 +11,8 @@ import ProductUI from "./containers/Product";
 import ShoppingCart from "./containers/ShoppingCart";
 import LoginAndSignUp from "./containers/Login";
 import User from "./containers/User";
-import Orders from "./containers/Order";
+import CreateOrder from "./containers/Order/CreateOrder";
+import AllOrders from "./containers/Order/Orders";
 
 function App() {
   return (
@@ -21,7 +22,8 @@ function App() {
         <Switch>
           <Route path="/user" component={User} />
           <Route path="/product/:slug/:product_id" component={ProductUI} />
-          <Route path="/order" component={Orders} />
+          <Route path="/create-order" component={CreateOrder} />
+          <Route path="/orders" component={AllOrders} />
           <Route
             path="/category/:category_name/:category_id"
             component={CategoryProducts}

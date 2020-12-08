@@ -9,6 +9,7 @@ import {
   getProductById,
   getReviewsByProductId,
 } from "../../services/api";
+import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 
 import {
   addProductInShoppingCart,
@@ -104,6 +105,7 @@ function ProductUI() {
           attribute: attribute.color + "-" + attribute.size,
         })
       );
+      dispatch(setIsDepartmentVisible(false));
 
       history.push("/cart");
     } else {

@@ -6,6 +6,7 @@ import styled from "styled-components";
 import {
   faChevronDown,
   faChevronUp,
+  faPowerOff,
   faSearch,
   faShoppingCart,
 } from "@fortawesome/free-solid-svg-icons";
@@ -21,12 +22,13 @@ import {
   setUsesrDetails,
 } from "../../store/actions/user.action";
 import { setProductsInShoppingCart } from "../../store/actions/shoppingCart.action";
+import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 
 function HeaderElement() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const [nameHover, setNameHover] = useState(false);
+  const [isOptionVisible, setIsOptionVisible] = useState(false);
 
   const showDepartments =
     location.pathname !== "/shoppingCart" && location.pathname !== "/login";
@@ -36,10 +38,12 @@ function HeaderElement() {
     accessToken,
     cartId,
     productsList,
+    isDepartmentVisible,
   } = useSelector((state: State) => ({
     ...state.home,
     ...state.user,
     ...state.cart,
+    ...state.screen,
   }));
 
   // console.log(customer);
@@ -56,7 +60,7 @@ function HeaderElement() {
     dispatch(setCategories());
 
     return () => {
-      setNameHover(false);
+      setIsOptionVisible(false);
     };
   }, []);
 
@@ -81,7 +85,13 @@ function HeaderElement() {
   };
 
   const handleCartClick = () => {
+    dispatch(setIsDepartmentVisible(false));
     history.push("/cart");
+  };
+
+  const handleOrdersClick = () => {
+    dispatch(setIsDepartmentVisible(false));
+    history.push("/orders");
   };
 
   return (
@@ -93,6 +103,7 @@ function HeaderElement() {
               src={require("./../../assets/images/freeLogo.jpeg").default}
               alt="logo"
               onClick={() => {
+                dispatch(setIsDepartmentVisible(true));
                 history.push("/");
               }}
             />
@@ -114,23 +125,30 @@ function HeaderElement() {
                   <>
                     <p
                       onMouseOver={() => {
-                        setNameHover(true);
+                        setIsOptionVisible(true);
                       }}
                     >
                       {customer.name.slice(0, 13)}{" "}
                       <FontAwesomeIcon
-                        icon={nameHover ? faChevronUp : faChevronDown}
+                        icon={isOptionVisible ? faChevronUp : faChevronDown}
                       />
                     </p>
-                    {nameHover && (
-                      <LogOut
-                        onClick={handleLogOutClick}
+                    {isOptionVisible && (
+                      <OptionContainer
                         onMouseLeave={() => {
-                          setNameHover(false);
+                          setIsOptionVisible(false);
                         }}
                       >
-                        Log Out
-                      </LogOut>
+                        <OrdersButton onClick={handleOrdersClick}>
+                          Orders
+                        </OrdersButton>
+                        <LogOut onClick={handleLogOutClick}>
+                          <span>
+                            <FontAwesomeIcon icon={faPowerOff} />
+                          </span>{" "}
+                          Log Out
+                        </LogOut>
+                      </OptionContainer>
                     )}
                   </>
                 ) : (
@@ -146,7 +164,7 @@ function HeaderElement() {
             )}
           </SystemWrapper>
         </SearchHead>
-        {showDepartments && (
+        {isDepartmentVisible && (
           <DepartmentWrapper>
             {departments.length > 0 &&
               departments.map((el, i) => <Department el={el} key={i} />)}
@@ -257,12 +275,31 @@ const LoginWrapper = styled.div`
   }
 `;
 
-const LogOut = styled(Button)`
+const OptionContainer = styled.div`
   position: absolute;
-  color: blue;
-  // top: 30px;
-  // background: ;
+  // top: 10px;
+  margin-top: 10px;
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  background: #fff;
+  width: 130px;
+  border-radius: 3px;
+
+  p {
+    color: black;
+    font-size: 17px;
+    margin: 5px 0;
+
+    &:hover {
+      color: blue;
+    }
+  }
 `;
+
+const OrdersButton = styled.p``;
+
+const LogOut = styled.p``;
 
 const Login = styled(Button)`
   // padding: 20px;

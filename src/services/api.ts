@@ -113,4 +113,6 @@ export const getOrderInfoById = (order_id: number) => api.get("/orders/" + order
 
 export const getAllOrders = () => api.get("/orders/inCustomer");
 
-export const getShortDetailOfOrder = (orderId: number) => api.get("/orders/shortDetail/" + orderId)
+export const getShortDetailOfOrder = (orderId: number) => api.get("/orders/shortDetail/" + orderId);
+
+export const getProductDetailById = (productId: number) => api.get(`/products/${productId}/details`);

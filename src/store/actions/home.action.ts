@@ -4,9 +4,9 @@ import { Dispatch } from "redux";
 import { Categories, Department } from "./tsTypes";
 
 
-export const setDepartments = () => async (dispatch: Dispatch) => {
+export const setDepartments = () => async (dispatch: Dispatch, _: any, apiClient: { getAllDepartments: () => Promise<Array<Department>> }) => {
   try {
-    const data: Array<Department> = await getAllDepartments();
+    const data: Array<Department> = await apiClient.getAllDepartments();
     dispatch({
       type: SET_DEPARTMENT,
       payload: data
@@ -16,7 +16,7 @@ export const setDepartments = () => async (dispatch: Dispatch) => {
   }
 }
 
-export const setCategories = () => async (dispatch: Dispatch) => {
+export const setCategories = () => async (dispatch: Dispatch,) => {
   try {
     const data: Categories = await getAllCategories()
     dispatch({

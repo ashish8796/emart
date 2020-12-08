@@ -1,5 +1,6 @@
 import { CategoryProductList, CategoryState, Product } from "../reducers/category.reducer";
 import { OrderState } from "../reducers/orders.reducer";
+import { ScreenState } from "../reducers/screen.reducer";
 import { ShoppingCartState } from "../reducers/shopping.reducer";
 import { UserState } from "../reducers/user.reducer";
 import { HomeState } from "./../reducers/home.reducer";
@@ -26,6 +27,7 @@ export interface State {
   cart: ShoppingCartState;
   user: UserState
   order: OrderState
+  screen: ScreenState
 }
 
 export type SetProdByDeptId = {
@@ -105,4 +107,9 @@ export type RemoveProductFromCart = {
 export type CreateOrder = {
   type: string,
   payload: any
+}
+
+export type IsDepartmentVisible = {
+  type: string,
+  payload: boolean
 }

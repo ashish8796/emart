@@ -1,13 +1,15 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { getShippingOption } from "../../services/api";
-import { createOrder } from "../../store/actions/orders.action";
+import { createOrder, setAllOrders } from "../../store/actions/orders.action";
 import { State } from "../../store/actions/tsTypes";
 
-function ShippingAddresses() {
+function ConfirmOrder() {
   const dispatch = useDispatch();
-  const { customer, cartId } = useSelector((state: State) => ({
+  const history = useHistory();
+  const { customer, cartId, productsList } = useSelector((state: State) => ({
     ...state.user,
     ...state.cart,
   }));
@@ -33,7 +35,7 @@ function ShippingAddresses() {
     setSelectedOption({ value: event.target.value, id: event.target.id });
   };
 
-  const handleConfirmOrder = () => {
+  const handleConfirmOrder = async () => {
     const orderData = {
       cart_id: cartId,
       shipping_id: selectedOption.id,
@@ -42,7 +44,9 @@ function ShippingAddresses() {
 
     console.log(orderData);
 
-    dispatch(createOrder(orderData));
+    const orderId = await dispatch(createOrder(orderData));
+    const allOrdersData = await dispatch(setAllOrders());
+    orderId && allOrdersData.length > 0 && history.push("/orders");
   };
 
   return (
@@ -94,9 +98,9 @@ function ShippingAddresses() {
           </DeliveryAddress>
           <DeliveryOption></DeliveryOption>
 
-          <ConfirmOrder>
+          <ConfirmOrderBox>
             <button onClick={handleConfirmOrder}>Confirm Order</button>
-          </ConfirmOrder>
+          </ConfirmOrderBox>
         </>
       )}
     </>
@@ -160,7 +164,7 @@ const Contact = styled.p`
 
 const DeliveryOption = styled.div``;
 
-const ConfirmOrder = styled.div`
+const ConfirmOrderBox = styled.div`
   // border: 2px solid red;
   position: relative;
   margin-top: 3em;
@@ -184,4 +188,4 @@ const ConfirmOrder = styled.div`
   }
 `;
 
-export default ShippingAddresses;
+export default ConfirmOrder;

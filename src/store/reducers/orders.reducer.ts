@@ -4,14 +4,14 @@ import { CreateOrder } from "../actions/tsTypes";
 export interface OrderState {
   orderId: number
   orderDetails: object
-  orders: object[]
+  allOrders: object[]
   shortDetailOfOrder: object
 }
 
 const initialState = {
   orderId: undefined,
   orderDetailsById: {},
-  orders: [],
+  allOrders: [],
   shortDetailOfOrder: {}
 }
 

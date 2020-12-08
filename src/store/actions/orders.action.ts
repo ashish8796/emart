@@ -3,8 +3,10 @@ import { getAllOrders, getOrderInfoById, getShortDetailOfOrder, postCreateOrder 
 import { CREATE_ORDER, SET_ALL_ORDERS, SET_ORDER_DETAILS_BY_ID, SET_SHORT_DETAIL_OF_ORDER } from "./actionTypes";
 
 export const createOrder = (orderData: any) => async (disptach: Dispatch) => {
+  let orderId;
   try {
-    const data = await postCreateOrder(orderData)
+    const data = await postCreateOrder(orderData);
+    orderId = data;
     console.log(data)
     disptach({
       type: CREATE_ORDER,
@@ -13,6 +15,7 @@ export const createOrder = (orderData: any) => async (disptach: Dispatch) => {
   } catch (error) {
 
   }
+  return orderId;
 }
 
 export const setOrderDetails = (orderId: number) => async (dispatch: Dispatch) => {
@@ -28,15 +31,20 @@ export const setOrderDetails = (orderId: number) => async (dispatch: Dispatch) =
 }
 
 export const setAllOrders = () => async (dispatch: Dispatch) => {
+  let ordersData;
+  console.log("set all orders working")
   try {
     const data = await getAllOrders();
+    ordersData = data;
     dispatch({
       type: SET_ALL_ORDERS,
       payload: data
     })
   } catch (error) {
+    console.log(error)
 
   }
+  return ordersData;
 }
 
 export const setShortDetailOfOrder = (orderId: number) => async (dispatch: Dispatch) => {
