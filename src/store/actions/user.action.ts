@@ -54,6 +54,7 @@ export const setLogOutUser = () => {
 
 export const setUserAddress = (obj: any) => async (dispatch: Dispatch) => {
   try {
+
     const data = await putUserAddress(obj)
     dispatch({
       type: SET_USER_ADDRESS,
@@ -77,8 +78,10 @@ export const setUserCreditCard = (creditCardNumber: string) => async (dispatch: 
 }
 
 export const updateUserDetails = (obj: any) => async (dispatch: Dispatch) => {
+  let userDetails;
   try {
     const data = putUserDetails(obj);
+    userDetails = data;
     dispatch({
       type: UPDATE_USER_DETAILS,
       payload: data
@@ -87,4 +90,5 @@ export const updateUserDetails = (obj: any) => async (dispatch: Dispatch) => {
   } catch (error) {
 
   }
+  return userDetails;
 }

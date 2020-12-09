@@ -35,9 +35,7 @@ function shoppingCartReducer(state = intialState, action: MainAction) {
     }
 
     case REMOVE_PRODUCT_FROM_CART: {
-      const newProductList = state.productsList.filter(product => product.item_id != action.payload);
-
-      return { ...state, productsList: newProductList };
+      return { ...state, productsList: action.payload };
     }
 
     default: return state;

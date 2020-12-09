@@ -20,7 +20,7 @@ function OrderedProduct({ product }: OrderedProductProps) {
     })();
   }, []);
 
-  console.log({ product, productData });
+  // console.log({ product, productData });
   return (
     <ProductWrapper>
       {productData.length > 0 && (
@@ -50,18 +50,17 @@ function OrderedProduct({ product }: OrderedProductProps) {
   );
 }
 
-const ProductWrapper = styled.div``;
+const ProductWrapper = styled.div`
+  margin-bottom: 20px;
+`;
 
 const OrderedProductDiv = styled.div`
   display: flex;
   flex-direction: row;
-  // border: 2px solid blue;
-  // justify-content: space-around;
 
   img {
     width: 100px;
     border-radius: 3px;
-    // margin-left: 20px;
   }
 
   div {

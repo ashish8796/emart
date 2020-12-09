@@ -32,7 +32,6 @@ export const setOrderDetails = (orderId: number) => async (dispatch: Dispatch) =
 
 export const setAllOrders = () => async (dispatch: Dispatch) => {
   let ordersData;
-  console.log("set all orders working")
   try {
     const data = await getAllOrders();
     ordersData = data;

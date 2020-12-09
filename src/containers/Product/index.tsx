@@ -4,11 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import {
-  getAttributesByProductId,
-  getProductById,
-  getReviewsByProductId,
-} from "../../services/api";
+import { getProductById, getReviewsByProductId } from "../../services/api";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 
 import {
@@ -18,6 +14,7 @@ import {
 
 import { State } from "../../store/actions/tsTypes";
 import { Product } from "../../store/reducers/category.reducer";
+import ProductAttribute from "./Attribute";
 
 interface Reviews {
   name: string;
@@ -26,18 +23,12 @@ interface Reviews {
   created_on: string;
 }
 
-interface Attribute {
-  attribute_name: string;
-  attribute_value_id: number;
-  attribute_value: string;
-}
-
 function ProductUI() {
   const location = useLocation();
   const dispatch = useDispatch();
   const history = useHistory();
 
-  const { cartId, customer, productsList } = useSelector((state: State) => ({
+  const { cartId } = useSelector((state: State) => ({
     ...state.cart,
     ...state.user,
   }));
@@ -54,7 +45,6 @@ function ProductUI() {
   });
 
   const [reviews, setReviews] = useState<Array<Reviews>>([]);
-  const [allAttributes, setAllArributes] = useState<Array<Attribute>>([]);
   const [attribute, setAttribute] = useState({ color: "", size: "" });
   const productId = location.pathname.split("/").pop();
   const [mainImage, setMainImage] = useState("");
@@ -76,13 +66,11 @@ function ProductUI() {
       try {
         const data = await getProductById(productId);
         const reviews = await getReviewsByProductId(productId);
-        const attributes = await getAttributesByProductId(productId);
 
         if (data.thumbnail) {
           setMainImage(data.thumbnail);
           setProductData(data);
           setReviews(reviews);
-          setAllArributes(attributes);
         }
       } catch (error) {
         console.log(error);
@@ -98,7 +86,7 @@ function ProductUI() {
         shoppingCartId = await dispatch(setShoppingCartId());
       }
 
-      dispatch(
+      await dispatch(
         addProductInShoppingCart({
           cartId: !cartId ? shoppingCartId : cartId,
           productId,
@@ -113,13 +101,27 @@ function ProductUI() {
     }
   }
 
-  function handleBuyNowClick() {
-    console.log(customer);
-    if (!("emart-token" in localStorage)) {
-      history.push("/login");
-    } else {
-      history.push("/user");
-    }
+  // function handleBuyNowClick() {
+  //   console.log(customer);
+  //   if (!("emart-token" in localStorage)) {
+  //     history.push("/login");
+  //   } else {
+  //     history.push("/user");
+  //   }
+  // }
+
+  function makeImages(imageName: string, i: number) {
+    return (
+      <ProductImage
+        key={i}
+        src={
+          require(`./../../assets/images/product_images/${imageName}`).default
+        }
+        onMouseOver={() => {
+          setMainImage(imageName);
+        }}
+      />
+    );
   }
 
   return (
@@ -130,25 +132,11 @@ function ProductUI() {
             <SectionA>
               <AllImages>
                 <MoreImages>
-                  <ProductImage
-                    src={
-                      require(`./../../assets/images/product_images/${productData.image}`)
-                        .default
+                  {[productData.image, productData.image_2].map(
+                    (imageName, i) => {
+                      return makeImages(imageName, i);
                     }
-                    onMouseOver={() => {
-                      setMainImage(productData.image);
-                    }}
-                  />
-
-                  <ProductImage
-                    src={
-                      require(`./../../assets/images/product_images/${productData.image_2}`)
-                        .default
-                    }
-                    onMouseOver={() => {
-                      setMainImage(productData.image_2);
-                    }}
-                  />
+                  )}
                 </MoreImages>
 
                 <PrimaryImage>
@@ -185,48 +173,11 @@ function ProductUI() {
                   <span>{Math.ceil((off * 100) / productPrice)}% off</span>
                 </Price>
 
-                <AttributeWrapper>
-                  <Colors>
-                    <h1>Colors</h1>
-                    {allAttributes.map(
-                      (cv, i) =>
-                        cv.attribute_name == "Color" && (
-                          <ColorTag
-                            selectColor={cv.attribute_value == attribute.color}
-                            key={i}
-                            onClick={() => {
-                              setAttribute((state) => ({
-                                ...state,
-                                color: cv.attribute_value,
-                              }));
-                            }}
-                          >
-                            {cv.attribute_value}
-                          </ColorTag>
-                        )
-                    )}
-                  </Colors>
-                  <Size>
-                    <h1>Size</h1>
-                    {allAttributes.map(
-                      (cv, i) =>
-                        cv.attribute_name == "Size" && (
-                          <SizeTag
-                            mark={cv.attribute_value === attribute.size}
-                            key={i}
-                            onClick={() => {
-                              setAttribute((state) => ({
-                                ...state,
-                                size: cv.attribute_value,
-                              }));
-                            }}
-                          >
-                            {cv.attribute_value}
-                          </SizeTag>
-                        )
-                    )}
-                  </Size>
-                </AttributeWrapper>
+                <ProductAttribute
+                  productId={productId}
+                  attribute={attribute}
+                  setAttribute={setAttribute}
+                />
 
                 <Option>
                   <AddToCart onClick={handleAddToCart}>
@@ -365,16 +316,6 @@ const Price = styled.div`
 `;
 const Offers = styled.div``;
 
-const AttributeWrapper = styled.div`
-  padding: 5px;
-  h1 {
-    margin-top: 13px;
-    margin-right: 3em;
-
-    color: grey;
-    font-weight: bold;
-  }
-`;
 const PTag = styled.p`
   margin: 0 5px;
   padding: 10px 5px;
@@ -382,51 +323,6 @@ const PTag = styled.p`
   border-radius: 3px;
   &:hover {
     border: 2px solid grey;
-    cursor: pointer;
-    color: #db6400;
-  }
-`;
-
-interface ColorProps {
-  selectColor: boolean;
-}
-const ColorTag = styled(PTag)`
-  border: 2px solid
-    ${(state: ColorProps) => (state.selectColor ? "blue" : "#fff")};
-  &:hover {
-    border: 2px solid
-      ${(state: ColorProps) => (state.selectColor ? "blue" : "grey")};
-    cursor: pointer;
-    color: #db6400;
-  }
-`;
-
-const Colors = styled(AttributeWrapper)`
-  display: flex;
-  flex-direction: row;
-`;
-const Size = styled(AttributeWrapper)`
-  display: flex;
-  flex-direction: row;
-
-  h1 {
-    margin-right: 4.1em;
-    margin-top: 8px;
-  }
-
-  p {
-    padding: 5px 20px;
-  }
-`;
-
-interface SizeProps {
-  mark: boolean;
-}
-
-const SizeTag = styled(PTag)`
-  border: 2px solid ${(state: SizeProps) => (state.mark ? "blue" : "#fff")};
-  &:hover {
-    border: 2px solid ${(state: SizeProps) => (state.mark ? "blue" : "grey")};
     cursor: pointer;
     color: #db6400;
   }

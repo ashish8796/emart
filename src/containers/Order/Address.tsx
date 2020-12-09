@@ -133,22 +133,25 @@ const Address = forwardRef<AddessHandler, AddressProps>((props, ref) => {
       <SelectRegion>
         <Label>Region</Label>
         <div>
-          <p onClick={hancleSelectClick}>
-            {showLoader && <Loder> </Loder>}
+          <PleaseSelectButton onClick={hancleSelectClick}>
+            <Loder showLoder={showLoader}> </Loder>
             {selectedRegion}{" "}
             <span>
               <FontAwesomeIcon icon={faChevronDown} />
             </span>
-          </p>
-          {regionOption.slice(1).map((option: any, i) =>
-            toggleOption ? (
-              <p key={i} onClick={handleRegion}>
-                {option.shipping_region}
-              </p>
-            ) : (
-              <></>
-            )
-          )}
+          </PleaseSelectButton>
+
+          <article>
+            {regionOption.slice(1).map((option: any, i) =>
+              toggleOption ? (
+                <p key={i} onClick={handleRegion}>
+                  {option.shipping_region}
+                </p>
+              ) : (
+                <></>
+              )
+            )}
+          </article>
         </div>
       </SelectRegion>
     </AddressBox>
@@ -196,26 +199,57 @@ const Label = styled.label`
   margin-top: 10px;
 `;
 
+const PleaseSelectButton = styled.p`
+  margin-left: 0;
+  margin-top: -2px;
+  margin-bottom: 2px;
+  border: 1px solid black;
+  border-radius: 2px;
+  color: black !important;
+  font-weight: normal !important;
+
+  span {
+    margin: 0 5px;
+  }
+`;
+
 const SelectRegion = styled(FlexStyle)`
   flex-direction: row;
+  height: 110px;
+
+  p {
+    &:hover {
+      cursor: pointer;
+    }
+  }
 
   label {
     margin-right: 20px;
     margin-top: 0;
   }
 
-  div {
+  article {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+
     p {
-      margin-bottom: 10px;
+      margin-left: 25px;
       font-weight: normal;
       color: black;
+      padding: 3px;
 
       &:hover {
-        cursor: pointer;
+        color: #fff;
+        background: blue;
       }
     }
   }
 `;
+
+interface LoderProps {
+  showLoder: boolean;
+}
 
 const Loder = styled.span`
   display: inline-block;
@@ -224,9 +258,10 @@ const Loder = styled.span`
   border-bottom: 2px solid #fff;
   width: 13px;
   height: 13px;
-  margin-bottom: -2px;
-  margin-right: 8px;
+  margin: 0 0 -2px 0;
   animation: rotateLoader 0.8s linear infinite;
+  visibility: ${(state: LoderProps) =>
+    state.showLoder ? "visible" : "hidden"};
 
   @keyframes rotateLoader {
     0% {

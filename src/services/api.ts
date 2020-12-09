@@ -40,10 +40,8 @@ class API {
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "DELETE",
-        headers: {
-          "content-type ": "application/json",
-        },
-        body: JSON.stringify(data)
+        headers: headers,
+
       });
       return await response.json();
     } catch (e) {
@@ -93,7 +91,7 @@ export const loginUser = (data: LoginDetails) => api.post('/customers/login', da
 
 export const getUserDetails = () => api.get('/customer');
 
-export const getProductsInShoppingCart = (cartId: string) => api.get("/shoppingcart/" + cartId);
+export const getProductsInShoppingCart = (cartId: string | null) => api.get("/shoppingcart/" + cartId);
 
 export const deleteProductfromCart = (itemId: number) => api.delete('/shoppingcart/removeProduct/' + itemId, itemId);
 

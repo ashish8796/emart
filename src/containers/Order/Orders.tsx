@@ -15,50 +15,13 @@ function AllOrders() {
     ...state.order,
   }));
 
-  console.log("Working");
-  console.log(allOrders);
-  // const orders = [
-  //   {
-  //     order_id: 44995,
-  //     total_amount: "16.95",
-  //     created_on: "2020-12-04T09:46:12.000Z",
-  //     shipped_on: null,
-  //     status: 0,
-  //     name: "Ashish Kumar Saini",
-  //   },
-  //   {
-  //     order_id: 44994,
-  //     total_amount: "0.00",
-  //     created_on: "2020-12-04T09:44:26.000Z",
-  //     shipped_on: null,
-  //     status: 0,
-  //     name: "Ashish Kumar Saini",
-  //   },
-  //   {
-  //     order_id: 44993,
-  //     total_amount: "0.00",
-  //     created_on: "2020-12-04T09:36:04.000Z",
-  //     shipped_on: null,
-  //     status: 0,
-  //     name: "Ashish Kumar Saini",
-  //   },
-  //   {
-  //     order_id: 44992,
-  //     total_amount: "15.99",
-  //     created_on: "2020-12-04T09:34:01.000Z",
-  //     shipped_on: null,
-  //     status: 0,
-  //     name: "Ashish Kumar Saini",
-  //   },
-  // ];
+  // console.log(allOrders);
 
   useEffect(() => {
     (async () => {
-      console.log("Working 1");
-      const orderData = await setAllOrders();
-      console.log("Working 2");
+      const orderData = await dispatch(setAllOrders());
     })();
-  });
+  }, []);
 
   return (
     <>
@@ -89,7 +52,7 @@ const OrdersContainer = styled.div`
   font-family: Roboto, Arial, sans-serif;
   // border: 2px solid red;
   padding: 30px;
-  margin: 30px;
+  margin: 5em 30px;
   background-color: #fff;
 `;
 
@@ -100,7 +63,7 @@ const FlexStyle = styled.div`
 
 const UserName = styled(FlexStyle)`
   flex-direction: row;
-  margin: 10px 0;
+  // margin: 10px 0;
 
   p:first-child {
     margin: 0 20px 20px 0;

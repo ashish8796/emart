@@ -24,7 +24,7 @@ function ordersReducer(state = initialState, action: MainAction) {
     }
 
     case SET_ALL_ORDERS: {
-      return { ...state, orders: action.payload }
+      return { ...state, allOrders: action.payload }
     }
 
     case SET_ORDER_DETAILS_BY_ID: {

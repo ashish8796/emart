@@ -31,8 +31,6 @@ function ShowOrder({ order }: ShowOrderProps) {
   );
 }
 
-const ShowOrderContainer = styled.div`
-  margin-bottom: 20px;
-`;
+const ShowOrderContainer = styled.div``;
 
 export default ShowOrder;

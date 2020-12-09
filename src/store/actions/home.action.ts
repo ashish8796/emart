@@ -1,5 +1,5 @@
 import { SET_DEPARTMENT, SET_CATEGORIES, SET_PROD_BY_DEPT_ID } from "./actionTypes"
-import { getAllDepartments, getAllCategories, getProductByDepartmentId, } from "../../services/api";
+import { getAllCategories, getProductByDepartmentId, } from "../../services/api";
 import { Dispatch } from "redux";
 import { Categories, Department } from "./tsTypes";
 

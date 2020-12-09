@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 import { loginTheUser } from "../../store/actions/user.action";
 
 interface LoginPageProps {
@@ -34,6 +35,8 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
 
     const loginDetails = { email: userName, password };
     const data = await dispatch(loginTheUser(loginDetails));
+
+    dispatch(setIsDepartmentVisible(true));
 
     "accessToken" in data && history.push("/");
   };

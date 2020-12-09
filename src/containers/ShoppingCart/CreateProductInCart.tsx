@@ -1,8 +1,9 @@
 import React from "react";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
+import { deleteProductfromCart } from "../../services/api";
 import { removeProductFromCart } from "../../store/actions/shoppingCart.action";
-import { CartProcuct } from "../../store/actions/tsTypes";
+import { CartProcuct, State } from "../../store/actions/tsTypes";
 
 interface CreateProductInCartProps {
   product: CartProcuct;
@@ -10,13 +11,15 @@ interface CreateProductInCartProps {
 
 function CreateProductInCart({ product }: CreateProductInCartProps) {
   const dispatch = useDispatch();
+  const { cartId } = useSelector((state: State) => state.cart);
 
   const convertPrice = (price: string) => {
     return Math.ceil(Number(price) * 75);
   };
 
-  const handleRemoveClick = () => {
-    dispatch(removeProductFromCart(product.item_id));
+  const handleRemoveClick = async () => {
+    await deleteProductfromCart(product.item_id);
+    dispatch(removeProductFromCart(cartId));
   };
 
   return (

@@ -36,8 +36,6 @@ export const addProductInShoppingCart = (obj: AddProduct) => async (dispatch: Di
 
 export const setProductsInShoppingCart = (cartId: string) => async (dispatch: Dispatch) => {
   try {
-
-    // console.log(cartId);
     // const data_secondry = localStorage.getItem("secondry_cart_id") ? await getProductsInShoppingCart(localStorage.getItem("secondry_cart_id") as string) : []
     const data_primary = await getProductsInShoppingCart(cartId);
 
@@ -50,13 +48,12 @@ export const setProductsInShoppingCart = (cartId: string) => async (dispatch: Di
   }
 }
 
-export const removeProductFromCart = (itemId: number) => async (dispatch: Dispatch) => {
+export const removeProductFromCart = (cartId: string | null) => async (dispatch: Dispatch) => {
   try {
-    const data = await removeProductFromCart(itemId);
-    console.log(data);
+    const data = await getProductsInShoppingCart(cartId);
     dispatch({
       type: REMOVE_PRODUCT_FROM_CART,
-      payload: itemId
+      payload: data
     })
   } catch (error) {
 

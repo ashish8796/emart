@@ -25,16 +25,14 @@ function CreateOrder() {
     ...state.user,
     ...state.cart,
   }));
-  const [addShippingDetails, setAddShippingDetails] = useState<boolean>(false);
+  const [addShippingDetails, setAddShippingDetails] = useState<boolean>(true);
+
+  const [showLoder, setShowLoder] = useState<boolean>(false);
+  console.log(customer);
 
   useEffect(() => {
-    if (
-      !customer.address_1 &&
-      !customer.city &&
-      !customer.country &&
-      !customer.postal_code
-    ) {
-      setAddShippingDetails(true);
+    if (customer.address_1) {
+      setAddShippingDetails(false);
     }
 
     return () => {
@@ -42,8 +40,10 @@ function CreateOrder() {
     };
   }, []);
 
-  const handleOrderForm = (event: any) => {
+  const handleOrderForm = async (event: any) => {
     event.preventDefault();
+
+    setShowLoder(true);
 
     const addressObj = addressRef.current?.getAddressState();
     console.log(addressObj);
@@ -62,9 +62,14 @@ function CreateOrder() {
       credentialObj &&
       credentialObj.credit_Card === credentialObj.confirmNumber
     ) {
-      dispatch(setUserAddress(addressObj));
+      const addressData = await dispatch(setUserAddress(addressObj));
       // dispatch(setUserCreditCard(credentialObj.credit_Card));
-      dispatch(updateUserDetails(userDetails));
+      const userData: any = await dispatch(updateUserDetails(userDetails));
+
+      if (userData.address_1 && userData.mob_phone) {
+        setAddShippingDetails(false);
+        setShowLoder(false);
+      }
     }
   };
 
@@ -93,7 +98,7 @@ function CreateOrder() {
           </div>
 
           <Submit type={"submit"} onSubmit={handleOrderForm}>
-            Next
+            <Loder showLoder={showLoder}></Loder> Next
           </Submit>
         </OrderForm>
       ) : (
@@ -104,6 +109,7 @@ function CreateOrder() {
 }
 
 const CreateOrderBox = styled.div`
+  position: relative;
   font-family: Roboto, Arial, sans-serif;
   // border: 2px solid red;
   padding: 30px;
@@ -118,6 +124,7 @@ const FlexStyle = styled.div`
 
 const UserName = styled(FlexStyle)`
   flex-direction: row;
+  margin-top: 20px;
 
   p:first-child {
     margin: 0 20px 20px 0;
@@ -136,14 +143,57 @@ const UserName = styled(FlexStyle)`
 `;
 
 const OrderForm = styled.form`
+  margin: 20px 0;
   display: grid;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: auto;
   grid-gap: 0 5em;
   justify-content: space-between;
-  align-itmes: space-between;
 `;
 
-const Submit = styled.button``;
+const Submit = styled.button`
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  margin: 20px;
+  outline: none;
+  background: #fc8621;
+  border: none;
+  padding: 10px 3em;
+  border-radius: 3px;
+  font-size: 20px;
+  color: #fff;
+  width: 200px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+interface LoderProps {
+  showLoder: boolean;
+}
+
+const Loder = styled.span`
+  display: inline-block;
+  border-radius: 50%;
+  border: 2px solid #fff;
+  border-bottom: 2px solid #fc8621;
+  width: 13px;
+  height: 13px;
+  margin: 0 0 -2px -14px;
+  animation: rotateLoader 0.8s linear infinite;
+  visibility: ${(state: LoderProps) =>
+    state.showLoder ? "visible" : "hidden"};
+
+  @keyframes rotateLoader {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
+  }
+`;
 
 export default CreateOrder;

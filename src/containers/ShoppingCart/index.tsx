@@ -1,12 +1,14 @@
 import React from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 import { State } from "../../store/actions/tsTypes";
 import CreateProductInCart from "./CreateProductInCart";
 
 function ShoppingCart() {
   const history = useHistory();
+  const dispatch = useDispatch();
   const { cartId, productsList } = useSelector((state: State) => state.cart);
 
   const convertPrice = (price: string) => {
@@ -27,6 +29,7 @@ function ShoppingCart() {
   };
 
   const handleShopNow = () => {
+    dispatch(setIsDepartmentVisible(true));
     history.push("/");
   };
 
@@ -67,10 +70,10 @@ function ShoppingCart() {
                 </span>
               </p>
 
-              <p>
+              {/* <p>
                 <span>Delivery charges</span>
                 <span>&#8377;00</span>
-              </p>
+              </p> */}
               <hr />
               <p>
                 <Amount>Total Amount</Amount>
