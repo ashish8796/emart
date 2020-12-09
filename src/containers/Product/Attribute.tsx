@@ -21,8 +21,6 @@ function ProductAttribute({
 }: ProductAttributeProps) {
   const [allAttributes, setAllArributes] = useState<Array<Attribute>>([]);
 
-  // const [attribute, setAttribute] = useState({ color: "", size: "" });
-
   useEffect(() => {
     (async (productId) => {
       try {

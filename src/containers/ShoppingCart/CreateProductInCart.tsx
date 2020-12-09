@@ -1,4 +1,6 @@
-import React from "react";
+import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { deleteProductfromCart } from "../../services/api";
@@ -12,15 +14,24 @@ interface CreateProductInCartProps {
 function CreateProductInCart({ product }: CreateProductInCartProps) {
   const dispatch = useDispatch();
   const { cartId } = useSelector((state: State) => state.cart);
+  const [showLoader, setLoader] = useState<boolean>(false);
+  const [quantity, setQuantity] = useState<number>(1);
 
   const convertPrice = (price: string) => {
     return Math.ceil(Number(price) * 75);
   };
 
   const handleRemoveClick = async () => {
+    setLoader(true);
     await deleteProductfromCart(product.item_id);
     dispatch(removeProductFromCart(cartId));
   };
+
+  useEffect(() => {
+    return () => {
+      setLoader(false);
+    };
+  }, []);
 
   return (
     <ProductCart>
@@ -46,10 +57,24 @@ function CreateProductInCart({ product }: CreateProductInCartProps) {
         </p>
 
         <p>
-          <span>Quantity: {product.quantity}</span>
+          <span>Quantity:</span>{" "}
+          <span>
+            <QuantityButton>
+              <FontAwesomeIcon icon={faMinus} />
+            </QuantityButton>
+          </span>
+          {product.quantity}{" "}
+          <span>
+            <QuantityButton>
+              <FontAwesomeIcon icon={faPlus} />
+            </QuantityButton>
+          </span>
         </p>
 
-        <Remove onClick={handleRemoveClick}>Remove</Remove>
+        <Remove onClick={handleRemoveClick}>
+          <Loder showLoder={showLoader}> </Loder>
+          Remove
+        </Remove>
       </ProductDetails>
     </ProductCart>
   );
@@ -106,7 +131,31 @@ const ProductDetails = styled.div`
       font-size: 23px;
     }
   }
+
+  span {
+    display: inline-block;
+  }
 `;
+
+const Button = styled.button`
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  outline: none;
+  background: none;
+  border: 1px solid grey;
+  border-radius: 50%;
+  width: 20px;
+  height: 20px;
+  margin: 0 5px;
+
+  &:hover {
+    cursor: pointer;
+  }
+`;
+
+const QuantityButton = styled(Button)``;
+
 const Remove = styled.button`
   font-size: 20px;
   border: none;
@@ -119,6 +168,32 @@ const Remove = styled.button`
     cursor: pointer;
     color: red;
     // text-decoration: underline;
+  }
+`;
+
+interface LoderProps {
+  showLoder: boolean;
+}
+
+const Loder = styled.span`
+  display: inline-block;
+  border-radius: 50%;
+  border: 2px solid green;
+  border-bottom: 2px solid #fff;
+  width: 13px;
+  height: 13px;
+  margin: 0 5px -2px -20px;
+  animation: rotateLoader 0.8s linear infinite;
+  visibility: ${(state: LoderProps) =>
+    state.showLoder ? "visible" : "hidden"};
+
+  @keyframes rotateLoader {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
+    }
   }
 `;
 

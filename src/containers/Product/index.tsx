@@ -1,37 +1,20 @@
-import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
-import { useHistory, useLocation } from "react-router-dom";
+// import { useDispatch, useSelector } from "react-redux";
+import { useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { getProductById, getReviewsByProductId } from "../../services/api";
-import { setIsDepartmentVisible } from "../../store/actions/screen.action";
-
-import {
-  addProductInShoppingCart,
-  setShoppingCartId,
-} from "../../store/actions/shoppingCart.action";
-
-import { State } from "../../store/actions/tsTypes";
+import { getProductById } from "../../services/api";
+// import { State } from "../../store/actions/tsTypes";
 import { Product } from "../../store/reducers/category.reducer";
 import ProductAttribute from "./Attribute";
-
-interface Reviews {
-  name: string;
-  review: string;
-  rating: number;
-  created_on: string;
-}
+import BuyingOption from "./BuyingOption";
+import Ratting from "./Ratting";
 
 function ProductUI() {
   const location = useLocation();
-  const dispatch = useDispatch();
-  const history = useHistory();
-
-  const { cartId } = useSelector((state: State) => ({
-    ...state.cart,
-    ...state.user,
-  }));
+  // const { cartId } = useSelector((state: State) => ({
+  //   ...state.cart,
+  //   ...state.user,
+  // }));
 
   const [productData, setProductData] = useState<Product>({
     product_id: 0,
@@ -44,7 +27,6 @@ function ProductUI() {
     image_2: "",
   });
 
-  const [reviews, setReviews] = useState<Array<Reviews>>([]);
   const [attribute, setAttribute] = useState({ color: "", size: "" });
   const productId = location.pathname.split("/").pop();
   const [mainImage, setMainImage] = useState("");
@@ -57,49 +39,20 @@ function ProductUI() {
   const productPrice = convertPrice(productData.price);
   const off = productPrice - productDiscountedPrice;
 
-  const averageRating =
-    reviews.length > 0 &&
-    reviews.reduce((acc, user) => (acc += user.rating), 0) / reviews.length;
-
   useEffect(() => {
     (async (productId) => {
       try {
         const data = await getProductById(productId);
-        const reviews = await getReviewsByProductId(productId);
 
         if (data.thumbnail) {
           setMainImage(data.thumbnail);
           setProductData(data);
-          setReviews(reviews);
         }
       } catch (error) {
         console.log(error);
       }
     })(productId);
   }, []);
-
-  async function handleAddToCart() {
-    let shoppingCartId: any;
-
-    if (attribute.size && attribute.color) {
-      if (!cartId) {
-        shoppingCartId = await dispatch(setShoppingCartId());
-      }
-
-      await dispatch(
-        addProductInShoppingCart({
-          cartId: !cartId ? shoppingCartId : cartId,
-          productId,
-          attribute: attribute.color + "-" + attribute.size,
-        })
-      );
-      dispatch(setIsDepartmentVisible(false));
-
-      history.push("/cart");
-    } else {
-      alert("Select Color and Size.");
-    }
-  }
 
   // function handleBuyNowClick() {
   //   console.log(customer);
@@ -153,13 +106,7 @@ function ProductUI() {
             <SectionB>
               <div>
                 <Name>{productData.name}</Name>
-
-                <RatingContainer>
-                  <Rating>
-                    {averageRating && averageRating.toFixed(1)}&#9733;{" "}
-                  </Rating>
-                  <span>{reviews.length} Ratings</span>
-                </RatingContainer>
+                <Ratting productId={productId} />
 
                 <Save>
                   <p>
@@ -179,13 +126,7 @@ function ProductUI() {
                   setAttribute={setAttribute}
                 />
 
-                <Option>
-                  <AddToCart onClick={handleAddToCart}>
-                    <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>
-                    ADD TO CART
-                  </AddToCart>
-                  {/* <BuyNow onClick={handleBuyNowClick}>BUY NOW</BuyNow> */}
-                </Option>
+                <BuyingOption productId={productId} attribute={attribute} />
 
                 <ProductDescription>
                   <h1>Product Descirption</h1>
@@ -251,11 +192,13 @@ const PrimeImage = styled(Img)`
     cursor: auto;
   } ;
 `;
+
 const PrimaryImage = styled(Flex)`
   width: 80%;
   margin-top: 20px;
   justify-content: flex-start;
 `;
+
 const SectionB = styled.section`
   & > div {
     // border: 2px solid green;
@@ -266,28 +209,6 @@ const SectionB = styled.section`
 const Name = styled.p`
   font-size: 30px;
   margin-bottom: 8px;
-`;
-
-const RatingContainer = styled.div`
-  span {
-    color: grey;
-    font-weight: bold;
-    margin-left: 10px;
-    font-size: 14px;
-  }
-`;
-
-const Rating = styled.button`
-  color: #fff;
-  background: green;
-  border: none;
-  outline: none;
-  border-radius: 3px;
-  margin: 5px 0;
-
-  &:hover {
-    cursor: pointer;
-  }
 `;
 
 const Save = styled.div`
@@ -315,47 +236,6 @@ const Price = styled.div`
   }
 `;
 const Offers = styled.div``;
-
-const PTag = styled.p`
-  margin: 0 5px;
-  padding: 10px 5px;
-  border: 2px solid #fff;
-  border-radius: 3px;
-  &:hover {
-    border: 2px solid grey;
-    cursor: pointer;
-    color: #db6400;
-  }
-`;
-
-const Option = styled.div`
-  padding: 20px 0;
-  margin-top: 20px;
-`;
-
-const Button = styled.button`
-  border: none;
-  outline: none;
-  padding: 20px;
-  font-size: 20px;
-  color: #fff;
-  border-radius: 4px;
-  width: 289px;
-  span {
-    margin-right: 10px;
-  }
-  &:hover {
-    cursor: pointer;
-  }
-`;
-const AddToCart = styled(Button)`
-  margin-right: 20px;
-  background: #e94560;
-`;
-const BuyNow = styled(Button)`
-  background: #00b7c2;
-  // width: 180px;
-`;
 
 const ProductDescription = styled.div`
   font-size: 14px;
