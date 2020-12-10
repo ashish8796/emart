@@ -13,6 +13,7 @@ import LoginAndSignUp from "./containers/Login";
 import User from "./containers/User";
 import CreateOrder from "./containers/Order/CreateOrder";
 import AllOrders from "./containers/Order/Orders";
+import UserProfile from "./containers/User/Profile";
 
 function App() {
   return (
@@ -21,19 +22,28 @@ function App() {
         <HeaderElement />
         <Switch>
           <Route path="/user" component={User} />
+
           <Route path="/product/:slug/:product_id" component={ProductUI} />
+
           <Route path="/create-order" component={CreateOrder} />
+
+          <Route path="/account" component={UserProfile} />
+
           <Route path="/orders" component={AllOrders} />
+
           <Route
             path="/category/:category_name/:category_id"
             component={CategoryProducts}
           />
+
           <Route path="/cart">
             <ShoppingCart />
           </Route>
+
           <Route path="/login">
             <LoginAndSignUp />
           </Route>
+
           <Route exact path="/">
             <Home />
           </Route>

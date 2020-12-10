@@ -4,7 +4,9 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronDown,
   faChevronUp,
+  faClipboardList,
   faPowerOff,
+  faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
 import { useHistory } from "react-router-dom";
@@ -36,6 +38,10 @@ function OptionNavBar({ customer }: OptionNavBarProps) {
     history.push("/login");
   };
 
+  const handleProfileClick = () => {
+    history.push("/account");
+  };
+
   return (
     <LoginWrapper>
       {" "}
@@ -57,7 +63,18 @@ function OptionNavBar({ customer }: OptionNavBarProps) {
                 setIsOptionVisible(false);
               }}
             >
-              <OrdersButton onClick={handleOrdersClick}>Orders</OrdersButton>
+              <ProfileButton onClick={handleProfileClick}>
+                <span>
+                  <FontAwesomeIcon icon={faUserCircle} />
+                </span>{" "}
+                Profile
+              </ProfileButton>
+              <OrdersButton onClick={handleOrdersClick}>
+                <span>
+                  <FontAwesomeIcon icon={faClipboardList} />
+                </span>{" "}
+                Orders
+              </OrdersButton>
               <LogOut onClick={handleLogOutClick}>
                 <span>
                   <FontAwesomeIcon icon={faPowerOff} />
@@ -89,7 +106,6 @@ const LoginWrapper = styled.div`
 
 const OptionContainer = styled.div`
   position: absolute;
-  // top: 10px;
   margin-top: 10px;
   display: flex;
   flex-direction: column;
@@ -102,6 +118,10 @@ const OptionContainer = styled.div`
     color: black;
     font-size: 17px;
     margin: 5px 0;
+
+    span {
+      margin: 0 5px;
+    }
 
     &:hover {
       color: blue;
@@ -125,12 +145,13 @@ const Button = styled.button`
 `;
 
 const Login = styled(Button)`
-  // padding: 20px;
   color: #0000c6;
 `;
 
 const OrdersButton = styled.p``;
 
 const LogOut = styled.p``;
+
+const ProfileButton = styled.p``;
 
 export default OptionNavBar;
