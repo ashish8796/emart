@@ -3,13 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import {
-  faChevronDown,
-  faChevronUp,
-  faPowerOff,
-  faSearch,
-  faShoppingCart,
-} from "@fortawesome/free-solid-svg-icons";
+import { faSearch, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import Department from "../Department/Department";
 import {
   setCategories,
@@ -17,18 +11,14 @@ import {
   setProdByDeptId,
 } from "../../store/actions/home.action";
 import { useHistory, useLocation } from "react-router-dom";
-import {
-  setLogOutUser,
-  setUsesrDetails,
-} from "../../store/actions/user.action";
-import { setProductsInShoppingCart } from "../../store/actions/shoppingCart.action";
+import { setUsesrDetails } from "../../store/actions/user.action";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
+import OptionNavBar from "./OptionNavBar";
 
 function HeaderElement() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
-  const [isOptionVisible, setIsOptionVisible] = useState(false);
 
   const showDepartments =
     location.pathname !== "/shoppingCart" && location.pathname !== "/login";
@@ -36,30 +26,22 @@ function HeaderElement() {
     departments,
     customer,
     accessToken,
-    cartId,
-    productsList,
     isDepartmentVisible,
   } = useSelector((state: State) => ({
     ...state.home,
     ...state.user,
-    ...state.cart,
     ...state.screen,
   }));
 
   useEffect(() => {
     (async () => {
       !customer.name && accessToken && (await dispatch(setUsesrDetails()));
-      // console.log(cartId);
     })();
   }, []);
 
   useEffect(() => {
     dispatch(setDepartments());
     dispatch(setCategories());
-
-    return () => {
-      setIsOptionVisible(false);
-    };
   }, []);
 
   useEffect(() => {
@@ -69,25 +51,9 @@ function HeaderElement() {
       });
   }, [departments]);
 
-  const handleLoginClick = () => {
-    history.push("/login");
-  };
-
-  const handleLogOutClick = () => {
-    localStorage.removeItem("emart-token");
-    localStorage.removeItem("secondry_cart_id");
-    dispatch(setLogOutUser());
-    history.push("/login");
-  };
-
   const handleCartClick = () => {
     dispatch(setIsDepartmentVisible(false));
     history.push("/cart");
-  };
-
-  const handleOrdersClick = () => {
-    dispatch(setIsDepartmentVisible(false));
-    history.push("/orders");
   };
 
   return (
@@ -114,44 +80,7 @@ function HeaderElement() {
             </SearchForm>
           </SearchWrapper>
           <SystemWrapper>
-            {showDepartments && (
-              <LoginWrapper>
-                {" "}
-                {customer.name ? (
-                  <>
-                    <p
-                      onMouseOver={() => {
-                        setIsOptionVisible(true);
-                      }}
-                    >
-                      {customer.name.slice(0, 13)}{" "}
-                      <FontAwesomeIcon
-                        icon={isOptionVisible ? faChevronUp : faChevronDown}
-                      />
-                    </p>
-                    {isOptionVisible && (
-                      <OptionContainer
-                        onMouseLeave={() => {
-                          setIsOptionVisible(false);
-                        }}
-                      >
-                        <OrdersButton onClick={handleOrdersClick}>
-                          Orders
-                        </OrdersButton>
-                        <LogOut onClick={handleLogOutClick}>
-                          <span>
-                            <FontAwesomeIcon icon={faPowerOff} />
-                          </span>{" "}
-                          Log Out
-                        </LogOut>
-                      </OptionContainer>
-                    )}
-                  </>
-                ) : (
-                  <Login onClick={handleLoginClick}>Login</Login>
-                )}
-              </LoginWrapper>
-            )}
+            {showDepartments && <OptionNavBar customer={customer} />}
 
             {showDepartments && (
               <Cart onClick={handleCartClick}>
@@ -185,7 +114,6 @@ const SearchHead = styled.div`
 `;
 
 const SearchWrapper = styled.div`
-  // border: 1px solid red;
   flex-basis: 62%;
   display: flex;
   justify-content: flex-end;
@@ -205,7 +133,6 @@ const Logo = styled.img`
 `;
 
 const SearchForm = styled.form`
-  // border: 2px solid green;
   background-color: #fff;
   margin: 10px;
   width: 70%;
@@ -258,50 +185,6 @@ const Button = styled.button`
   }
 `;
 
-const LoginWrapper = styled.div`
-  position: relative;
-  margin: auto;
-  p {
-    color: #fff;
-    font-size: 20px;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-`;
-
-const OptionContainer = styled.div`
-  position: absolute;
-  // top: 10px;
-  margin-top: 10px;
-  display: flex;
-  flex-direction: column;
-  padding: 10px;
-  background: #fff;
-  width: 130px;
-  border-radius: 3px;
-
-  p {
-    color: black;
-    font-size: 17px;
-    margin: 5px 0;
-
-    &:hover {
-      color: blue;
-    }
-  }
-`;
-
-const OrdersButton = styled.p``;
-
-const LogOut = styled.p``;
-
-const Login = styled(Button)`
-  // padding: 20px;
-  color: #0000c6;
-`;
-
 const More = styled(Button)`
   background: none;
 `;
@@ -312,12 +195,12 @@ const Cart = styled(Button)`
     margin-right: 5px;
   }
 `;
+
 const DepartmentWrapper = styled.div`
   margin-top: 3.5em;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  // padding: 10px;
   font-family: Roboto, Arial, sans-serif;
   background-color: #fff;
 `;
