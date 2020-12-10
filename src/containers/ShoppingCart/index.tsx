@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
+import { setProductsInShoppingCart } from "../../store/actions/shoppingCart.action";
 import { State } from "../../store/actions/tsTypes";
 import CreateProductInCart from "./CreateProductInCart";
 
@@ -10,6 +11,7 @@ function ShoppingCart() {
   const history = useHistory();
   const dispatch = useDispatch();
   const { cartId, productsList } = useSelector((state: State) => state.cart);
+  const [showJsx, setShowJsx] = useState<boolean>(false);
 
   const convertPrice = (price: string) => {
     return Math.ceil(Number(price) * 75);
@@ -37,82 +39,98 @@ function ShoppingCart() {
     history.push("/create-order");
   };
 
+  useEffect(() => {
+    (async () => {
+      cartId &&
+        !productsList.length &&
+        (await dispatch(setProductsInShoppingCart(cartId)));
+      setShowJsx(true);
+    })();
+
+    return () => {
+      setShowJsx(false);
+    };
+  }, []);
+
   return (
     <>
-      <CartWrapper>
-        {productsList.length ? (
-          <>
-            <ProductSection>
-              {productsList.map((product, i) => (
-                <CreateProductInCart product={product} key={i} />
-              ))}
+      {showJsx && (
+        <CartWrapper>
+          {productsList.length ? (
+            <>
+              <ProductSection>
+                {productsList.map((product, i) => (
+                  <CreateProductInCart product={product} key={i} />
+                ))}
 
-              <PlaceOrder>
-                <button onClick={handlePlaceOrder}>Place Order</button>
-              </PlaceOrder>
-            </ProductSection>
+                <PlaceOrder>
+                  <button onClick={handlePlaceOrder}>Place Order</button>
+                </PlaceOrder>
+              </ProductSection>
 
-            <BalanceSection>
-              <p>PRICE DETAILS</p>
-              <hr />
+              <BalanceSection>
+                <p>PRICE DETAILS</p>
+                <hr />
 
-              <p>
-                <span>
-                  Price ({productsList.length}{" "}
-                  {productsList.length > 1 ? "items" : "item"})
-                </span>
-                <span>
-                  &#8377;
-                  {productsList.reduce(
-                    (acc, cv) => (acc += convertPrice(cv.price)),
-                    0
-                  )}
-                </span>
-              </p>
+                <p>
+                  <span>
+                    Price ({productsList.length}{" "}
+                    {productsList.length > 1 ? "items" : "item"})
+                  </span>
+                  <span>
+                    &#8377;
+                    {productsList.reduce(
+                      (acc, cv) => (acc += convertPrice(cv.subtotal)),
+                      0
+                    )}
+                  </span>
+                </p>
 
-              {/* <p>
+                {/* <p>
                 <span>Delivery charges</span>
                 <span>&#8377;00</span>
               </p> */}
-              <hr />
-              <p>
-                <Amount>Total Amount</Amount>
-                <span>
-                  &#8377;
-                  {productsList.reduce(
-                    (acc, cv) => (acc += convertPrice(cv.price)),
-                    0
-                  )}
-                </span>
-              </p>
-              <hr />
-            </BalanceSection>
-          </>
-        ) : (
-          <EmptyCart>
-            <MyCart>My Cart</MyCart>
-            <img
-              src={
-                require("./../../assets/images/cart_image/shopNow.png").default
-              }
-              alt="Shop Now"
-            />
-            {localStorage.hasOwnProperty("emart-token") ? (
-              <LogedIn>
-                <p>Your Cart is empty!</p>
-                <p>Add items to it now.</p>
-                <ShopNow onClick={handleShopNow}>Shop Now</ShopNow>
-              </LogedIn>
-            ) : (
-              <LogedOut>
-                <p>Missing Cart items?</p>
-                <p>Login to see the items you added previously</p>
-                <LoginButton onClick={handleLogin}>Login</LoginButton>
-              </LogedOut>
-            )}
-          </EmptyCart>
-        )}
-      </CartWrapper>
+                <hr />
+                <p>
+                  <Amount>Total Amount</Amount>
+                  <span>
+                    &#8377;
+                    {productsList.reduce(
+                      (acc, cv) => (acc += convertPrice(cv.subtotal)),
+                      0
+                    )}
+                  </span>
+                </p>
+                <hr />
+              </BalanceSection>
+            </>
+          ) : (
+            <EmptyCart>
+              <MyCart>My Cart</MyCart>
+              <img
+                src={
+                  require("./../../assets/images/cart_image/shopNow.png")
+                    .default
+                }
+                alt="Shop Now"
+              />
+              {localStorage.hasOwnProperty("emart-token") ? (
+                <LogedIn>
+                  <p>Your Cart is empty!</p>
+                  <p>Add items to it now.</p>
+                  <ShopNow onClick={handleShopNow}>Shop Now</ShopNow>
+                </LogedIn>
+              ) : (
+                <LogedOut>
+                  <p>Missing Cart items?</p>
+                  <p>Login to see the items you added previously</p>
+                  <LoginButton onClick={handleLogin}>Login</LoginButton>
+                </LogedOut>
+              )}
+            </EmptyCart>
+          )}
+        </CartWrapper>
+      )}
     </>
   );
 }

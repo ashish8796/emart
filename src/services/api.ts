@@ -3,6 +3,7 @@ import { LoginDetails, UserDetails } from "../store/actions/tsTypes";
 const accessToken: string | null | undefined = localStorage.getItem('emart-token');
 const headers = new Headers({
   "content-type": "application/json",
+  "Access-Control-Allow-Origin": "*"
 });
 accessToken && headers.append("USER-KEY", accessToken);
 
@@ -21,7 +22,6 @@ class API {
   }
 
   async post(url: string, data: any) {
-    // console.log(fetch)
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "POST",
@@ -55,7 +55,7 @@ class API {
       const response = await fetch(this.mainUrl + url, {
         method: "PUT",
         headers: headers,
-        body: typeof (data) === "string" ? data : JSON.stringify(data)
+        body: JSON.stringify(data)
       });
       return await response.json();
     } catch (e) {
@@ -114,3 +114,5 @@ export const getAllOrders = () => api.get("/orders/inCustomer");
 export const getShortDetailOfOrder = (orderId: number) => api.get("/orders/shortDetail/" + orderId);
 
 export const getProductDetailById = (productId: number) => api.get(`/products/${productId}/details`);
+
+export const putProductQuantityInCart = (itemId: number, data: any) => api.put("/shoppingcart/update/" + itemId, data);

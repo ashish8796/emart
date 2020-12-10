@@ -30,7 +30,7 @@ function shoppingCartReducer(state = intialState, action: MainAction) {
     }
 
     case SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART: {
-      // console.log(action.payload)
+
       return { ...state, productsList: action.payload };
     }
 

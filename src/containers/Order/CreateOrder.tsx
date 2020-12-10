@@ -6,6 +6,7 @@ import styled from "styled-components";
 import { State } from "../../store/actions/tsTypes";
 import {
   setUserAddress,
+  setUserCreditCard,
   updateUserDetails,
 } from "../../store/actions/user.action";
 import Address from "./Address";
@@ -63,7 +64,9 @@ function CreateOrder() {
       credentialObj.credit_Card === credentialObj.confirmNumber
     ) {
       const addressData = await dispatch(setUserAddress(addressObj));
-      // dispatch(setUserCreditCard(credentialObj.credit_Card));
+      // await dispatch(
+      //   setUserCreditCard({ credit_card: credentialObj.credit_Card })
+      // );
       const userData: any = await dispatch(updateUserDetails(userDetails));
 
       if (userData.address_1 && userData.mob_phone) {

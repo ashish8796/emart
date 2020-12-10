@@ -46,12 +46,10 @@ function HeaderElement() {
     ...state.screen,
   }));
 
-  // console.log(customer);
   useEffect(() => {
     (async () => {
       !customer.name && accessToken && (await dispatch(setUsesrDetails()));
-      console.log(cartId);
-      cartId && (await dispatch(setProductsInShoppingCart(cartId)));
+      // console.log(cartId);
     })();
   }, []);
 
@@ -70,8 +68,6 @@ function HeaderElement() {
         dispatch(setProdByDeptId(department.department_id));
       });
   }, [departments]);
-
-  // console.log(cartId);
 
   const handleLoginClick = () => {
     history.push("/login");

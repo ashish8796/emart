@@ -65,7 +65,7 @@ export const setUserAddress = (obj: any) => async (dispatch: Dispatch) => {
   }
 }
 
-export const setUserCreditCard = (creditCardNumber: string) => async (dispatch: Dispatch) => {
+export const setUserCreditCard = (creditCardNumber: any) => async (dispatch: Dispatch) => {
   try {
     const data = await putCreditCart(creditCardNumber);
     dispatch({

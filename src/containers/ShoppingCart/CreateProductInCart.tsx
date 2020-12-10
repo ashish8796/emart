@@ -1,11 +1,10 @@
-import { faMinus, faPlus } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { deleteProductfromCart } from "../../services/api";
 import { removeProductFromCart } from "../../store/actions/shoppingCart.action";
 import { CartProcuct, State } from "../../store/actions/tsTypes";
+import ProductQuantity from "./ProductQuantity";
 
 interface CreateProductInCartProps {
   product: CartProcuct;
@@ -15,7 +14,6 @@ function CreateProductInCart({ product }: CreateProductInCartProps) {
   const dispatch = useDispatch();
   const { cartId } = useSelector((state: State) => state.cart);
   const [showLoader, setLoader] = useState<boolean>(false);
-  const [quantity, setQuantity] = useState<number>(1);
 
   const convertPrice = (price: string) => {
     return Math.ceil(Number(price) * 75);
@@ -32,6 +30,8 @@ function CreateProductInCart({ product }: CreateProductInCartProps) {
       setLoader(false);
     };
   }, []);
+
+  console.log(product);
 
   return (
     <ProductCart>
@@ -57,18 +57,7 @@ function CreateProductInCart({ product }: CreateProductInCartProps) {
         </p>
 
         <p>
-          <span>Quantity:</span>{" "}
-          <span>
-            <QuantityButton>
-              <FontAwesomeIcon icon={faMinus} />
-            </QuantityButton>
-          </span>
-          {product.quantity}{" "}
-          <span>
-            <QuantityButton>
-              <FontAwesomeIcon icon={faPlus} />
-            </QuantityButton>
-          </span>
+          <ProductQuantity product={product} />
         </p>
 
         <Remove onClick={handleRemoveClick}>
@@ -120,7 +109,6 @@ const ProductDetails = styled.div`
   }
 
   & > div {
-    // border: 2px solid red;
     display: flex;
     font-size: 23px;
     justify-content: space-between;
@@ -137,25 +125,6 @@ const ProductDetails = styled.div`
   }
 `;
 
-const Button = styled.button`
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  outline: none;
-  background: none;
-  border: 1px solid grey;
-  border-radius: 50%;
-  width: 20px;
-  height: 20px;
-  margin: 0 5px;
-
-  &:hover {
-    cursor: pointer;
-  }
-`;
-
-const QuantityButton = styled(Button)``;
-
 const Remove = styled.button`
   font-size: 20px;
   border: none;
@@ -167,7 +136,6 @@ const Remove = styled.button`
   &:hover {
     cursor: pointer;
     color: red;
-    // text-decoration: underline;
   }
 `;
 
