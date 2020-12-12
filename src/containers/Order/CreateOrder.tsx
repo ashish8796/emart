@@ -9,9 +9,9 @@ import {
   setUserCreditCard,
   updateUserDetails,
 } from "../../store/actions/user.action";
-import Address from "./Address";
-import Credential from "./Credential";
-import ContactNums from "./ContactNumber";
+import Address from "../User/Address";
+import Credential from "../User/Credential";
+import ContactNums from "../User/ContactNumber";
 import ConfirmOrder from "./ConfirmOrder";
 
 function CreateOrder() {

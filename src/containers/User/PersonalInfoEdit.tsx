@@ -1,34 +1,64 @@
-import React from "react";
+import React, { forwardRef, useImperativeHandle, useState } from "react";
 import styled from "styled-components";
 
 interface PersonalInfoEditProps {
   customer: any;
 }
 
-function PersonalInfoEdit({ customer }: PersonalInfoEditProps) {
-  return (
-    <>
-      <PersonalInfoEditDiv>
-        <PTag>Personal Information</PTag>
-        <PTag>Edit</PTag>
-        <Input type="text" placeholder={customer.name} />
-      </PersonalInfoEditDiv>
-
-      <EmailAddressEdit>
-        <PTag>Email Address</PTag>
-        <PTag>Edit</PTag>
-        <PTag>Change Password</PTag>
-        <Input type={"email"} />
-      </EmailAddressEdit>
-
-      <MobileNumberEdit>
-        <PTag>Mobile Number</PTag>
-        <PTag>Edit</PTag>
-        <Input type="number" />
-      </MobileNumberEdit>
-    </>
-  );
+interface PersonalInfoHandler {
+  getPersonalInfoState: () => PersonalInfoObj;
 }
+
+interface PersonalInfoObj {}
+
+const PersonalInfoEdit = forwardRef<PersonalInfoHandler, PersonalInfoEditProps>(
+  ({ customer }, ref) => {
+    const [name, setName] = useState<string>("");
+    const [email, setEmail] = useState<string>("");
+    const [password, setPassword] = useState<string>("");
+    const [mobNum, setMobNum] = useState<string>("");
+    const [editName, setEditName] = useState<boolean>(false);
+    const [editEmail, setEditEmail] = useState<boolean>(false);
+    const [changePassword, setChangePassword] = useState<boolean>(false);
+    const [editMobNo, setEditMobNo] = useState<boolean>(false);
+
+    const getPersonalInfoState = () => {
+      return {};
+    };
+
+    useImperativeHandle(ref, () => ({
+      getPersonalInfoState,
+    }));
+
+    return (
+      <>
+        <PersonalInfoEditDiv>
+          <PTag>Personal Information</PTag>
+          <PTag>Edit</PTag>
+          <Input type="text" placeholder={customer.name} />
+        </PersonalInfoEditDiv>
+
+        <EmailAddressEdit>
+          <PTag>Email Address</PTag>
+          <PTag>Edit</PTag>
+          <Input type={"email"} />
+        </EmailAddressEdit>
+
+        <ChangePassword>
+          <PTag>Change Password</PTag>
+          <PTag>Change</PTag>
+          <Input type={"password"} />
+        </ChangePassword>
+
+        <MobileNumberEdit>
+          <PTag>Mobile Number</PTag>
+          <PTag>Edit</PTag>
+          <Input type="number" />
+        </MobileNumberEdit>
+      </>
+    );
+  }
+);
 
 const Input = styled.input`
   display: block;
@@ -63,6 +93,10 @@ const PTag = styled.p`
 const PersonalInfoEditDiv = styled.div``;
 
 const EmailAddressEdit = styled.div`
+  margin: 50px 0;
+`;
+
+const ChangePassword = styled.div`
   margin: 50px 0;
 `;
 const MobileNumberEdit = styled.div``;

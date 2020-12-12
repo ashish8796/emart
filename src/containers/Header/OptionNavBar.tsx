@@ -39,6 +39,7 @@ function OptionNavBar({ customer }: OptionNavBarProps) {
   };
 
   const handleProfileClick = () => {
+    dispatch(setIsDepartmentVisible(false));
     history.push("/account");
   };
 

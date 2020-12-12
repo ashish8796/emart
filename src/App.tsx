@@ -10,7 +10,6 @@ import CategoryProducts from "./containers/CategoryProducts";
 import ProductUI from "./containers/Product";
 import ShoppingCart from "./containers/ShoppingCart";
 import LoginAndSignUp from "./containers/Login";
-import User from "./containers/User";
 import CreateOrder from "./containers/Order/CreateOrder";
 import AllOrders from "./containers/Order/Orders";
 import UserProfile from "./containers/User/Profile";
@@ -21,8 +20,6 @@ function App() {
       <Router>
         <HeaderElement />
         <Switch>
-          <Route path="/user" component={User} />
-
           <Route path="/product/:slug/:product_id" component={ProductUI} />
 
           <Route path="/create-order" component={CreateOrder} />

@@ -1,6 +1,7 @@
-import React from "react";
+import React, { useRef } from "react";
 import styled from "styled-components";
-import EditAddressComponent from "./EditAddressComponent";
+import Address from "./Address";
+import Credential from "./Credential";
 import PersonalInfoEdit from "./PersonalInfoEdit";
 
 interface EditProfileFormProps {
@@ -9,13 +10,21 @@ interface EditProfileFormProps {
 }
 
 function EditProfileForm({ customer, editFeild }: EditProfileFormProps) {
+  const addressRef = useRef<React.ElementRef<typeof Address>>(null);
+  const paymentRef = useRef<React.ElementRef<typeof Credential>>(null);
+  const personalInfoRef = useRef<React.ElementRef<typeof PersonalInfoEdit>>(
+    null
+  );
+
   return (
     <SectionB>
       <EditForm>
         {editFeild === "personalInfo" && (
           <PersonalInfoEdit customer={customer} />
         )}
-        {editFeild === "address" && <EditAddressComponent />}
+        {editFeild === "address" && <Address ref={addressRef} />}
+
+        {editFeild === "credential" && <Credential ref={paymentRef} />}
       </EditForm>
     </SectionB>
   );

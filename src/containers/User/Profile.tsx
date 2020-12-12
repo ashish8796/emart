@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { State } from "../../store/actions/tsTypes";
 import EditProfileForm from "./EditProfile";
@@ -7,11 +7,16 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   faChevronRight,
   faClipboardList,
+  faCreditCard,
   faPowerOff,
   faUser,
 } from "@fortawesome/free-solid-svg-icons";
+import { useHistory } from "react-router-dom";
+import { setLogOutUser } from "../../store/actions/user.action";
 
 function UserProfile() {
+  const history = useHistory();
+  const dispatch = useDispatch();
   const { customer } = useSelector((state: State) => state.user);
   const [editFeild, setEditFeild] = useState<string>("personalInfo");
 
@@ -21,6 +26,21 @@ function UserProfile() {
 
   const handleAddressClick = () => {
     setEditFeild("address");
+  };
+
+  const handlePaymentClick = () => {
+    setEditFeild("credential");
+  };
+
+  const handleLogOut = () => {
+    localStorage.removeItem("emart-token");
+    localStorage.removeItem("secondry_cart_id");
+    dispatch(setLogOutUser());
+    history.push("/login");
+  };
+
+  const handleOrderClick = () => {
+    history.push("/orders");
   };
 
   return (
@@ -40,7 +60,7 @@ function UserProfile() {
           </aside>
         </GreetingArticle>
         <InformationArticle>
-          <OrdersButton>
+          <OrdersButton onClick={handleOrderClick}>
             <span>
               <FontAwesomeIcon icon={faClipboardList} />
             </span>{" "}
@@ -51,19 +71,29 @@ function UserProfile() {
           </OrdersButton>
 
           <SettingDiv feild={editFeild}>
-            <SettingHeading>
+            <Heading>
               <span>
                 <FontAwesomeIcon icon={faUser} />
               </span>
 
-              <SettingText>ACCOUNT SETTINGS</SettingText>
-            </SettingHeading>
+              <Text>ACCOUNT SETTINGS</Text>
+            </Heading>
 
             <p onClick={handlePersonalInfoClick}>Profile Information</p>
             <p onClick={handleAddressClick}>Manage Addresses</p>
           </SettingDiv>
 
-          <LogOut>
+          <PaymentsDiv onClick={handlePaymentClick}>
+            <Heading>
+              <span>
+                <FontAwesomeIcon icon={faCreditCard} />
+              </span>
+
+              <Text>Payments</Text>
+            </Heading>
+          </PaymentsDiv>
+
+          <LogOut onClick={handleLogOut}>
             <span>
               <FontAwesomeIcon icon={faPowerOff} />
             </span>
@@ -84,7 +114,7 @@ const Flex = styled.div`
 
 const ProfileWrapper = styled(Flex)`
   padding: 30px;
-  border: 2px solid red;
+  margin-top: 50px;
 `;
 
 const SectionA = styled.section`
@@ -95,7 +125,6 @@ const SectionA = styled.section`
 
   svg {
     color: blue;
-    // font-size: 15px;
   }
 `;
 
@@ -135,7 +164,6 @@ const Name = styled.p`
 `;
 
 const InformationArticle = styled.article`
-  // display:flex;
   background-color: #fff;
   box-shadow: 0 0 5px #b2b1b1;
   padding: 13px 3em 13px 13px;
@@ -152,6 +180,10 @@ const OrdersButton = styled.p`
 
   .fa-chevron-right {
     color: grey;
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 `;
 
@@ -181,6 +213,14 @@ const SettingDiv = styled.div`
   }
 `;
 
+const PaymentsDiv = styled.div`
+  p {
+    &:hover {
+      cursor: pointer !important;
+    }
+  }
+`;
+
 const MyOrderText = styled.span`
   display: inline-block;
   width: 80%;
@@ -189,8 +229,7 @@ const MyOrderText = styled.span`
   font-size: 18px;
 `;
 
-const SettingHeading = styled.p`
-  // border: 2px solid;
+const Heading = styled.p`
   padding: 20px 0 10px 0;
   margin: 0 !important;
 
@@ -199,7 +238,7 @@ const SettingHeading = styled.p`
   }
 `;
 
-const SettingText = styled.span`
+const Text = styled.span`
   font-weight: bold;
   font-size: 18px;
   color: gray;
@@ -214,6 +253,10 @@ const LogOut = styled.p`
 
   svg {
     margin-right: 15px;
+  }
+
+  &:hover {
+    cursor: pointer;
   }
 `;
 
