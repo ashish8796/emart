@@ -1,7 +1,9 @@
 import React, { forwardRef, useImperativeHandle, useState } from "react";
 import styled from "styled-components";
 
-interface CredentialProps {}
+interface CredentialProps {
+  addCard?: boolean;
+}
 
 interface CredentialObj {
   credit_Card: string;
@@ -13,7 +15,7 @@ export interface CredentialHanler {
 }
 
 const Credential = forwardRef<CredentialHanler, CredentialProps>(
-  (props, ref) => {
+  ({ addCard = true }, ref) => {
     const [creditCard, setCreditCard] = useState<string>("");
     const [confirmNumber, setConfirmNumber] = useState<string>("");
 
@@ -44,6 +46,7 @@ const Credential = forwardRef<CredentialHanler, CredentialProps>(
           required
           onChange={handleCrediInput}
           placeholder={"Enter Credit Card Number"}
+          disabled={addCard}
         />
 
         <ConfirmNumber
@@ -51,6 +54,7 @@ const Credential = forwardRef<CredentialHanler, CredentialProps>(
           required
           onChange={handleConfirmNumber}
           placeholder={"Confirm Credit Card Number"}
+          disabled={addCard}
         />
       </CredentialBox>
     );

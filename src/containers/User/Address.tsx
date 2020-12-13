@@ -3,160 +3,187 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronDown } from "@fortawesome/free-solid-svg-icons";
 import styled from "styled-components";
 import { getRegion } from "../../services/api";
+import { State } from "../../store/actions/tsTypes";
+import { useSelector } from "react-redux";
 
-interface AddressProps {}
-
-export interface AddessHandler {
-  getAddressState: () => object;
+interface AddressProps {
+  editAddress?: boolean;
 }
 
-const Address = forwardRef<AddessHandler, AddressProps>((props, ref) => {
-  const [regionOption, setRegionOption] = useState([
-    { shipping_region_id: 1, shipping_region: "Please Select" },
-  ]);
+interface AddressObj {
+  address_1: string;
+  address_2?: string;
+  city: string;
+  country: string;
+  postal_code: number | null;
+  region: string;
+  shipping_region_id: number | null;
+}
 
-  const [city, setCity] = useState<string>("");
-  const [country, setCountry] = useState<string>("");
-  const [postalCode, setPostalCode] = useState<number>();
-  const [addressLine1, setAddressLine1] = useState<string>("");
-  const [addressLine2, setAddressLine2] = useState<string>("");
-  const [shippingRegion, setShippingRegion] = useState<string>("");
-  const [shippingRegionId, setShippingRegionId] = useState<number>();
-  const [toggleOption, setToggleOption] = useState<boolean>(false);
-  const [selectedRegion, setSelectedRegion] = useState<string>("Please Select");
-  const [showLoader, setLoader] = useState<boolean>(false);
+export interface AddessHandler {
+  getAddressState: () => AddressObj;
+}
 
-  const hancleSelectClick = async () => {
-    if (regionOption.length === 1) {
-      setLoader(true);
-      const data = await getRegion();
-      setLoader(false);
+const Address = forwardRef<AddessHandler, AddressProps>(
+  ({ editAddress = false }, ref) => {
+    const { customer } = useSelector((state: State) => state.user);
+    const [regionOption, setRegionOption] = useState([
+      { shipping_region_id: 1, shipping_region: "Please Select" },
+    ]);
 
-      setRegionOption(data);
-    }
+    const [city, setCity] = useState<string>("");
+    const [country, setCountry] = useState<string>("");
+    const [postalCode, setPostalCode] = useState<number | null>(null);
+    const [addressLine1, setAddressLine1] = useState<string>("");
+    const [addressLine2, setAddressLine2] = useState<string>("");
+    const [shippingRegion, setShippingRegion] = useState<string>("");
+    const [shippingRegionId, setShippingRegionId] = useState<number | null>(
+      null
+    );
+    const [toggleOption, setToggleOption] = useState<boolean>(false);
+    const [selectedRegion, setSelectedRegion] = useState<string>(
+      "Please Select"
+    );
+    const [showLoader, setLoader] = useState<boolean>(false);
 
-    setToggleOption(!toggleOption);
-  };
+    const hancleSelectClick = async () => {
+      if (regionOption.length === 1) {
+        setLoader(true);
+        const data = await getRegion();
+        setLoader(false);
 
-  const handleAddressLine1 = (event: any) => {
-    setAddressLine1(event.target.value);
-  };
-  const handleAddressLine2 = (event: any) => {
-    setAddressLine2(event.target.value);
-  };
-  const handleCity = (event: any) => {
-    setCity(event.target.value);
-  };
-  const handleCountry = (event: any) => {
-    setCountry(event.target.value);
-  };
-  const handlePostalCode = (event: any) => {
-    setPostalCode(event.target.value);
-  };
-  const handleRegion = (event: any) => {
-    const region = event.target.innerText;
-    const shippingId = regionOption.find(
-      (obj) => obj.shipping_region === region
-    )?.shipping_region_id;
+        setRegionOption(data);
+      }
 
-    console.log(shippingId);
-
-    setSelectedRegion(region);
-    setShippingRegion(region);
-    setToggleOption(!toggleOption);
-    setShippingRegionId(shippingId);
-  };
-
-  const getAddressState = () => {
-    return {
-      city,
-      country,
-      postal_code: postalCode,
-      address_1: addressLine1,
-      address_2: addressLine2,
-      region: shippingRegion,
-      shipping_region_id: shippingRegionId,
+      setToggleOption(!toggleOption);
     };
-  };
 
-  useImperativeHandle(ref, () => ({
-    getAddressState,
-  }));
+    const handleAddressLine1 = (event: any) => {
+      setAddressLine1(event.target.value);
+    };
+    const handleAddressLine2 = (event: any) => {
+      setAddressLine2(event.target.value);
+    };
+    const handleCity = (event: any) => {
+      setCity(event.target.value);
+    };
+    const handleCountry = (event: any) => {
+      setCountry(event.target.value);
+    };
+    const handlePostalCode = (event: any) => {
+      setPostalCode(event.target.value);
+    };
+    const handleRegion = (event: any) => {
+      const region = event.target.innerText;
+      const shippingId = regionOption.find(
+        (obj) => obj.shipping_region === region
+      )?.shipping_region_id;
 
-  return (
-    <AddressBox>
-      <p>Delivery Address</p>
+      setSelectedRegion(region);
+      setShippingRegion(region);
+      setToggleOption(!toggleOption);
 
-      <InputBox>
-        <Input
-          type="text"
-          value={addressLine1}
-          required
-          onChange={handleAddressLine1}
-          placeholder={"Address Line 1"}
-        />
+      shippingId && setShippingRegionId(shippingId);
+    };
 
-        <Input
-          type="text"
-          value={addressLine2}
-          onChange={handleAddressLine2}
-          placeholder={"Address Line 2"}
-        />
+    console.log(customer);
 
-        <Input
-          type="text"
-          value={city}
-          required
-          onChange={handleCity}
-          placeholder={"City"}
-        />
+    const getAddressState = () => {
+      return {
+        city,
+        country,
+        postal_code: postalCode,
+        address_1: addressLine1,
+        address_2: addressLine2,
+        region: shippingRegion,
+        shipping_region_id: shippingRegionId,
+      };
+    };
 
-        <Input
-          type="text"
-          value={country}
-          required
-          onChange={handleCountry}
-          placeholder={"Country"}
-        />
+    useImperativeHandle(ref, () => ({
+      getAddressState,
+    }));
 
-        <div>
-          <Label>Postal Code</Label>
+    return (
+      <AddressBox>
+        <p>Delivery Address</p>
+
+        <InputBox>
           <Input
-            type="number"
-            value={postalCode}
+            type="text"
+            value={addressLine1}
             required
-            onChange={handlePostalCode}
+            onChange={handleAddressLine1}
+            placeholder={"Address Line 1"}
+            disabled={editAddress}
           />
-        </div>
-      </InputBox>
 
-      <SelectRegion>
-        <Label>Region</Label>
-        <div>
-          <PleaseSelectButton onClick={hancleSelectClick}>
-            <Loder showLoder={showLoader}> </Loder>
-            {selectedRegion}{" "}
-            <span>
-              <FontAwesomeIcon icon={faChevronDown} />
-            </span>
-          </PleaseSelectButton>
+          <Input
+            type="text"
+            value={addressLine2}
+            onChange={handleAddressLine2}
+            placeholder={"Address Line 2"}
+            disabled={editAddress}
+          />
 
-          <article>
-            {regionOption.slice(1).map((option: any, i) =>
-              toggleOption ? (
-                <p key={i} onClick={handleRegion}>
-                  {option.shipping_region}
-                </p>
-              ) : (
-                <></>
-              )
-            )}
-          </article>
-        </div>
-      </SelectRegion>
-    </AddressBox>
-  );
-});
+          <Input
+            type="text"
+            value={city}
+            required
+            onChange={handleCity}
+            placeholder={"City"}
+            disabled={editAddress}
+          />
+
+          <Input
+            type="text"
+            value={country}
+            required
+            onChange={handleCountry}
+            placeholder={"Country"}
+            disabled={editAddress}
+          />
+
+          <div>
+            <Label>Postal Code</Label>
+            <Input
+              type="number"
+              value={postalCode ? postalCode : ""}
+              required
+              onChange={handlePostalCode}
+              disabled={editAddress}
+            />
+          </div>
+        </InputBox>
+
+        <SelectRegion>
+          <Label>Region</Label>
+          <div>
+            <PleaseSelectButton onClick={hancleSelectClick}>
+              <Loder showLoder={showLoader}> </Loder>
+              {selectedRegion}{" "}
+              <span>
+                <FontAwesomeIcon icon={faChevronDown} />
+              </span>
+            </PleaseSelectButton>
+
+            <article>
+              {regionOption.slice(1).map((option: any, i) =>
+                toggleOption ? (
+                  <p key={i} onClick={handleRegion}>
+                    {option.shipping_region}
+                  </p>
+                ) : (
+                  <></>
+                )
+              )}
+            </article>
+          </div>
+        </SelectRegion>
+      </AddressBox>
+    );
+  }
+);
 
 const FlexStyle = styled.div`
   display: flex;

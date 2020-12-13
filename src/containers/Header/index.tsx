@@ -56,29 +56,25 @@ function HeaderElement() {
     history.push("/cart");
   };
 
+  const handleHomeClick = () => {
+    dispatch(setIsDepartmentVisible(true));
+    history.push("/");
+  };
+
   return (
     <>
       <Header>
         <SearchHead>
-          <SearchWrapper>
+          <HomeWrapper>
             <Logo
               src={require("./../../assets/images/freeLogo.jpeg").default}
               alt="logo"
-              onClick={() => {
-                dispatch(setIsDepartmentVisible(true));
-                history.push("/");
-              }}
+              onClick={handleHomeClick}
             />
-            <SearchForm>
-              <Search
-                type="text"
-                placeholder={"Search for products, brands and more"}
-              />
-              <SearchLogo type="submit">
-                <FontAwesomeIcon icon={faSearch} />
-              </SearchLogo>
-            </SearchForm>
-          </SearchWrapper>
+
+            <HomeButton onClick={handleHomeClick}>Home</HomeButton>
+          </HomeWrapper>
+
           <SystemWrapper>
             {showDepartments && <OptionNavBar customer={customer} />}
 
@@ -106,25 +102,26 @@ const Header = styled.header`
 `;
 
 const SearchHead = styled.div`
+  background-color: blue;
   display: flex;
+  justify-content: space-between;
   position: fixed;
   top: 0;
   width: 100%;
   z-index: 10;
 `;
 
-const SearchWrapper = styled.div`
+const HomeWrapper = styled.div`
   flex-basis: 62%;
   display: flex;
-  justify-content: flex-end;
   background-color: blue;
 `;
 
 const Logo = styled.img`
-  margin-right: 10px;
-  margin-top: 5px;
-  width: 45px;
-  height: 45px;
+  margin: 5px 5em;
+  width: 90px;
+  height: 48px;
+
   border-radius: 3px;
 
   &:hover {
@@ -132,42 +129,10 @@ const Logo = styled.img`
   }
 `;
 
-const SearchForm = styled.form`
-  background-color: #fff;
-  margin: 10px;
-  width: 70%;
-  border-radius: 2px;
-`;
-
-const Search = styled.input`
-  width: 90%;
-  padding: 6px;
-  font-size: 20px;
-  display: inline-block;
-  border-radius: 4px;
-  outline: none;
-  border: none;
-
-  &::-webkit-input-placeholder {
-    font-size: 16px;
-  }
-`;
-
-const SearchLogo = styled.button`
-  display: inline-block;
-  font-size: 20px;
-  margin-left: 10px;
-  color: blue;
-  outline: none;
-  border: none;
-  background: none;
-`;
-
 const SystemWrapper = styled.div`
-  flex: 1;
-  background-color: blue;
   display: flex;
-  justify-content: space-evenly;
+  flex: 1;
+  justify-content: flex-end;
 `;
 
 const Button = styled.button`
@@ -183,6 +148,10 @@ const Button = styled.button`
   &:hover {
     cursor: pointer;
   }
+`;
+
+const HomeButton = styled(Button)`
+  color: #0000c6;
 `;
 
 const More = styled(Button)`

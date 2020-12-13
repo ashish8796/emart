@@ -28,7 +28,12 @@ const PersonalInfoEdit = forwardRef<PersonalInfoHandler, PersonalInfoEditProps>(
     const [editMobNo, setEditMobNo] = useState<boolean>(true);
 
     const getPersonalInfoState = () => {
-      return { name, email, password, mob_phone: mobNum };
+      return {
+        name: name ? name : customer.name,
+        email: email ? email : customer.email,
+        password,
+        mob_phone: mobNum,
+      };
     };
 
     useImperativeHandle(ref, () => ({
@@ -68,6 +73,8 @@ const PersonalInfoEdit = forwardRef<PersonalInfoHandler, PersonalInfoEditProps>(
       setEditMobNo((state) => !state);
     };
 
+    console.log(customer);
+
     return (
       <>
         <PersonalInfoEditDiv>
@@ -90,6 +97,7 @@ const PersonalInfoEdit = forwardRef<PersonalInfoHandler, PersonalInfoEditProps>(
             value={!editEmail ? email : ""}
             onChange={handleEmailInput}
             disabled={editEmail}
+            placeholder={customer.email}
           />
         </EmailAddressEdit>
 
@@ -129,6 +137,7 @@ const Input = styled.input`
   font-size: 20px;
   padding: 8px;
   background: #f3f3f3;
+  width: 280px;
 `;
 
 const PTag = styled.p`

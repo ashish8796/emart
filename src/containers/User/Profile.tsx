@@ -47,17 +47,21 @@ function UserProfile() {
     <ProfileWrapper>
       <SectionA>
         <GreetingArticle>
-          <img
-            src={
-              require("./../../assets/images/user_image/rupee-indian.svg")
-                .default
-            }
-            alt="user"
-          />
-          <aside>
-            <Hello>Hello,</Hello>
-            <Name>{customer.name}</Name>
-          </aside>
+          {customer.name && (
+            <>
+              <img
+                src={
+                  require("./../../assets/images/user_image/rupee-indian.svg")
+                    .default
+                }
+                alt="user"
+              />
+              <aside>
+                <Hello>Hello,</Hello>
+                <Name>{customer.name}</Name>
+              </aside>
+            </>
+          )}
         </GreetingArticle>
         <InformationArticle>
           <OrdersButton onClick={handleOrderClick}>
@@ -129,6 +133,7 @@ const SectionA = styled.section`
 `;
 
 const GreetingArticle = styled.article`
+  height: 50px;
   display: flex;
   flex-direction: row;
   background-color: #fff;
