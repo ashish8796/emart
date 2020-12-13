@@ -9,7 +9,12 @@ interface PersonalInfoHandler {
   getPersonalInfoState: () => PersonalInfoObj;
 }
 
-interface PersonalInfoObj {}
+interface PersonalInfoObj {
+  name: string;
+  email: string;
+  password: string;
+  mob_phone: string;
+}
 
 const PersonalInfoEdit = forwardRef<PersonalInfoHandler, PersonalInfoEditProps>(
   ({ customer }, ref) => {
@@ -17,43 +22,99 @@ const PersonalInfoEdit = forwardRef<PersonalInfoHandler, PersonalInfoEditProps>(
     const [email, setEmail] = useState<string>("");
     const [password, setPassword] = useState<string>("");
     const [mobNum, setMobNum] = useState<string>("");
-    const [editName, setEditName] = useState<boolean>(false);
-    const [editEmail, setEditEmail] = useState<boolean>(false);
-    const [changePassword, setChangePassword] = useState<boolean>(false);
-    const [editMobNo, setEditMobNo] = useState<boolean>(false);
+    const [editName, setEditName] = useState<boolean>(true);
+    const [editEmail, setEditEmail] = useState<boolean>(true);
+    const [changePassword, setChangePassword] = useState<boolean>(true);
+    const [editMobNo, setEditMobNo] = useState<boolean>(true);
 
     const getPersonalInfoState = () => {
-      return {};
+      return { name, email, password, mob_phone: mobNum };
     };
 
     useImperativeHandle(ref, () => ({
       getPersonalInfoState,
     }));
 
+    const handleNameInput = (event: any) => {
+      console.log(event.target.value);
+      setName(event.target.value);
+    };
+
+    const handleEmailInput = (event: any) => {
+      setEmail(event.target.value);
+    };
+
+    const handlePasswordInput = (event: any) => {
+      setPassword(event.target.value);
+    };
+
+    const handleMobileInput = (event: any) => {
+      setMobNum(event.target.value);
+    };
+
+    const handleEditName = (event: any) => {
+      setEditName((state) => !state);
+    };
+
+    const handleEditEmail = (event: any) => {
+      setEditEmail((state) => !state);
+    };
+
+    const handleChangePassword = (event: any) => {
+      setChangePassword((state) => !state);
+    };
+
+    const handleEditMobNo = (event: any) => {
+      setEditMobNo((state) => !state);
+    };
+
     return (
       <>
         <PersonalInfoEditDiv>
           <PTag>Personal Information</PTag>
-          <PTag>Edit</PTag>
-          <Input type="text" placeholder={customer.name} />
+          <PTag onClick={handleEditName}>{editName ? "Edit" : "Cancel"}</PTag>
+          <Input
+            type="text"
+            placeholder={customer.name}
+            value={!editName ? name : ""}
+            onChange={handleNameInput}
+            disabled={editName}
+          />
         </PersonalInfoEditDiv>
 
         <EmailAddressEdit>
           <PTag>Email Address</PTag>
-          <PTag>Edit</PTag>
-          <Input type={"email"} />
+          <PTag onClick={handleEditEmail}>{editEmail ? "Edit" : "Cancel"}</PTag>
+          <Input
+            type={"email"}
+            value={!editEmail ? email : ""}
+            onChange={handleEmailInput}
+            disabled={editEmail}
+          />
         </EmailAddressEdit>
 
         <ChangePassword>
           <PTag>Change Password</PTag>
-          <PTag>Change</PTag>
-          <Input type={"password"} />
+          <PTag onClick={handleChangePassword}>
+            {changePassword ? "Edit" : "Cancel"}
+          </PTag>
+          <Input
+            type={"password"}
+            value={!changePassword ? password : ""}
+            onChange={handlePasswordInput}
+            disabled={changePassword}
+          />
         </ChangePassword>
 
         <MobileNumberEdit>
           <PTag>Mobile Number</PTag>
-          <PTag>Edit</PTag>
-          <Input type="number" />
+          <PTag onClick={handleEditMobNo}>{editMobNo ? "Edit" : "Cancel"}</PTag>
+          <Input
+            type="number"
+            value={!editMobNo ? mobNum : ""}
+            onChange={handleMobileInput}
+            disabled={editMobNo}
+          />
         </MobileNumberEdit>
       </>
     );
