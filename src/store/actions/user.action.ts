@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { getUserDetails, loginUser, putCreditCart, putUserAddress, putUserDetails, registerNewUser } from "../../services/api";
-import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "./actionTypes";
+import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_CUSTOMER_STATUS, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "./actionTypes";
 import { LoginDetails, UserDetails } from "./tsTypes";
 
 export const registerUser = (userDetails: UserDetails) => async (dispatch: Dispatch) => {
@@ -37,11 +37,14 @@ export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dis
 export const setUsesrDetails = () => async (dispatch: Dispatch) => {
   try {
     const data = await getUserDetails();
+    console.log(data)
+
     dispatch({
-      type: SET_USER_DETAILS,
+      type: data ? SET_USER_DETAILS : SET_CUSTOMER_STATUS,
       payload: data
     })
-  } catch (error) {
+  } catch (e) {
+    console.log(e);
 
   }
 }

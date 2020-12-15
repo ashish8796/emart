@@ -13,9 +13,8 @@ class API {
 
   async get(url: string) {
     try {
-      // console.log(this.mainUrl + url)
       const response = await fetch(this.mainUrl + url, { headers });
-      return await response.json();
+      return response.ok ? await response.json() : response.ok;
     } catch (e) {
       console.log(e);
     }

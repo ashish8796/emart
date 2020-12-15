@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-import { faSearch, faShoppingCart } from "@fortawesome/free-solid-svg-icons";
+import { faShoppingCart } from "@fortawesome/free-solid-svg-icons";
 import Department from "../Department/Department";
 import {
   setCategories,

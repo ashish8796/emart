@@ -1,4 +1,4 @@
-import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "../actions/actionTypes";
+import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_CUSTOMER_STATUS, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "../actions/actionTypes";
 
 export type Customer = {
   customer_id: number,
@@ -15,6 +15,7 @@ export type Customer = {
   eve_phone: string,
   mob_phone: string,
   credit_card: string,
+  status: boolean
 }
 
 export interface UserState {
@@ -22,24 +23,28 @@ export interface UserState {
   customer: Customer
 }
 
+const customerObj = {
+  customer_id: 0,
+  name: "",
+  email: "",
+  address_1: "",
+  address_2: "",
+  city: "",
+  region: "",
+  postal_code: "",
+  country: "",
+  shipping_region_id: 0,
+  day_phone: "",
+  eve_phone: "",
+  mob_phone: "",
+  credit_card: "",
+  status: false
+}
+
 const initialState: UserState = {
   accessToken: localStorage.hasOwnProperty('emart-token') ? localStorage.getItem('emart-token') : '',
-  customer: {
-    customer_id: 0,
-    name: "",
-    email: "",
-    address_1: "",
-    address_2: "",
-    city: "",
-    region: "",
-    postal_code: "",
-    country: "",
-    shipping_region_id: 0,
-    day_phone: "",
-    eve_phone: "",
-    mob_phone: "",
-    credit_card: "",
-  }
+  customer: customerObj,
+
 }
 
 function userReducer(state = initialState, action: any) {
@@ -49,7 +54,7 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: action.payload.customer, accessToken
+        ...state, customer: { status: true, ...action.payload.customer }, accessToken
       }
     }
 
@@ -58,53 +63,44 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: action.payload.customer, accessToken
+        ...state, customer: { status: true, ...action.payload.customer }, accessToken
       }
     }
 
     case SET_USER_DETAILS: {
 
       return {
-        ...state, customer: action.payload
+        ...state, customer: { ...state.customer, ...action.payload.customer }
       }
     }
 
     case LOG_OUT_USER: {
       return {
-        ...state, customer: {
-          customer_id: 0,
-          name: "",
-          email: "",
-          address_1: "",
-          address_2: "",
-          city: "",
-          region: "",
-          postal_code: "",
-          country: "",
-          shipping_region_id: 0,
-          day_phone: "",
-          eve_phone: "",
-          mob_phone: "",
-          credit_card: "",
-        }
+        ...state, customer: customerObj
       }
     }
 
     case SET_USER_ADDRESS: {
       return {
-        ...state, customer: action.payload
+        ...state, customer: { ...state.customer, ...action.payload.customer }
       }
     }
 
     case SET_USER_CREDIT_CARD: {
       return {
-        ...state, customer: action.payload
+        ...state, customer: { ...state.customer, ...action.payload.customer }
       }
     }
 
     case UPDATE_USER_DETAILS: {
       return {
-        ...state, customer: action.payload
+        ...state, customer: { ...state.customer, ...action.payload.customer }
+      }
+    }
+
+    case SET_CUSTOMER_STATUS: {
+      return {
+        ...state, customer: { ...state.customer, status: action.payload.customer }
       }
     }
 
