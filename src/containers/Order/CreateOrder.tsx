@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { State } from "../../store/actions/tsTypes";
 import {
   setUserAddress,
-  setUserCreditCard,
+  // setUserCreditCard,
   updateUserDetails,
 } from "../../store/actions/user.action";
 import Address from "../User/Address";
@@ -22,7 +22,7 @@ function CreateOrder() {
 
   const contactNumRef = useRef<React.ElementRef<typeof ContactNums>>(null);
 
-  const { customer, cartId } = useSelector((state: State) => ({
+  const { customer } = useSelector((state: State) => ({
     ...state.user,
     ...state.cart,
   }));
@@ -39,7 +39,7 @@ function CreateOrder() {
     return () => {
       setAddShippingDetails(false);
     };
-  }, []);
+  }, [customer.address_1]);
 
   const handleOrderForm = async (event: any) => {
     event.preventDefault();
@@ -63,7 +63,7 @@ function CreateOrder() {
       credentialObj &&
       credentialObj.credit_Card === credentialObj.confirmNumber
     ) {
-      const addressData = await dispatch(setUserAddress(addressObj));
+      await dispatch(setUserAddress(addressObj));
       // await dispatch(
       //   setUserCreditCard({ credit_card: credentialObj.credit_Card })
       // );

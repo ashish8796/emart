@@ -30,7 +30,7 @@ function Ratting({ productId }: RattingProps) {
         console.log(error);
       }
     })(productId);
-  }, []);
+  }, [productId]);
 
   return (
     <RatingContainer>

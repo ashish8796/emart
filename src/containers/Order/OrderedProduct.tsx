@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+// import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getProductDetailById } from "../../services/api";
-import { State } from "../../store/actions/tsTypes";
+// import { State } from "../../store/actions/tsTypes";
 
 interface OrderedProductProps {
   product: any;
 }
 
 function OrderedProduct({ product }: OrderedProductProps) {
-  const dispatch = useDispatch();
-  const { customer } = useSelector((state: State) => state.user);
+  // const dispatch = useDispatch();
+  // const { customer } = useSelector((state: State) => state.user);
   const [productData, setProductData] = useState<Array<any>>([]);
 
   useEffect(() => {
@@ -18,7 +18,7 @@ function OrderedProduct({ product }: OrderedProductProps) {
       const data = await getProductDetailById(product.product_id);
       data.length > 0 && setProductData(data);
     })();
-  }, []);
+  }, [product.product_id]);
 
   // console.log({ product, productData });
   return (

@@ -1,4 +1,3 @@
-import { url } from "inspector";
 import React, { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import styled from "styled-components";
@@ -19,6 +18,7 @@ function LoginAndSignUp() {
     <LoginAndSignUpContainer>
       <img
         src={require("./../../assets/images/login_image/login.png").default}
+        alt={"login.png"}
       />
       {!isLogin ? (
         <SignUp setIsLogin={setIsLogin} />

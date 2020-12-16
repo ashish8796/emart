@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -27,6 +27,7 @@ function HeaderElement() {
     customer,
     accessToken,
     isDepartmentVisible,
+    departmentStatus,
   } = useSelector((state: State) => ({
     ...state.home,
     ...state.user,
@@ -37,19 +38,19 @@ function HeaderElement() {
     (async () => {
       !customer.name && accessToken && (await dispatch(setUsesrDetails()));
     })();
-  }, []);
+  }, [customer.name, accessToken, dispatch]);
 
   useEffect(() => {
     dispatch(setDepartments());
     dispatch(setCategories());
-  }, []);
+  }, [dispatch]);
 
   useEffect(() => {
     departments.length > 0 &&
       departments.forEach((department) => {
         dispatch(setProdByDeptId(department.department_id));
       });
-  }, [departments]);
+  }, [dispatch, departments]);
 
   const handleCartClick = () => {
     dispatch(setIsDepartmentVisible(false));
@@ -60,6 +61,8 @@ function HeaderElement() {
     dispatch(setIsDepartmentVisible(true));
     history.push("/");
   };
+
+  console.log(departmentStatus);
 
   return (
     <>
@@ -85,7 +88,7 @@ function HeaderElement() {
             )}
           </SystemWrapper>
         </SearchHead>
-        {isDepartmentVisible && (
+        {isDepartmentVisible && departmentStatus && (
           <DepartmentWrapper>
             {departments.length > 0 &&
               departments.map((el, i) => <Department el={el} key={i} />)}
@@ -152,10 +155,6 @@ const Button = styled.button`
 
 const HomeButton = styled(Button)`
   color: #0000c6;
-`;
-
-const More = styled(Button)`
-  background: none;
 `;
 
 const Cart = styled(Button)`

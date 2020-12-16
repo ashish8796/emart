@@ -78,9 +78,9 @@ const ProductWrapper = styled.div`
   }
 `;
 
-const FirstProductWrapper = styled(ProductWrapper)`
-  margin-left: 6em;
-`;
+// const FirstProductWrapper = styled(ProductWrapper)`
+//   margin-left: 6em;
+// `;
 
 const ProductImage = styled.img`
   margin: 20px 20px 10px 25px;
@@ -91,7 +91,7 @@ const ProductName = styled.p`
   font-weight: 600;
   margin: 10px 20px;
 `;
-const ProductDescription = styled.p``;
+// const ProductDescription = styled.p``;
 const ProductPrice = styled.p`
   text-decoration: line-through;
   margin-bottom: 5px;

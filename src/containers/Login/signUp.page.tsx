@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { registerUser } from "../../store/actions/user.action";
 
@@ -9,13 +8,11 @@ interface SignUpProps {
 }
 
 function SignUp({ setIsLogin }: SignUpProps) {
-  const history = useHistory();
   const dispatch = useDispatch();
   const [flipHeading, setFlipHeading] = useState(false);
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [check, setCheck] = useState<boolean>(false);
   const [isSignUpClicked, setIsSignUpClicked] = useState(false);
 
   const handleLogInClick = () => {
@@ -38,7 +35,6 @@ function SignUp({ setIsLogin }: SignUpProps) {
     target: { checked: React.SetStateAction<boolean> };
   }) => {
     console.log(event.target.checked);
-    setCheck(event.target.checked);
   };
 
   const handlePassword = (event: {
@@ -65,7 +61,7 @@ function SignUp({ setIsLogin }: SignUpProps) {
       setEmail("");
       setPassword("");
       setFlipHeading(false);
-      setCheck(false);
+
       setIsSignUpClicked(false);
     };
   }, []);
@@ -219,8 +215,6 @@ const Input = styled.input`
     font-size: 15px;
   }
 `;
-
-const Label = styled.label``;
 
 const TermsAndConditions = styled.div``;
 

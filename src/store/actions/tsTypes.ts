@@ -1,4 +1,4 @@
-import { CategoryProductList, CategoryState, Product } from "../reducers/category.reducer";
+import { CategoryProductList, CategoryState } from "../reducers/category.reducer";
 import { OrderState } from "../reducers/orders.reducer";
 import { ScreenState } from "../reducers/screen.reducer";
 import { ShoppingCartState } from "../reducers/shopping.reducer";

@@ -24,7 +24,7 @@ function CreateDepartment({ id }: DepartmentProps) {
     if (prodByDept && prodByDept[id]) {
       setProducts(prodByDept[id].products);
     }
-  }, [prodByDept]);
+  }, [prodByDept, id]);
 
   // console.log(prodByDept);
   return (

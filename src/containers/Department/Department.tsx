@@ -1,13 +1,12 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
 
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { RowsObj } from "../../store/reducers/home.reducer";
 import { useHistory } from "react-router-dom";
-import { setProdByDeptId } from "../../store/actions/home.action";
 
 interface Props {
   el: RowsObj;
@@ -15,7 +14,6 @@ interface Props {
 
 function Department({ el }: Props) {
   const history = useHistory();
-  const dispatch = useDispatch();
   const [isHover, setIsHover] = useState(false);
   const [releventCats, setReleventCats] = useState<Array<RowsObj>>([]);
 

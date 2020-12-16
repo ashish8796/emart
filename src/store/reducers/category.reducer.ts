@@ -1,6 +1,6 @@
 
 import { SET_PRODUCT_BY_CATEGORY_ID } from "../actions/actionTypes";
-import { Categories, SetProductByCategoryId } from "./../actions/tsTypes"
+import { SetProductByCategoryId } from "./../actions/tsTypes"
 
 type MainAction = SetProductByCategoryId;
 export interface Product {

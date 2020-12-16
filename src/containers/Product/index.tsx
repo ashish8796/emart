@@ -52,7 +52,7 @@ function ProductUI() {
         console.log(error);
       }
     })(productId);
-  }, []);
+  }, [productId]);
 
   // function handleBuyNowClick() {
   //   console.log(customer);
@@ -235,7 +235,7 @@ const Price = styled.div`
     color: green;
   }
 `;
-const Offers = styled.div``;
+// const Offers = styled.div``;
 
 const ProductDescription = styled.div`
   font-size: 14px;

@@ -96,10 +96,10 @@ const AddToCart = styled(Button)`
   background: #e94560;
 `;
 
-const BuyNow = styled(Button)`
-  background: #00b7c2;
-  // width: 180px;
-`;
+// const BuyNow = styled(Button)`
+//   background: #00b7c2;
+//   // width: 180px;
+// `;
 
 interface LoderProps {
   showLoder: boolean;

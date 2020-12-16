@@ -20,7 +20,7 @@ const CategoryProducts = ({ match }: RouteComponentProps<TParams>) => {
 
   useEffect(() => {
     dispatch(setPorductBycategoryId({ categoryId, categoryName }));
-  }, [categoryId, categoryName]);
+  }, [categoryId, categoryName, dispatch]);
 
   let slug = categoryName;
 

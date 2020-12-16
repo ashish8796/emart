@@ -14,9 +14,12 @@ class API {
   async get(url: string) {
     try {
       const response = await fetch(this.mainUrl + url, { headers });
+      console.log(response)
       return response.ok ? await response.json() : response.ok;
     } catch (e) {
-      console.log(e);
+      console.log(String(e).split(":"));
+      const error = String(e).split(":")[1].trim()
+      return error;
     }
   }
 

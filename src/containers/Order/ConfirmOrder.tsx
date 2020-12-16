@@ -9,7 +9,7 @@ import { State } from "../../store/actions/tsTypes";
 function ConfirmOrder() {
   const dispatch = useDispatch();
   const history = useHistory();
-  const { customer, cartId, productsList } = useSelector((state: State) => ({
+  const { customer, cartId } = useSelector((state: State) => ({
     ...state.user,
     ...state.cart,
   }));

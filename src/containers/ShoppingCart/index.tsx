@@ -17,14 +17,14 @@ function ShoppingCart() {
     return Math.ceil(Number(price) * 75);
   };
 
-  const percentOff = (totalCost: string, discountedCost: string) => {
-    return (
-      Math.ceil(
-        (convertPrice(totalCost) - convertPrice(discountedCost)) /
-          convertPrice(totalCost)
-      ) * 100
-    );
-  };
+  // const percentOff = (totalCost: string, discountedCost: string) => {
+  //   return (
+  //     Math.ceil(
+  //       (convertPrice(totalCost) - convertPrice(discountedCost)) /
+  //         convertPrice(totalCost)
+  //     ) * 100
+  //   );
+  // };
 
   const handleLogin = () => {
     history.push("/login");
@@ -50,7 +50,7 @@ function ShoppingCart() {
     return () => {
       setShowJsx(false);
     };
-  }, []);
+  }, [cartId, productsList.length, dispatch]);
 
   return (
     <>
@@ -135,8 +135,8 @@ function ShoppingCart() {
   );
 }
 
-const Div = styled.div``;
-const Section = styled.section``;
+// const Div = styled.div``;
+// const Section = styled.section``;
 const CartWrapper = styled.div`
   padding: 20px 30px;
   display: flex;

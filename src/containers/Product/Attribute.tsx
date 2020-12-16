@@ -31,7 +31,7 @@ function ProductAttribute({
         console.log(error);
       }
     })(productId);
-  }, []);
+  }, [productId]);
 
   return (
     <>
@@ -40,9 +40,9 @@ function ProductAttribute({
           <h1>Colors</h1>
           {allAttributes.map(
             (cv, i) =>
-              cv.attribute_name == "Color" && (
+              cv.attribute_name === "Color" && (
                 <ColorTag
-                  selectColor={cv.attribute_value == attribute.color}
+                  selectColor={cv.attribute_value === attribute.color}
                   key={i}
                   onClick={() => {
                     setAttribute((state: any) => ({
@@ -60,7 +60,7 @@ function ProductAttribute({
           <h1>Size</h1>
           {allAttributes.map(
             (cv, i) =>
-              cv.attribute_name == "Size" && (
+              cv.attribute_name === "Size" && (
                 <SizeTag
                   mark={cv.attribute_value === attribute.size}
                   key={i}

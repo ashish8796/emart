@@ -1,4 +1,4 @@
-import { SET_CATEGORIES, SET_DEPARTMENT, SET_PROD_BY_DEPT_ID } from "../actions/actionTypes";
+import { SET_CATEGORIES, SET_DEPARTMENT, SET_INTERNET_ERROR, SET_PROD_BY_DEPT_ID } from "../actions/actionTypes";
 import { SetCategories, SetDepartment, SetProdByDeptId } from "../actions/tsTypes";
 import { Product } from "./category.reducer";
 
@@ -25,6 +25,8 @@ export interface HomeState {
       products: Product[]
     }
   }
+
+  departmentStatus: boolean
 }
 
 
@@ -36,13 +38,15 @@ const initialState: HomeState = {
     rows: []
   },
   prodByDept: {}
+  ,
+  departmentStatus: false
 }
 
 function homeReducer(state = initialState, action: MainAction) {
   switch (action.type) {
     case SET_DEPARTMENT: {
       // console.log(action.payload)
-      return { ...state, departments: action.payload }
+      return { ...state, departments: action.payload, departmentStatus: true }
     }
 
     case SET_CATEGORIES: {
@@ -50,13 +54,19 @@ function homeReducer(state = initialState, action: MainAction) {
     }
 
     case SET_PROD_BY_DEPT_ID: {
-      let obj = action.payload;
+      // let obj = action.payload;
       // console.log(obj)
       return {
         ...state,
         prodByDept: {
           ...state.prodByDept, ...action.payload
         }
+      }
+    }
+
+    case SET_INTERNET_ERROR: {
+      return {
+        ...state, departmentStatus: action.payload
       }
     }
 

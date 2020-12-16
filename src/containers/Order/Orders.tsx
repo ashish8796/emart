@@ -9,7 +9,7 @@ import { setAllOrders } from "../../store/actions/orders.action";
 
 function AllOrders() {
   const dispatch = useDispatch();
-  const { customer, cartId, allOrders } = useSelector((state: State) => ({
+  const { customer, allOrders } = useSelector((state: State) => ({
     ...state.user,
     ...state.cart,
     ...state.order,
@@ -19,9 +19,9 @@ function AllOrders() {
 
   useEffect(() => {
     (async () => {
-      const orderData = await dispatch(setAllOrders());
+      await dispatch(setAllOrders());
     })();
-  }, []);
+  }, [dispatch]);
 
   return (
     <>
