@@ -32,8 +32,8 @@ function CreateDepartment({ id }: DepartmentProps) {
       <ProductContainer ref={scrollElem} width={width}>
         <LeftButton
           onClick={(event) => {
-            console.log("Left button is working");
-            console.log(width);
+            // console.log("Left button is working");
+            // console.log(width);
             setWidth((width) => width + 100);
           }}
         >
@@ -45,7 +45,7 @@ function CreateDepartment({ id }: DepartmentProps) {
           ))}
         <RightButton
           onClick={() => {
-            console.log("Right button is working");
+            // console.log("Right button is working");
             setWidth((width) => width - 100);
           }}
         >

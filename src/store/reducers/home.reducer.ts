@@ -39,7 +39,7 @@ const initialState: HomeState = {
   },
   prodByDept: {}
   ,
-  departmentStatus: false
+  departmentStatus: true
 }
 
 function homeReducer(state = initialState, action: MainAction) {

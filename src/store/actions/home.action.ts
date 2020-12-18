@@ -7,10 +7,10 @@ import { Categories, Department } from "./tsTypes";
 export const setDepartments = () => async (dispatch: Dispatch, _: any, apiClient: { getAllDepartments: () => Promise<Array<Department> | string> }) => {
   try {
     const data: Array<Department> | string = await apiClient.getAllDepartments();
-    console.log(data)
+    // console.log(data)
     dispatch({
       type: data !== "Failed to fetch" ? SET_DEPARTMENT : SET_INTERNET_ERROR,
-      payload: data
+      payload: data !== "Failed to fetch" ? data : false
     })
   } catch (e) {
     console.log(e)
@@ -19,10 +19,10 @@ export const setDepartments = () => async (dispatch: Dispatch, _: any, apiClient
 
 export const setCategories = () => async (dispatch: Dispatch,) => {
   try {
-    const data: Categories = await getAllCategories()
+    const data = await getAllCategories()
     dispatch({
-      type: SET_CATEGORIES,
-      payload: data
+      type: data !== "Failed to fetch" ? SET_CATEGORIES : SET_INTERNET_ERROR,
+      payload: data !== "Failed to fetch" ? data : false
     })
   }
   catch (e) {
