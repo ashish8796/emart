@@ -8,9 +8,10 @@ export function HeaderLoader() {
       width="100%"
       backgroundColor="rgba(0,0,0,0.06)"
       foregroundColor="rgba(0,0,0,0.12)"
-      height="90"
+      height="70"
+      style={{ position: "absolute", top: "0" }}
     >
-      <rect x="0" y="0" rx="0" ry="0" width="100%" height="90" />
+      <rect x="0" y="0" rx="0" ry="0" width="100%" height="60" />
     </ContentLoader>
   );
 }
@@ -72,3 +73,88 @@ export function ProductLoader() {
     </>
   );
 }
+
+export function CartLoader() {
+  return (
+    <>
+      <ContentLoader
+        speed={1}
+        width="100%"
+        backgroundColor="rgba(0,0,0,0.06)"
+        foregroundColor="rgba(0,0,0,0.12)"
+        height="87vh"
+      >
+        <rect x="50" y="70" rx="3" ry="3" width="58%" height="85vh" />
+        <rect x="63%" y="70" rx="3" ry="3" width="28%" height="38vh" />
+      </ContentLoader>
+      <ContentLoader
+        speed={1}
+        width="100%"
+        backgroundColor={"#d0cece"}
+        foregroundColor={"#cac6c6"}
+        height="80"
+        style={{ marginTop: "-5px" }}
+      >
+        <rect x="50" y="0" rx="3" ry="3" width="58%" height="80" />
+      </ContentLoader>
+    </>
+  );
+}
+
+export function CreateOrderLoader() {
+  return (
+    <ContentLoader
+      speed={1}
+      width="100%"
+      backgroundColor="rgba(0,0,0,0.06)"
+      foregroundColor="rgba(0,0,0,0.12)"
+      height="50vh"
+      style={{
+        position: "absolute",
+        top: "100%",
+        left: "0",
+      }}
+    >
+      <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+    </ContentLoader>
+  );
+}
+
+export function OrdersLoader() {
+  return (
+    <>
+      <ContentLoader
+        speed={1}
+        width="100%"
+        backgroundColor="rgba(0,0,0,0.06)"
+        foregroundColor="rgba(0,0,0,0.12)"
+        height="15vh"
+      >
+        <rect x="0" y="0" rx="3" ry="3" width="100" height="100" />
+        <rect x="120" y="8" rx="3" ry="3" width="125" height="15" />
+        <rect x="120" y="33" rx="3" ry="3" width="125" height="15" />
+        <rect x="120" y="58" rx="3" ry="3" width="100" height="15" />
+        <rect x="120" y="83" rx="3" ry="3" width="90" height="15" />
+      </ContentLoader>
+    </>
+  );
+}
+
+// export function ProfileLoader() {
+//   return (
+//     <ContentLoader
+//       speed={1}
+//       width="100%"
+//       backgroundColor="rgba(0,0,0,0.06)"
+//       foregroundColor="rgba(0,0,0,0.12)"
+//       height="50vh"
+//       style={{
+//         position: "absolute",
+//         top: "100%",
+//         left: "0",
+//       }}
+//     >
+//       <rect x="0" y="0" rx="3" ry="3" width="100%" height="100%" />
+//     </ContentLoader>
+//   );
+// }

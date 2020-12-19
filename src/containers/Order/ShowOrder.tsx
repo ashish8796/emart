@@ -9,7 +9,6 @@ interface ShowOrderProps {
 }
 
 function ShowOrder({ order }: ShowOrderProps) {
-  // const dispatch = useDispatch();
   const [orderData, setOrderData] = useState<Array<any>>([]);
 
   useEffect(() => {

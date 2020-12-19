@@ -57,12 +57,6 @@ function ProductUI() {
     })(productId);
   }, [productId]);
 
-  // useEffect(() => {
-  //   if (product?.name) {
-  //     // setProductLoader(false);
-  //   }
-  // }, [product]);
-
   // function handleBuyNowClick() {
   //   console.log(customer);
   //   if (!("emart-token" in localStorage)) {
@@ -90,7 +84,7 @@ function ProductUI() {
     <>
       {productLoader ? (
         <Loader>
-          <ProductLoader></ProductLoader>
+          <ProductLoader />
         </Loader>
       ) : (
         <ProductContainer>

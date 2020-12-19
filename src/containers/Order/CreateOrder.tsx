@@ -57,7 +57,7 @@ function CreateOrder() {
       mob_phone: contactNumRef.current?.getContactState(),
     };
 
-    console.log({ addressObj, credentialObj, userDetails });
+    // console.log({ addressObj, credentialObj, userDetails });
 
     if (
       credentialObj &&
@@ -115,7 +115,7 @@ const CreateOrderBox = styled.div`
   position: relative;
   font-family: Roboto, Arial, sans-serif;
   // border: 2px solid red;
-  padding: 30px;
+  padding: 30px 30px 0 30px;
   margin: 30px;
   background-color: #fff;
 `;

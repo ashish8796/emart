@@ -15,7 +15,7 @@ function AllOrders() {
     ...state.order,
   }));
 
-  // console.log(allOrders);
+  console.log(allOrders.length);
 
   useEffect(() => {
     (async () => {
@@ -51,8 +51,8 @@ function AllOrders() {
 const OrdersContainer = styled.div`
   font-family: Roboto, Arial, sans-serif;
   // border: 2px solid red;
-  padding: 30px;
-  margin: 5em 30px;
+  padding: 20px 30px;
+  margin: 5em 30px 0 30px;
   background-color: #fff;
 `;
 
@@ -78,6 +78,12 @@ const UserName = styled(FlexStyle)`
     span: first-child {
       font-weight: bold;
     }
+  }
+`;
+
+const LoaderDiv = styled.div`
+  svg {
+    margin: 10px 0;
   }
 `;
 

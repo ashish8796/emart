@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { getShippingOption } from "../../services/api";
 import { createOrder, setAllOrders } from "../../store/actions/orders.action";
 import { State } from "../../store/actions/tsTypes";
+import { CreateOrderLoader } from "../Home/contentLoader";
 
 function ConfirmOrder() {
   const dispatch = useDispatch();
@@ -22,8 +23,6 @@ function ConfirmOrder() {
 
   const getShippingResionById = async () => {
     const data = await getShippingOption(customer.shipping_region_id);
-    console.log(data);
-
     setShippingOption(data);
   };
 
@@ -42,8 +41,6 @@ function ConfirmOrder() {
       tax_id: 2,
     };
 
-    console.log(orderData);
-
     const orderId = await dispatch(createOrder(orderData));
     const allOrdersData = await dispatch(setAllOrders());
     orderId && allOrdersData.length > 0 && history.push("/orders");
@@ -51,7 +48,9 @@ function ConfirmOrder() {
 
   return (
     <>
-      {shippingOption.length > 0 && (
+      {!(shippingOption.length > 0) ? (
+        <CreateOrderLoader />
+      ) : (
         <>
           <DeliveryAddress>
             <section>

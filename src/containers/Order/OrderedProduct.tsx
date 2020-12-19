@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 // import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { getProductDetailById } from "../../services/api";
+import { OrdersLoader } from "../Home/contentLoader";
 // import { State } from "../../store/actions/tsTypes";
 
 interface OrderedProductProps {
@@ -23,7 +24,7 @@ function OrderedProduct({ product }: OrderedProductProps) {
   // console.log({ product, productData });
   return (
     <ProductWrapper>
-      {productData.length > 0 && (
+      {productData.length > 0 ? (
         <OrderedProductDiv>
           <img
             src={
@@ -45,6 +46,8 @@ function OrderedProduct({ product }: OrderedProductProps) {
             <Cost>&#8377; {Math.ceil(product.unit_cost * 75)} </Cost>
           </div>
         </OrderedProductDiv>
+      ) : (
+        <OrdersLoader />
       )}
     </ProductWrapper>
   );
