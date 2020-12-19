@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { getProductById } from "../../services/api";
 // import { State } from "../../store/actions/tsTypes";
 import { Product } from "../../store/reducers/category.reducer";
+import { ProductLoader } from "../Home/contentLoader";
 import ProductAttribute from "./Attribute";
 import BuyingOption from "./BuyingOption";
 import Ratting from "./Ratting";
@@ -30,6 +31,7 @@ function ProductUI() {
   const [attribute, setAttribute] = useState({ color: "", size: "" });
   const productId = location.pathname.split("/").pop();
   const [mainImage, setMainImage] = useState("");
+  const [productLoader, setProductLoader] = useState(true);
 
   const convertPrice = (price: string) => {
     return Math.ceil(Number(price) * 75);
@@ -47,12 +49,19 @@ function ProductUI() {
         if (data.thumbnail) {
           setMainImage(data.thumbnail);
           setProductData(data);
+          setProductLoader(false);
         }
       } catch (error) {
         console.log(error);
       }
     })(productId);
   }, [productId]);
+
+  // useEffect(() => {
+  //   if (product?.name) {
+  //     // setProductLoader(false);
+  //   }
+  // }, [product]);
 
   // function handleBuyNowClick() {
   //   console.log(customer);
@@ -79,67 +88,78 @@ function ProductUI() {
 
   return (
     <>
-      <ProductContainer>
-        {productData.name && (
-          <>
-            <SectionA>
-              <AllImages>
-                <MoreImages>
-                  {[productData.image, productData.image_2].map(
-                    (imageName, i) => {
-                      return makeImages(imageName, i);
-                    }
-                  )}
-                </MoreImages>
+      {productLoader ? (
+        <Loader>
+          <ProductLoader></ProductLoader>
+        </Loader>
+      ) : (
+        <ProductContainer>
+          {productData.name && (
+            <>
+              <SectionA>
+                <AllImages>
+                  <MoreImages>
+                    {[productData.image, productData.image_2].map(
+                      (imageName, i) => {
+                        return makeImages(imageName, i);
+                      }
+                    )}
+                  </MoreImages>
 
-                <PrimaryImage>
-                  <PrimeImage
-                    src={
-                      require(`./../../assets/images/product_images/${mainImage}`)
-                        .default
-                    }
+                  <PrimaryImage>
+                    <PrimeImage
+                      src={
+                        require(`./../../assets/images/product_images/${mainImage}`)
+                          .default
+                      }
+                    />
+                  </PrimaryImage>
+                </AllImages>
+              </SectionA>
+
+              <SectionB>
+                <div>
+                  <Name>{productData.name}</Name>
+                  <Ratting productId={productId} />
+
+                  <Save>
+                    <p>
+                      Extra <span>&#8377;</span> <span>{off}</span> off
+                    </p>
+                  </Save>
+
+                  <Price>
+                    <span>&#8377;{productDiscountedPrice}</span>
+                    <span>&#8377;{productPrice}</span>{" "}
+                    <span>{Math.ceil((off * 100) / productPrice)}% off</span>
+                  </Price>
+
+                  <ProductAttribute
+                    productId={productId}
+                    attribute={attribute}
+                    setAttribute={setAttribute}
                   />
-                </PrimaryImage>
-              </AllImages>
-            </SectionA>
 
-            <SectionB>
-              <div>
-                <Name>{productData.name}</Name>
-                <Ratting productId={productId} />
+                  <BuyingOption productId={productId} attribute={attribute} />
 
-                <Save>
-                  <p>
-                    Extra <span>&#8377;</span> <span>{off}</span> off
-                  </p>
-                </Save>
-
-                <Price>
-                  <span>&#8377;{productDiscountedPrice}</span>
-                  <span>&#8377;{productPrice}</span>{" "}
-                  <span>{Math.ceil((off * 100) / productPrice)}% off</span>
-                </Price>
-
-                <ProductAttribute
-                  productId={productId}
-                  attribute={attribute}
-                  setAttribute={setAttribute}
-                />
-
-                <BuyingOption productId={productId} attribute={attribute} />
-
-                <ProductDescription>
-                  <h1>Product Descirption</h1>
-                  <p>{productData.description}</p>
-                </ProductDescription>
-              </div>
-            </SectionB>
-          </>
-        )}
-      </ProductContainer>
+                  <ProductDescription>
+                    <h1>Product Descirption</h1>
+                    <p>{productData.description}</p>
+                  </ProductDescription>
+                </div>
+              </SectionB>
+            </>
+          )}
+        </ProductContainer>
+      )}
     </>
   );
 }
+
+const Loader = styled.div`
+  display: flex;
+  flex-direction: row:
+`;
 
 const Flex = styled.div`
   display: flex;

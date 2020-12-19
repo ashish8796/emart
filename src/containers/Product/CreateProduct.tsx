@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRupeeSign } from "@fortawesome/free-solid-svg-icons";
@@ -12,6 +12,7 @@ interface ProductProps {
 
 function CreateProduct({ product, first }: ProductProps) {
   const history = useHistory();
+  const [productLoader, setProductLoader] = useState(true);
 
   const imgSrc = require(`./../../assets/images/product_images/${product.thumbnail}`)
     .default;
@@ -21,7 +22,6 @@ function CreateProduct({ product, first }: ProductProps) {
   );
 
   const productPrice = Math.ceil(Number(product.price) * 75);
-  // console.log(Number(product.price));
 
   return (
     <>

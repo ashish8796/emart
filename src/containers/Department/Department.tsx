@@ -20,7 +20,7 @@ function Department({ el }: Props) {
   const { categories } = useSelector((state: State) => state.home);
   let relevCats: RowsObj[] =
     "rows" in categories
-      ? categories.rows.filter((v) => v.department_id === el.department_id)
+      ? categories.rows.filter((v: any) => v.department_id === el.department_id)
       : [];
 
   return (

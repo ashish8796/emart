@@ -18,7 +18,7 @@ interface DepartmentProps {
 
 function CreateDepartment({ id }: DepartmentProps) {
   const dispatch = useDispatch();
-  // const { prodByDept } = useSelector((state: State) => state.home);
+  const { prodByDept } = useSelector((state: State) => state.home);
   const [products, setProducts] = useState<Array<Product>>([]);
   const [width, setWidth] = useState(0);
   const scrollElem = useRef<HTMLElement>(null!);
@@ -26,9 +26,14 @@ function CreateDepartment({ id }: DepartmentProps) {
 
   useEffect(() => {
     (async (id) => {
-      const data: any = await dispatch(setProdByDeptId(id));
-      setProducts(data.rows);
-      setProductLoader(false);
+      if (!(prodByDept[id]?.products.length > 0)) {
+        const data: any = await dispatch(setProdByDeptId(id));
+        setProducts(data.rows);
+        setProductLoader(false);
+      } else {
+        setProducts(prodByDept[id].products);
+        setProductLoader(false);
+      }
     })(id);
   }, [id, dispatch]);
 
@@ -76,8 +81,8 @@ const ProductContainer = styled.article`
   overflow-y: hidden;
   scroll-left : ${(props: props) => props.width}
   transition : overflow 1s;
-  &:nth-child (1) {
-    margin-left: 5em;
+  &:first-of-type{
+    margin-top: 20px;
   }
 `;
 
@@ -86,8 +91,6 @@ const Button = styled.button`
   font-size: 30px;
   width: 60px;
   padding: 25px 0;
-  // transform: translate(0, -50%);
-  // top: 50%;
   border: none;
   box-shadow: 2px 2px 5px grey;
   outline: none;
