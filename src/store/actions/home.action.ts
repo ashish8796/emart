@@ -31,9 +31,10 @@ export const setCategories = () => async (dispatch: Dispatch,) => {
 }
 
 export const setProdByDeptId = (id: number) => async (dispatch: Dispatch) => {
+  let productsData;
   try {
     const data = await getProductByDepartmentId(+id);
-    // console.log(data)
+    productsData = data;
     dispatch({
       type: SET_PROD_BY_DEPT_ID,
       payload: {
@@ -45,4 +46,6 @@ export const setProdByDeptId = (id: number) => async (dispatch: Dispatch) => {
   } catch (error) {
 
   }
+
+  return productsData;
 }

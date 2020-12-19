@@ -18,14 +18,10 @@ function Department({ el }: Props) {
   const [releventCats, setReleventCats] = useState<Array<RowsObj>>([]);
 
   const { categories } = useSelector((state: State) => state.home);
-
-  // console.log();
   let relevCats: RowsObj[] =
     "rows" in categories
       ? categories.rows.filter((v) => v.department_id === el.department_id)
       : [];
-
-  // console.log(categories);
 
   return (
     <DepWrapper>

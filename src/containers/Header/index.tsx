@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -14,11 +14,13 @@ import { useHistory, useLocation } from "react-router-dom";
 import { setUsesrDetails } from "../../store/actions/user.action";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 import OptionNavBar from "./OptionNavBar";
+import { HeaderLoader } from "../Home/contentLoader";
 
 function HeaderElement() {
   const dispatch = useDispatch();
   const history = useHistory();
   const location = useLocation();
+  const [loader, setLoader] = useState(true);
 
   const showDepartments =
     location.pathname !== "/shoppingCart" && location.pathname !== "/login";
@@ -41,16 +43,12 @@ function HeaderElement() {
   }, [customer.name, accessToken, dispatch]);
 
   useEffect(() => {
-    dispatch(setDepartments());
-    dispatch(setCategories());
+    (async () => {
+      await dispatch(setDepartments());
+      await dispatch(setCategories());
+      setLoader(false);
+    })();
   }, [dispatch]);
-
-  useEffect(() => {
-    departments.length > 0 &&
-      departments.forEach((department) => {
-        dispatch(setProdByDeptId(department.department_id));
-      });
-  }, [dispatch, departments]);
 
   const handleCartClick = () => {
     dispatch(setIsDepartmentVisible(false));
@@ -62,39 +60,41 @@ function HeaderElement() {
     history.push("/");
   };
 
-  console.log(departmentStatus);
-
   return (
     <>
-      <Header>
-        <SearchHead>
-          <HomeWrapper>
-            <Logo
-              src={require("./../../assets/images/freeLogo.jpeg").default}
-              alt="logo"
-              onClick={handleHomeClick}
-            />
+      {loader ? (
+        <HeaderLoader />
+      ) : (
+        <Header>
+          <SearchHead>
+            <HomeWrapper>
+              <Logo
+                src={require("./../../assets/images/freeLogo.jpeg").default}
+                alt="logo"
+                onClick={handleHomeClick}
+              />
 
-            <HomeButton onClick={handleHomeClick}>Home</HomeButton>
-          </HomeWrapper>
+              <HomeButton onClick={handleHomeClick}>Home</HomeButton>
+            </HomeWrapper>
 
-          <SystemWrapper>
-            {showDepartments && <OptionNavBar customer={customer} />}
+            <SystemWrapper>
+              {showDepartments && <OptionNavBar customer={customer} />}
 
-            {showDepartments && (
-              <Cart onClick={handleCartClick}>
-                <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>Cart
-              </Cart>
-            )}
-          </SystemWrapper>
-        </SearchHead>
-        {isDepartmentVisible && departmentStatus && (
-          <DepartmentWrapper>
-            {departments.length > 0 &&
-              departments.map((el, i) => <Department el={el} key={i} />)}
-          </DepartmentWrapper>
-        )}
-      </Header>
+              {showDepartments && (
+                <Cart onClick={handleCartClick}>
+                  <span>{<FontAwesomeIcon icon={faShoppingCart} />}</span>Cart
+                </Cart>
+              )}
+            </SystemWrapper>
+          </SearchHead>
+          {isDepartmentVisible && departmentStatus && (
+            <DepartmentWrapper>
+              {departments.length > 0 &&
+                departments.map((el, i) => <Department el={el} key={i} />)}
+            </DepartmentWrapper>
+          )}
+        </Header>
+      )}
     </>
   );
 }

@@ -1,22 +1,40 @@
 import React from "react";
-// import ContentLoader from "react-content-loader";
+import ContentLoader from "react-content-loader";
 
-function HomeLoader() {
+export function HeaderLoader() {
   return (
-    // <ContentLoader
-    //   speed={1}
-    //   width={200}
-    //   height={40}
-    //   backgroundColor={"#333"}
-    //   foregroundColor={"#999"}
-    //   viewBox="0 0 380 70"
-    // >
-    //   <rect x="100%" y="100" rx="0" ry="0" width="70" height="70" />
-    //   <rect x="80" y="17" rx="4" ry="4" width="300" height="13" />
-    //   <rect x="80" y="40" rx="3" ry="3" width="250" height="10" />
-    // </ContentLoader>
-    <></>
+    <ContentLoader
+      speed={1}
+      width="100%"
+      backgroundColor="rgba(0,0,0,0.06)"
+      foregroundColor="rgba(0,0,0,0.12)"
+      height="90"
+    >
+      <rect x="0" y="0" rx="0" ry="0" width="100%" height="90" />
+    </ContentLoader>
   );
 }
 
-export default HomeLoader;
+export function DepartmentProductLoader() {
+  return (
+    <ContentLoader
+      speed={1}
+      height="275"
+      width="100%"
+      backgroundColor="rgba(0,0,0,0.06)"
+      foregroundColor="rgba(0,0,0,0.12)"
+      style={{ marginTop: "1.5em" }}
+    >
+      <rect x="20" y="87" rx="3" ry="3" width="60" height="84" />
+
+      <rect x="100" y="0" rx="3" ry="3" width="170" height="100%" />
+      <rect x="300" y="0" rx="3" ry="3" width="170" height="100%" />
+      <rect x="500" y="0" rx="3" ry="3" width="170" height="100%" />
+      <rect x="700" y="0" rx="3" ry="3" width="170" height="100%" />
+      <rect x="900" y="0" rx="3" ry="3" width="170" height="100%" />
+      <rect x="1100" y="0" rx="3" ry="3" width="170" height="100%" />
+
+      <rect x="1290" y="87" rx="3" ry="3" width="60" height="84" />
+    </ContentLoader>
+  );
+}

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { State } from "../../store/actions/tsTypes";
 import CreateProduct from "../Product/CreateProduct";
@@ -9,49 +9,58 @@ import {
   faChevronRight,
 } from "@fortawesome/free-solid-svg-icons";
 import { Product } from "../../store/reducers/category.reducer";
+import { setProdByDeptId } from "../../store/actions/home.action";
+import { DepartmentProductLoader } from "../Home/contentLoader";
 
 interface DepartmentProps {
   id: number;
 }
 
 function CreateDepartment({ id }: DepartmentProps) {
-  const { prodByDept } = useSelector((state: State) => state.home);
+  const dispatch = useDispatch();
+  // const { prodByDept } = useSelector((state: State) => state.home);
   const [products, setProducts] = useState<Array<Product>>([]);
   const [width, setWidth] = useState(0);
   const scrollElem = useRef<HTMLElement>(null!);
+  const [productLoader, setProductLoader] = useState(true);
 
   useEffect(() => {
-    if (prodByDept && prodByDept[id]) {
-      setProducts(prodByDept[id].products);
-    }
-  }, [prodByDept, id]);
+    (async (id) => {
+      const data: any = await dispatch(setProdByDeptId(id));
+      setProducts(data.rows);
+      setProductLoader(false);
+    })(id);
+  }, [id, dispatch]);
 
-  // console.log(prodByDept);
   return (
     <>
-      <ProductContainer ref={scrollElem} width={width}>
-        <LeftButton
-          onClick={(event) => {
-            // console.log("Left button is working");
-            // console.log(width);
-            setWidth((width) => width + 100);
-          }}
-        >
-          <FontAwesomeIcon icon={faChevronLeft} />
-        </LeftButton>
-        {products.length > 0 &&
-          products.map((product, i) => (
-            <CreateProduct key={i} product={product} first={i === 0} />
-          ))}
-        <RightButton
-          onClick={() => {
-            // console.log("Right button is working");
-            setWidth((width) => width - 100);
-          }}
-        >
-          <FontAwesomeIcon icon={faChevronRight} />
-        </RightButton>
-      </ProductContainer>
+      {productLoader ? (
+        <DepartmentProductLoader></DepartmentProductLoader>
+      ) : (
+        <ProductContainer ref={scrollElem} width={width}>
+          <LeftButton
+            onClick={(event) => {
+              // console.log("Left button is working");
+              // console.log(width);
+              setWidth((width) => width + 100);
+            }}
+          >
+            <FontAwesomeIcon icon={faChevronLeft} />
+          </LeftButton>
+          {products.length > 0 &&
+            products.map((product, i) => (
+              <CreateProduct key={i} product={product} first={i === 0} />
+            ))}
+          <RightButton
+            onClick={() => {
+              // console.log("Right button is working");
+              setWidth((width) => width - 100);
+            }}
+          >
+            <FontAwesomeIcon icon={faChevronRight} />
+          </RightButton>
+        </ProductContainer>
+      )}
     </>
   );
 }
