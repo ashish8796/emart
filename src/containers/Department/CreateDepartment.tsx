@@ -40,7 +40,9 @@ function CreateDepartment({ id }: DepartmentProps) {
   return (
     <>
       {productLoader ? (
-        <DepartmentProductLoader></DepartmentProductLoader>
+        <Loader>
+          <DepartmentProductLoader />
+        </Loader>
       ) : (
         <ProductContainer ref={scrollElem} width={width}>
           <LeftButton
@@ -73,6 +75,12 @@ function CreateDepartment({ id }: DepartmentProps) {
 interface props {
   width: number;
 }
+
+const Loader = styled.div`
+  &:first-of-type {
+    margin-top: 90px;
+  }
+`;
 
 const ProductContainer = styled.article`
   display: flex;
