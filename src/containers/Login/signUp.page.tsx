@@ -143,7 +143,7 @@ const SignUpWrapper = styled.div`
 
 const Heading = styled.h1`
   font-size: 40px;
-  margin: 4em 1.3em 0 1.3em;
+  margin: 3em 1.3em 0 1.3em;
   animation-duration: 0.8s;
 `;
 
@@ -263,7 +263,7 @@ const Rotate = styled.div`
 
 const LogInButton = styled.p`
   position: absolute;
-  left: 16%;
+  left: 19.5%;
   bottom: 10%;
   padding: 3px;
   font-size: 20px;

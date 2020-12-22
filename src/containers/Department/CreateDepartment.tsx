@@ -18,7 +18,7 @@ interface DepartmentProps {
 
 function CreateDepartment({ id }: DepartmentProps) {
   const dispatch = useDispatch();
-  const { prodByDept } = useSelector((state: State) => state.home);
+  const { prodByDept, departments } = useSelector((state: State) => state.home);
   const [products, setProducts] = useState<Array<Product>>([]);
   const [width, setWidth] = useState(0);
   const scrollElem = useRef<HTMLElement>(null!);
@@ -44,7 +44,11 @@ function CreateDepartment({ id }: DepartmentProps) {
           <DepartmentProductLoader />
         </Loader>
       ) : (
-        <ProductContainer ref={scrollElem} width={width}>
+        <ProductContainer
+          ref={scrollElem}
+          width={width}
+          departmentLength={departments.length}
+        >
           <LeftButton
             onClick={(event) => {
               // console.log("Left button is working");
@@ -72,14 +76,15 @@ function CreateDepartment({ id }: DepartmentProps) {
   );
 }
 
-interface props {
+interface Props {
   width: number;
+  departmentLength: number;
 }
 
 const Loader = styled.div`
-  &:first-of-type {
-    margin-top: 90px;
-  }
+  // &:first-of-type {
+  //   margin-top: 20px;
+  // }
 `;
 
 const ProductContainer = styled.article`
@@ -87,7 +92,7 @@ const ProductContainer = styled.article`
   flex-direaction: row;
   overflow: scroll;
   overflow-y: hidden;
-  scroll-left : ${(props: props) => props.width}
+  scroll-left : ${(props: Props) => props.width}
   transition : overflow 1s;
   &:first-of-type{
     margin-top: 20px;

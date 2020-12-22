@@ -11,10 +11,13 @@ import EmptyCart from "./EmptyCart";
 function ShoppingCart() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { cartId, productsList, accessToken } = useSelector((state: State) => ({
-    ...state.cart,
-    ...state.user,
-  }));
+  const { cartId, productsList, accessToken, categories } = useSelector(
+    (state: State) => ({
+      ...state.cart,
+      ...state.user,
+      ...state.home,
+    })
+  );
   const [IsCartLoaderVisible, setCartLoaderVisible] = useState<boolean>(true);
 
   const convertPrice = (price: string) => {
@@ -39,13 +42,13 @@ function ShoppingCart() {
       cartId &&
         !productsList.length &&
         (await dispatch(setProductsInShoppingCart(cartId)));
-      setCartLoaderVisible(false);
+      categories.rows.length && setCartLoaderVisible(false);
     })();
 
     // return () => {
     //   setCartLoaderVisible(false);
     // };
-  }, [cartId, productsList.length, dispatch]);
+  }, [cartId, productsList.length, dispatch, categories.rows]);
 
   return (
     <>
@@ -112,12 +115,16 @@ function ShoppingCart() {
 
 // const Div = styled.div``;
 // const Section = styled.section``;
+interface Props {
+  length: number;
+}
+
 const CartWrapper = styled.div`
   padding: 20px 30px;
   display: flex;
   flex-direction: row;
   font-family: Roboto, Arial, sans-serif;
-  margin-top: 3em;
+  // margin-top: 3em;
 `;
 
 const ProductSection = styled.section`

@@ -8,10 +8,10 @@ export function HeaderLoader() {
       width="100%"
       backgroundColor="rgba(0,0,0,0.06)"
       foregroundColor="rgba(0,0,0,0.12)"
-      height="70"
-      style={{ position: "absolute", top: "0" }}
+      height="90"
+      // style={{ position: "absolute", top: "0" }}
     >
-      <rect x="0" y="0" rx="0" ry="0" width="100%" height="60" />
+      <rect x="0" y="0" rx="0" ry="0" width="100%" height="90" />
     </ContentLoader>
   );
 }
@@ -82,10 +82,10 @@ export function CartLoader() {
         width="100%"
         backgroundColor="rgba(0,0,0,0.06)"
         foregroundColor="rgba(0,0,0,0.12)"
-        height="87vh"
+        height="72vh"
       >
-        <rect x="50" y="70" rx="3" ry="3" width="58%" height="85vh" />
-        <rect x="63%" y="70" rx="3" ry="3" width="28%" height="38vh" />
+        <rect x="50" y="20" rx="3" ry="3" width="58%" height="72vh" />
+        <rect x="63%" y="20" rx="3" ry="3" width="28%" height="38vh" />
       </ContentLoader>
       <ContentLoader
         speed={1}
@@ -135,6 +135,27 @@ export function OrdersLoader() {
         <rect x="120" y="33" rx="3" ry="3" width="125" height="15" />
         <rect x="120" y="58" rx="3" ry="3" width="100" height="15" />
         <rect x="120" y="83" rx="3" ry="3" width="90" height="15" />
+      </ContentLoader>
+    </>
+  );
+}
+
+export function CategoryProductLoader() {
+  return (
+    <>
+      <ContentLoader
+        height="275"
+        width="100%"
+        backgroundColor="rgba(0,0,0,0.06)"
+        foregroundColor="rgba(0,0,0,0.12)"
+        style={{ marginTop: "20px" }}
+      >
+        <rect x="100" y="0" rx="3" ry="3" width="170" height="100%" />
+        <rect x="300" y="0" rx="3" ry="3" width="170" height="100%" />
+        <rect x="500" y="0" rx="3" ry="3" width="170" height="100%" />
+        <rect x="700" y="0" rx="3" ry="3" width="170" height="100%" />
+        <rect x="900" y="0" rx="3" ry="3" width="170" height="100%" />
+        <rect x="1100" y="0" rx="3" ry="3" width="170" height="100%" />
       </ContentLoader>
     </>
   );

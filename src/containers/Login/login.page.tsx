@@ -129,7 +129,6 @@ const LoginHeading = styled.h1`
 `;
 
 const LoginForm = styled.form`
-  // border: 2px solid red;
   display: flex;
   flex-direction: column;
   margin: 5em 0 0 52px;
@@ -205,7 +204,7 @@ const Rotate = styled.div`
 
 const SignUpButton = styled.p`
   position: absolute;
-  left: 18%;
+  left: 22%;
   bottom: 10%;
   padding: 3px;
   font-size: 20px;

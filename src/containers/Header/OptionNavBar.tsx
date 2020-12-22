@@ -35,6 +35,7 @@ function OptionNavBar({ customer }: OptionNavBarProps) {
   };
 
   const handleLoginClick = () => {
+    dispatch(setIsDepartmentVisible(false));
     history.push("/login");
   };
 
@@ -107,6 +108,7 @@ const LoginWrapper = styled.div`
 
 const OptionContainer = styled.div`
   position: absolute;
+  z-index: 10;
   margin-top: 10px;
   display: flex;
   flex-direction: column;

@@ -30,19 +30,16 @@ function LoginAndSignUp() {
 }
 
 const LoginAndSignUpContainer = styled.div`
-  // background-size: cover;
   background-color: #fff;
-  height: 100vh;
-  // border: 2px solid red;
+  height: 84.8vh;
   position: relative;
   overflow: hidden;
-  // margin: 10px 0;
 
   img {
     position: absolute;
     right: 0;
-    height: 75vh;
-    margin-top: 25px;
+    height: 73vh;
+    margin-top: -30px;
   }
 `;
 

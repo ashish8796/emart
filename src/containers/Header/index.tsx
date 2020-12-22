@@ -46,6 +46,8 @@ function HeaderElement() {
     (async () => {
       await dispatch(setDepartments());
       await dispatch(setCategories());
+      console.log("header function");
+
       setLoader(false);
     })();
   }, [dispatch]);
@@ -87,11 +89,13 @@ function HeaderElement() {
               )}
             </SystemWrapper>
           </SearchHead>
-          {isDepartmentVisible && departmentStatus && (
+          {isDepartmentVisible && departmentStatus ? (
             <DepartmentWrapper>
               {departments.length > 0 &&
                 departments.map((el, i) => <Department el={el} key={i} />)}
             </DepartmentWrapper>
+          ) : (
+            <FakeDeparmentBox></FakeDeparmentBox>
           )}
         </Header>
       )}
@@ -108,7 +112,7 @@ const SearchHead = styled.div`
   background-color: blue;
   display: flex;
   justify-content: space-between;
-  position: fixed;
+  // position: fixed;
   top: 0;
   width: 100%;
   z-index: 10;
@@ -165,12 +169,16 @@ const Cart = styled(Button)`
 `;
 
 const DepartmentWrapper = styled.div`
-  margin-top: 3.5em;
+  // margin-top: 3.5em;
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
   font-family: Roboto, Arial, sans-serif;
   background-color: #fff;
+`;
+
+const FakeDeparmentBox = styled.div`
+  height: 36.5px;
 `;
 
 export default HeaderElement;

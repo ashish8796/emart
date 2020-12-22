@@ -31,7 +31,7 @@ function CreateProductInCart({ product }: CreateProductInCartProps) {
     };
   }, []);
 
-  console.log(product);
+  // console.log(product);
 
   return (
     <ProductCart>

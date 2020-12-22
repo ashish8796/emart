@@ -117,8 +117,7 @@ const Flex = styled.div`
 `;
 
 const ProfileWrapper = styled(Flex)`
-  padding: 30px;
-  margin-top: 50px;
+  padding: 10px 30px;
 `;
 
 const SectionA = styled.section`

@@ -52,7 +52,7 @@ const OrdersContainer = styled.div`
   font-family: Roboto, Arial, sans-serif;
   // border: 2px solid red;
   padding: 20px 30px;
-  margin: 5em 30px 0 30px;
+  margin: 30px;
   background-color: #fff;
 `;
 
