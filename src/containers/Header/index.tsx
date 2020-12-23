@@ -46,7 +46,7 @@ function HeaderElement() {
     (async () => {
       await dispatch(setDepartments());
       await dispatch(setCategories());
-      console.log("header function");
+      // console.log("header function");
 
       setLoader(false);
     })();
@@ -61,6 +61,8 @@ function HeaderElement() {
     dispatch(setIsDepartmentVisible(true));
     history.push("/");
   };
+
+  // console.log(customer, accessToken);
 
   return (
     <>

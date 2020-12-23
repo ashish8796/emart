@@ -10,7 +10,6 @@ function LoginAndSignUp() {
   const { user } = useSelector((state: State) => state);
 
   useEffect(() => {
-    console.log(user);
     "accessToken" in user && setIsLogin(true);
   }, [user]);
 

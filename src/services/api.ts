@@ -14,11 +14,19 @@ class API {
   async get(url: string) {
     try {
       const response = await fetch(this.mainUrl + url, { headers });
-      // console.log(response)
-      return response.ok ? await response.json() : response.ok;
+      // if (response.ok) {
+      //   const result = await response.json();
+      //   return { ...result, status: response.status }
+      // } else {
+      //   return { status: response.status }
+      // }
+      // console.log("1");
+
+      const result = response.ok && await response.json();
+      return { ...result, status: response.status }
     } catch (e) {
-      // console.log(String(e).split(":"));
       const error = String(e).split(":")[1].trim()
+      // console.log(error);
       return error;
     }
   }

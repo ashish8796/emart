@@ -7,9 +7,9 @@ export const registerUser = (userDetails: UserDetails) => async (dispatch: Dispa
   let registerData;
   try {
     const data = await registerNewUser(userDetails);
-    console.log(data)
+    // console.log(data)
     dispatch({
-      type: REGISTER_USER,
+      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : REGISTER_USER,
       payload: data
     })
     registerData = data;
@@ -24,7 +24,7 @@ export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dis
     const data = await loginUser(loginDetails);
     // console.log(data)
     dispatch({
-      type: LOGIN_USER,
+      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : LOGIN_USER,
       payload: data,
     })
     loginData = data
@@ -37,10 +37,10 @@ export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dis
 export const setUsesrDetails = () => async (dispatch: Dispatch) => {
   try {
     const data = await getUserDetails();
-    console.log(data)
+    // console.log(data)
 
     dispatch({
-      type: data ? SET_USER_DETAILS : SET_CUSTOMER_STATUS,
+      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : SET_USER_DETAILS,
       payload: data
     })
   } catch (e) {
@@ -60,7 +60,7 @@ export const setUserAddress = (obj: any) => async (dispatch: Dispatch) => {
 
     const data = await putUserAddress(obj)
     dispatch({
-      type: SET_USER_ADDRESS,
+      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : SET_USER_ADDRESS,
       payload: data
     })
   } catch (error) {
@@ -72,7 +72,7 @@ export const setUserCreditCard = (creditCardNumber: any) => async (dispatch: Dis
   try {
     const data = await putCreditCart(creditCardNumber);
     dispatch({
-      type: SET_USER_CREDIT_CARD,
+      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : SET_USER_CREDIT_CARD,
       payload: data
     })
   } catch (error) {
@@ -83,10 +83,10 @@ export const setUserCreditCard = (creditCardNumber: any) => async (dispatch: Dis
 export const updateUserDetails = (obj: any) => async (dispatch: Dispatch) => {
   let userDetails;
   try {
-    const data = putUserDetails(obj);
+    const data = await putUserDetails(obj);
     userDetails = data;
     dispatch({
-      type: UPDATE_USER_DETAILS,
+      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : UPDATE_USER_DETAILS,
       payload: data
     })
 

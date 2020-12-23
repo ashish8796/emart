@@ -15,17 +15,21 @@ const CategoryProducts = ({ match }: RouteComponentProps<TParams>) => {
   } = match;
 
   const dispatch = useDispatch();
-  const { categoriesProducts } = useSelector((state: State) => state.category);
+  const { categoriesProducts, categories } = useSelector((state: State) => ({
+    ...state.category,
+    ...state.home,
+  }));
   const [loader, setLoader] = useState<boolean>(true);
 
   // console.log(categoriesProducts, categoryName);
 
   useEffect(() => {
     (async () => {
+      setLoader(true);
       await dispatch(setPorductBycategoryId({ categoryId, categoryName }));
-      setLoader(false);
+      categories.rows.length && setLoader(false);
     })();
-  }, [categoryId, categoryName, dispatch]);
+  }, [categoryId, categoryName, dispatch, categories.rows]);
 
   let slug = categoryName;
 
@@ -48,9 +52,8 @@ const CategoryWrapper = styled.div`
   display: grid;
   grid-template-columns: repeat(5, 1fr);
   grid-template-rows: auto;
-  // padding: 0 30px;
   grid-gap: 1em;
-  margin: 30px auto;
+  margin: 35px auto;
   justify-content: center;
 
   & > div {

@@ -68,9 +68,8 @@ function userReducer(state = initialState, action: any) {
     }
 
     case SET_USER_DETAILS: {
-
       return {
-        ...state, customer: { ...state.customer, ...action.payload.customer }
+        ...state, customer: { ...state.customer, ...action.payload }
       }
     }
 
