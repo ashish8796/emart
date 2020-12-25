@@ -15,7 +15,7 @@ export type Customer = {
   eve_phone: string,
   mob_phone: string,
   credit_card: string,
-  status: boolean
+  customer_status: number | boolean
 }
 
 export interface UserState {
@@ -38,7 +38,7 @@ const customerObj = {
   eve_phone: "",
   mob_phone: "",
   credit_card: "",
-  status: false
+  customer_status: false
 }
 
 const initialState: UserState = {
@@ -54,7 +54,7 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: { status: true, ...action.payload.customer }, accessToken
+        ...state, customer: { ...action.payload.customer }, accessToken
       }
     }
 
