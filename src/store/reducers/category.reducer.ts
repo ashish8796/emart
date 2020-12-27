@@ -13,11 +13,13 @@ export interface Product {
   image: string,
   image_2: string,
 }
+
 export interface CategoryProductList {
   categoryId: string,
   count: number,
   rows: Product[]
 }
+
 export interface CategoryState {
   categoriesProducts: {
     [slug: string]: CategoryProductList

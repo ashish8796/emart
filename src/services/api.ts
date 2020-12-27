@@ -14,16 +14,9 @@ class API {
   async get(url: string) {
     try {
       const response = await fetch(this.mainUrl + url, { headers });
-      // if (response.ok) {
-      //   const result = await response.json();
-      //   return { ...result, status: response.status }
-      // } else {
-      //   return { status: response.status }
-      // }
-      // console.log("1");
 
       const result = response.ok && await response.json();
-      return { ...result, status: response.status }
+      return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
       // console.log(error);
@@ -39,10 +32,14 @@ class API {
         body: JSON.stringify(data)
       });
 
-      return await response.json();
-    } catch (e) {
+      console.log(response)
 
-      console.log(e);
+      const result = response.ok && await response.json();
+      return { result, status: response.status }
+    } catch (e) {
+      const error = String(e).split(":")[1].trim()
+      // console.log(error);
+      return error;
     }
   }
 
@@ -61,15 +58,17 @@ class API {
 
   async put(url: string, data: any) {
     try {
-      console.log(headers)
       const response = await fetch(this.mainUrl + url, {
         method: "PUT",
         headers: headers,
         body: JSON.stringify(data)
       });
-      return await response.json();
+      const result = response.ok && await response.json();
+      return { result, status: response.status }
     } catch (e) {
-      console.log(e);
+      const error = String(e).split(":")[1].trim()
+      // console.log(error);
+      return error;
     }
   }
 

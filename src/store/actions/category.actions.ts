@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { getProductByCategoryId } from "../../services/api";
-import { SET_PRODUCT_BY_CATEGORY_ID } from "./actionTypes";
+import { SET_PRODUCT_BY_CATEGORY_ID, SET_PRODUCT_CATEGORY_STATUS, SET_PRODUCT_STATUS } from "./actionTypes";
 
 interface Obj {
   categoryId: string;
@@ -9,12 +9,12 @@ interface Obj {
 
 export const setPorductBycategoryId = ({ categoryId, categoryName }: Obj) => async (dispatch: Dispatch) => {
   try {
-    const data = await getProductByCategoryId(categoryId)
+    const data: any = await getProductByCategoryId(categoryId)
     // console.log({ data, categoryName })
     dispatch({
-      type: SET_PRODUCT_BY_CATEGORY_ID,
+      type: data === "Failed to Fetch" ? SET_PRODUCT_CATEGORY_STATUS : SET_PRODUCT_BY_CATEGORY_ID,
       payload: {
-        data: { ...data, categoryId },
+        data: { ...data.result, categoryId, },
         categoryName,
       }
     })

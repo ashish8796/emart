@@ -66,6 +66,7 @@ export type SetShoppingCartId = {
   type: string,
   payload: string
 }
+
 export type AddProduct = {
   cartId?: any;
   productId: string | undefined;

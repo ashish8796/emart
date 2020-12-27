@@ -54,7 +54,7 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: { ...action.payload.customer }, accessToken
+        ...state, customer: { ...action.payload.customer, }, accessToken
       }
     }
 
@@ -63,7 +63,7 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: { status: true, ...action.payload.customer }, accessToken
+        ...state, customer: { ...action.payload.customer }, accessToken
       }
     }
 
@@ -99,7 +99,7 @@ function userReducer(state = initialState, action: any) {
 
     case SET_CUSTOMER_STATUS: {
       return {
-        ...state, customer: { ...state.customer, status: action.payload.customer }
+        ...state, customer: { ...state.customer, customer_status: action.payload.customer }
       }
     }
 
