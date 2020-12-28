@@ -16,6 +16,7 @@ class API {
       const response = await fetch(this.mainUrl + url, { headers });
 
       const result = response.ok && await response.json();
+      console.log(result)
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
@@ -35,6 +36,7 @@ class API {
       console.log(response)
 
       const result = response.ok && await response.json();
+      console.log(result)
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
@@ -64,6 +66,7 @@ class API {
         body: JSON.stringify(data)
       });
       const result = response.ok && await response.json();
+      console.log(result)
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()

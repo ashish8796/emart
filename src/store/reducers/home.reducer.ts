@@ -19,14 +19,16 @@ export interface HomeState {
   departments: Array<Department>,
   categories: {
     rows: RowsObj[] | []
+    categoriesStatus: boolean | number
   }
   prodByDept: {
     [id: number]: {
-      products: Product[]
+      products: Product[],
+      productsStatus: boolean | number
     }
   }
 
-  departmentStatus: boolean
+  departmentStatus: boolean | number
 }
 
 
@@ -35,7 +37,8 @@ type MainAction = SetDepartment | SetCategories | SetProdByDeptId;
 const initialState: HomeState = {
   departments: [],
   categories: {
-    rows: []
+    rows: [],
+    categoriesStatus: true
   },
   prodByDept: {}
   ,
@@ -45,17 +48,18 @@ const initialState: HomeState = {
 function homeReducer(state = initialState, action: MainAction) {
   switch (action.type) {
     case SET_DEPARTMENT: {
-      // console.log(action.payload)
-      return { ...state, departments: action.payload, departmentStatus: true }
+      const { data, departmentStatus } = action.payload
+      return { ...state, departments: data, departmentStatus }
     }
 
     case SET_CATEGORIES: {
-      return { ...state, categories: action.payload }
+      return {
+        ...state, categories: { ...action.payload }
+      }
     }
 
     case SET_PROD_BY_DEPT_ID: {
-      // let obj = action.payload;
-      // console.log(obj)
+
       return {
         ...state,
         prodByDept: {

@@ -23,7 +23,7 @@ export interface UserState {
   customer: Customer
 }
 
-const customerObj = {
+export const customerObj = {
   customer_id: 0,
   name: "",
   email: "",
@@ -54,7 +54,7 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: { ...action.payload.customer, }, accessToken
+        ...state, customer: { ...action.payload.customer, customer_status: action.payload.status }, accessToken
       }
     }
 
@@ -63,13 +63,13 @@ function userReducer(state = initialState, action: any) {
       localStorage.setItem("emart-token", accessToken)
 
       return {
-        ...state, customer: { ...action.payload.customer }, accessToken
+        ...state, customer: { ...action.payload.customer, customer_status: action.payload.status }, accessToken
       }
     }
 
     case SET_USER_DETAILS: {
       return {
-        ...state, customer: { ...state.customer, ...action.payload }
+        ...state, customer: action.payload
       }
     }
 
@@ -81,13 +81,13 @@ function userReducer(state = initialState, action: any) {
 
     case SET_USER_ADDRESS: {
       return {
-        ...state, customer: { ...state.customer, ...action.payload.customer }
+        ...state, customer: { ...action.payload.customer, customer_status: action.payload.status }
       }
     }
 
     case SET_USER_CREDIT_CARD: {
       return {
-        ...state, customer: { ...state.customer, ...action.payload.customer }
+        ...state, customer: { ...action.payload.customer, customer_status: action.payload.status }
       }
     }
 

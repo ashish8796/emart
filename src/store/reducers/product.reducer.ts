@@ -3,11 +3,11 @@ import { SetProductById } from "../actions/tsTypes";
 
 
 export interface ProductState {
-  productId: object
+  productId: { projectStatus: boolean | number }
 }
 
 const intialState: ProductState = {
-  productId: {},
+  productId: { projectStatus: false },
 }
 
 type MainAction = SetProductById

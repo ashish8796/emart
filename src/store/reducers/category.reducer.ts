@@ -1,5 +1,5 @@
 
-import { SET_PRODUCT_BY_CATEGORY_ID } from "../actions/actionTypes";
+import { SET_PRODUCT_BY_CATEGORY_ID, SET_PRODUCT_CATEGORY_STATUS } from "../actions/actionTypes";
 import { SetProductByCategoryId } from "./../actions/tsTypes"
 
 type MainAction = SetProductByCategoryId;
@@ -17,7 +17,8 @@ export interface Product {
 export interface CategoryProductList {
   categoryId: string,
   count: number,
-  rows: Product[]
+  rows: Product[],
+  categoryProductStatus: number | boolean,
 }
 
 export interface CategoryState {
@@ -33,15 +34,23 @@ const initialState: CategoryState = {
 function categoryReducer(state = initialState, action: MainAction) {
   switch (action.type) {
     case SET_PRODUCT_BY_CATEGORY_ID: {
-      // console.log(action.payload)
-      const { data, categoryName } = action.payload
+      const { data, categoryName, categoryProductStatus } = action.payload
 
       return {
         ...state,
         categoriesProducts: {
           ...state.categoriesProducts,
-          [categoryName]: { ...data }
+          [categoryName]: { ...data, categoryProductStatus }
         }
+      }
+    }
+
+    case SET_PRODUCT_CATEGORY_STATUS: {
+      const { categoryName, categoryProductStatus } = action.payload
+      const data = state.categoriesProducts
+      data[categoryName].categoryProductStatus = categoryProductStatus
+      return {
+        ...state, categoriesProducts: data
       }
     }
 

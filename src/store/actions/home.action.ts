@@ -1,4 +1,4 @@
-import { SET_DEPARTMENT, SET_CATEGORIES, SET_PROD_BY_DEPT_ID, SET_INTERNET_ERROR } from "./actionTypes"
+import { SET_DEPARTMENT, SET_CATEGORIES, SET_PROD_BY_DEPT_ID, SET_INTERNET_ERROR, SET_CATEGORY_STATUS } from "./actionTypes"
 import { getAllCategories, getProductByDepartmentId, } from "../../services/api";
 import { Dispatch } from "redux";
 import { Categories, Department } from "./tsTypes";
@@ -6,11 +6,11 @@ import { Categories, Department } from "./tsTypes";
 
 export const setDepartments = () => async (dispatch: Dispatch, _: any, apiClient: { getAllDepartments: () => Promise<Array<Department> | string> }) => {
   try {
-    const data: Array<Department> | string = await apiClient.getAllDepartments();
+    const data: any = await apiClient.getAllDepartments();
     // console.log(data)
     dispatch({
-      type: data !== "Failed to fetch" ? SET_DEPARTMENT : SET_INTERNET_ERROR,
-      payload: data !== "Failed to fetch" ? data : false
+      type: SET_DEPARTMENT,
+      payload: data !== "Failed to fetch" ? { data, departmentStatus: data.status } : { data: [], departmentStatus: false }
     })
   } catch (e) {
     console.log(e)
@@ -19,10 +19,10 @@ export const setDepartments = () => async (dispatch: Dispatch, _: any, apiClient
 
 export const setCategories = () => async (dispatch: Dispatch,) => {
   try {
-    const data = await getAllCategories()
+    const data: any = await getAllCategories()
     dispatch({
-      type: data !== "Failed to fetch" ? SET_CATEGORIES : SET_INTERNET_ERROR,
-      payload: data !== "Failed to fetch" ? data : false
+      type: SET_CATEGORIES,
+      payload: data !== "Failed to fetch" ? { ...data.result, categoriesStatus: data.status } : { rows: [], categoriesStatus: false }
     })
   }
   catch (e) {
@@ -33,15 +33,16 @@ export const setCategories = () => async (dispatch: Dispatch,) => {
 export const setProdByDeptId = (id: number) => async (dispatch: Dispatch) => {
   let productsData;
   try {
-    const data = await getProductByDepartmentId(+id);
+    const data: any = await getProductByDepartmentId(+id);
     productsData = data;
     dispatch({
       type: SET_PROD_BY_DEPT_ID,
-      payload: {
+      payload: data !== "Failed to fetch" ? {
         [id]: {
-          products: data.rows
+          products: data.result.rows,
+          productsStatus: data.status
         }
-      }
+      } : { [id]: { productsStatus: false } }
     })
   } catch (error) {
 

@@ -6,14 +6,14 @@ import { AddProduct } from "./tsTypes";
 export const setShoppingCartId = () => async (dispatch: Dispatch): Promise<string> => {
   let cartId = '';
   try {
-    const data = await getShoppingCartId();
+    const data: any = await getShoppingCartId();
 
     dispatch({
       type: SET_SHOPPING_CART_ID,
-      payload: data.cart_id
+      payload: data !== "Failed to Fetch" ? { id: data.result.cart_id, cartIdStatus: data.status } : { id: "", cartIdStatus: false }
     })
 
-    cartId = data.cart_id;
+    cartId = data.result.cart_id;
   } catch (error) {
 
   }
@@ -22,11 +22,10 @@ export const setShoppingCartId = () => async (dispatch: Dispatch): Promise<strin
 
 export const addProductInShoppingCart = (obj: AddProduct) => async (dispatch: Dispatch) => {
   try {
-    const data = await postProductToShoppingCart({ cart_id: obj.cartId, product_id: obj.productId, attributes: obj.attribute })
-    // console.log(data)
+    const data: any = await postProductToShoppingCart({ cart_id: obj.cartId, product_id: obj.productId, attributes: obj.attribute })
     dispatch({
       type: ADD_PRODUCT_IN_SHOPPING_CART,
-      payload: data
+      payload: data !== "Failed to Fetch" ? data : { result: [], status: false }
     })
     return data;
   } catch (error) {
@@ -37,11 +36,11 @@ export const addProductInShoppingCart = (obj: AddProduct) => async (dispatch: Di
 export const setProductsInShoppingCart = (cartId: string | null) => async (dispatch: Dispatch) => {
   try {
     // const data_secondry = localStorage.getItem("secondry_cart_id") ? await getProductsInShoppingCart(localStorage.getItem("secondry_cart_id") as string) : []
-    const data_primary = await getProductsInShoppingCart(cartId);
+    const data: any = await getProductsInShoppingCart(cartId);
 
     dispatch({
       type: SET_LIST_OF_PRODUCTS_IN_SHOPPING_CART,
-      payload: data_primary
+      payload: data !== "Failed to Fetch" ? data : { result: [], status: false }
     })
   } catch (error) {
 
@@ -50,10 +49,10 @@ export const setProductsInShoppingCart = (cartId: string | null) => async (dispa
 
 export const removeProductFromCart = (cartId: string | null) => async (dispatch: Dispatch) => {
   try {
-    const data = await getProductsInShoppingCart(cartId);
+    const data: any = await getProductsInShoppingCart(cartId);
     dispatch({
       type: REMOVE_PRODUCT_FROM_CART,
-      payload: data
+      payload: data !== "Failed to Fetch" ? data : { result: [], status: false }
     })
   } catch (error) {
 

@@ -2,17 +2,24 @@ import { CREATE_ORDER, SET_ALL_ORDERS, SET_ORDER_DETAILS_BY_ID, SET_SHORT_DETAIL
 import { CreateOrder } from "../actions/tsTypes";
 
 export interface OrderState {
-  orderId: number
+  orderId: number | undefined
+  orderDetailsById: { singleOrderStatus: boolean | number }
   orderDetails: object
   allOrders: object[]
-  shortDetailOfOrder: object
+  shortDetailOfOrder: { shortDetailStatus: boolean | number }
+  createdOrderStatus: boolean | number
+  ordersStatus: boolean | number
+
 }
 
-const initialState = {
+const initialState: OrderState = {
   orderId: undefined,
-  orderDetailsById: {},
+  orderDetailsById: { singleOrderStatus: false },
+  orderDetails: {},
   allOrders: [],
-  shortDetailOfOrder: {}
+  shortDetailOfOrder: { shortDetailStatus: false },
+  createdOrderStatus: false,
+  ordersStatus: false,
 }
 
 type MainAction = CreateOrder
@@ -20,11 +27,11 @@ type MainAction = CreateOrder
 function ordersReducer(state = initialState, action: MainAction) {
   switch (action.type) {
     case CREATE_ORDER: {
-      return { ...state, orderId: action.payload }
+      return { ...state, ...action.payload }
     }
 
     case SET_ALL_ORDERS: {
-      return { ...state, allOrders: action.payload }
+      return { ...state, allOrders: action.payload.result, ordersStatus: action.payload.status }
     }
 
     case SET_ORDER_DETAILS_BY_ID: {

@@ -12,7 +12,7 @@ export type Categories = object;
 
 export type SetDepartment = {
   type: string,
-  payload: Array<Department>
+  payload: any
 }
 
 export type SetCategories = {
@@ -44,6 +44,7 @@ export type SetProductByCategoryId = {
   payload: {
     data: CategoryProductList,
     categoryName: string,
+    categoryProductStatus: boolean | number
   }
 }
 
@@ -86,7 +87,8 @@ export type CartProcuct = {
 
 export type AddProductInShoppingCart = {
   type: string,
-  payload: CartProcuct[]
+  payload: any
+  // payload: { result: CartProcuct[], status: boolean | number }
 }
 
 export type UserDetails = {

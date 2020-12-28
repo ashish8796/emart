@@ -1,5 +1,6 @@
 import { Dispatch } from "redux";
 import { getUserDetails, loginUser, putCreditCart, putUserAddress, putUserDetails, registerNewUser } from "../../services/api";
+import { customerObj } from "../reducers/user.reducer";
 import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_CUSTOMER_STATUS, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "./actionTypes";
 import { LoginDetails, UserDetails } from "./tsTypes";
 
@@ -7,10 +8,10 @@ export const registerUser = (userDetails: UserDetails) => async (dispatch: Dispa
   let registerData;
   try {
     const data: any = await registerNewUser(userDetails);
-    // console.log(data)
+    console.log(data)
     dispatch({
-      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : REGISTER_USER,
-      payload: data === "Failed to fetch" ? data : { ...data.result, customer_status: data.status }
+      type: REGISTER_USER,
+      payload: data === "Failed to fetch" ? { customer: customerObj, customer_status: false, accessToken: "" } : { ...data.result, status: data.status }
     })
     registerData = data;
   } catch (error) {
@@ -24,10 +25,10 @@ export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dis
     const data: any = await loginUser(loginDetails);
     // console.log(data)
     dispatch({
-      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : LOGIN_USER,
-      payload: data === "Failed to fetch" ? data : { ...data.result, customer_status: data.status },
+      type: LOGIN_USER,
+      payload: data === "Failed to fetch" ? { customer: customerObj, customer_status: false, accessToken: "" } : { ...data.result, status: data.status },
     })
-    loginData = data
+    loginData = data.result
   } catch (error) {
 
   }
@@ -40,8 +41,8 @@ export const setUsesrDetails = () => async (dispatch: Dispatch) => {
     // console.log(data)
 
     dispatch({
-      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : SET_USER_DETAILS,
-      payload: data === "Failed to fetch" ? data : { ...data.result, customer_status: data.status }
+      type: SET_USER_DETAILS,
+      payload: data === "Failed to fetch" ? { ...customerObj, customer_status: false } : { ...data.result, customer_status: data.status }
     })
   } catch (e) {
     console.log(e);
@@ -60,8 +61,8 @@ export const setUserAddress = (obj: any) => async (dispatch: Dispatch) => {
 
     const data: any = await putUserAddress(obj)
     dispatch({
-      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : SET_USER_ADDRESS,
-      payload: data === "Failed to fetch" ? data : { ...data.result, customer_status: data.status }
+      type: SET_USER_ADDRESS,
+      payload: data === "Failed to fetch" ? { customer: customerObj, customer_status: false } : { ...data.result, status: data.status }
     })
   } catch (error) {
 
@@ -72,8 +73,8 @@ export const setUserCreditCard = (creditCardNumber: any) => async (dispatch: Dis
   try {
     const data: any = await putCreditCart(creditCardNumber);
     dispatch({
-      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : SET_USER_CREDIT_CARD,
-      payload: data === "Failed to fetch" ? data : { ...data.result, customer_status: data.status }
+      type: SET_USER_CREDIT_CARD,
+      payload: data === "Failed to fetch" ? { customer: customerObj, status: false } : { ...data.result, status: data.status }
     })
   } catch (error) {
 
