@@ -49,10 +49,10 @@ const Address = forwardRef<AddessHandler, AddressProps>(
     const hancleSelectClick = async () => {
       if (regionOption.length === 1) {
         setLoader(true);
-        const data = await getRegion();
+        const data: any = await getRegion();
         setLoader(false);
 
-        setRegionOption(data);
+        setRegionOption(data.result);
       }
 
       setToggleOption(!toggleOption);

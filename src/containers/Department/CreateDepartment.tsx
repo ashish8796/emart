@@ -25,15 +25,10 @@ function CreateDepartment({ id }: DepartmentProps) {
   const [productLoader, setProductLoader] = useState(true);
 
   useEffect(() => {
-    (async (id) => {
-      if (!(prodByDept[id]?.products.length > 0)) {
-        const data: any = await dispatch(setProdByDeptId(id));
-        setProducts(data.rows);
-        setProductLoader(false);
-      } else {
-        setProducts(prodByDept[id].products);
-        setProductLoader(false);
-      }
+    (async (id: number) => {
+      await dispatch(setProdByDeptId(id));
+      // setProducts(data.rows);
+      setProductLoader(false);
     })(id);
   }, [id, dispatch]);
 
@@ -47,7 +42,7 @@ function CreateDepartment({ id }: DepartmentProps) {
         <ProductContainer
           ref={scrollElem}
           width={width}
-          departmentLength={departments.length}
+          // departmentLength={departments.length}
         >
           <LeftButton
             onClick={(event) => {
@@ -58,8 +53,8 @@ function CreateDepartment({ id }: DepartmentProps) {
           >
             <FontAwesomeIcon icon={faChevronLeft} />
           </LeftButton>
-          {products.length > 0 &&
-            products.map((product, i) => (
+          {prodByDept[id]?.productsStatus === 201 &&
+            prodByDept[id].products.map((product, i) => (
               <CreateProduct key={i} product={product} first={i === 0} />
             ))}
           <RightButton
@@ -78,7 +73,7 @@ function CreateDepartment({ id }: DepartmentProps) {
 
 interface Props {
   width: number;
-  departmentLength: number;
+  // departmentLength: number;
 }
 
 const Loader = styled.div`
@@ -113,11 +108,13 @@ const Button = styled.button`
     cursor: pointer;
   }
 `;
+
 const LeftButton = styled(Button)`
   left: 0;
   box-shadow: 2px 2px 5px grey;
   margin-left: 10px;
 `;
+
 const RightButton = styled(Button)`
   right: 0;
   box-shadow: -2px 2px 5px grey;

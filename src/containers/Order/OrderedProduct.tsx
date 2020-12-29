@@ -16,8 +16,8 @@ function OrderedProduct({ product }: OrderedProductProps) {
 
   useEffect(() => {
     (async () => {
-      const data = await getProductDetailById(product.product_id);
-      data.length > 0 && setProductData(data);
+      const data: any = await getProductDetailById(product.product_id);
+      data.result.length > 0 && setProductData(data.result);
     })();
   }, [product.product_id]);
 

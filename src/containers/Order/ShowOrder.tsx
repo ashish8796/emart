@@ -13,8 +13,8 @@ function ShowOrder({ order }: ShowOrderProps) {
 
   useEffect(() => {
     (async () => {
-      const data = await getOrderInfoById(order.order_id);
-      data.length > 0 && setOrderData(data);
+      const data: any = await getOrderInfoById(order.order_id);
+      data.result.length > 0 && setOrderData(data.result);
     })();
   }, [order.order_id]);
 

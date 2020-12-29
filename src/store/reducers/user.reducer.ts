@@ -93,7 +93,7 @@ function userReducer(state = initialState, action: any) {
 
     case UPDATE_USER_DETAILS: {
       return {
-        ...state, customer: { ...state.customer, ...action.payload.customer }
+        ...state, customer: { ...action.payload.customer, customer_status: action.payload.status }
       }
     }
 

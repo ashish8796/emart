@@ -14,6 +14,7 @@ class API {
   async get(url: string) {
     try {
       const response = await fetch(this.mainUrl + url, { headers });
+      console.log(response);
 
       const result = response.ok && await response.json();
       console.log(result)

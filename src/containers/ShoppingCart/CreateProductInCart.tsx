@@ -22,7 +22,7 @@ function CreateProductInCart({ product }: CreateProductInCartProps) {
   const handleRemoveClick = async () => {
     setLoader(true);
     await deleteProductfromCart(product.item_id);
-    dispatch(removeProductFromCart(cartId));
+    dispatch(removeProductFromCart(cartId.id));
   };
 
   useEffect(() => {

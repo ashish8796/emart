@@ -12,9 +12,9 @@ function Home() {
 
   return (
     <>
-      {departmentStatus ? (
+      {departmentStatus !== false ? (
         <MainWrapper>
-          {departments.length > 0 &&
+          {departmentStatus === 200 &&
             departments.map((department, i) => (
               <CreateDepartment key={i} id={department.department_id} />
             ))}

@@ -87,8 +87,8 @@ export const updateUserDetails = (obj: any) => async (dispatch: Dispatch) => {
     const data: any = await putUserDetails(obj);
     userDetails = data;
     dispatch({
-      type: data === "Failed to fetch" ? SET_CUSTOMER_STATUS : UPDATE_USER_DETAILS,
-      payload: data === "Failed to fetch" ? data : { ...data.result, customer_status: data.status }
+      type: UPDATE_USER_DETAILS,
+      payload: data === "Failed to fetch" ? { customer: customerObj, status: false } : { ...data.result, status: data.status }
     })
 
   } catch (error) {

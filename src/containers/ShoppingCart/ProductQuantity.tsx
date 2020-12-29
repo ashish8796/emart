@@ -22,7 +22,7 @@ function ProductQuantity({ product }: ProductQuantityProps) {
     await putProductQuantityInCart(product.item_id, {
       quantity: product.quantity + 1,
     });
-    await dispatch(setProductsInShoppingCart(cartId));
+    await dispatch(setProductsInShoppingCart(cartId.id));
     setChangeColor("");
   };
 
@@ -31,7 +31,7 @@ function ProductQuantity({ product }: ProductQuantityProps) {
     await putProductQuantityInCart(product.item_id, {
       quantity: product.quantity - 1,
     });
-    await dispatch(setProductsInShoppingCart(cartId));
+    await dispatch(setProductsInShoppingCart(cartId.id));
     setChangeColor("");
   };
 

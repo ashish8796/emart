@@ -48,8 +48,8 @@ const initialState: HomeState = {
 function homeReducer(state = initialState, action: MainAction) {
   switch (action.type) {
     case SET_DEPARTMENT: {
-      const { data, departmentStatus } = action.payload
-      return { ...state, departments: data, departmentStatus }
+      const { departments, departmentStatus } = action.payload
+      return { ...state, departments, departmentStatus }
     }
 
     case SET_CATEGORIES: {

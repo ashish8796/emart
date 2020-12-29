@@ -24,9 +24,9 @@ function ProductAttribute({
   useEffect(() => {
     (async (productId) => {
       try {
-        const attributes = await getAttributesByProductId(productId);
+        const attributes: any = await getAttributesByProductId(productId);
 
-        setAllArributes(attributes);
+        setAllArributes(attributes.result);
       } catch (error) {
         console.log(error);
       }

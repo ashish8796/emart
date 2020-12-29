@@ -23,9 +23,9 @@ function Ratting({ productId }: RattingProps) {
   useEffect(() => {
     (async (productId) => {
       try {
-        const reviews = await getReviewsByProductId(productId);
+        const reviews: any = await getReviewsByProductId(productId);
 
-        setReviews(reviews);
+        setReviews(reviews.result);
       } catch (error) {
         console.log(error);
       }

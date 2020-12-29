@@ -18,57 +18,52 @@ function Department({ el }: Props) {
   const [releventCats, setReleventCats] = useState<Array<RowsObj>>([]);
 
   const { categories } = useSelector((state: State) => state.home);
-  let relevCats: RowsObj[] =
-    "rows" in categories
-      ? categories.rows.filter((v: any) => v.department_id === el.department_id)
-      : [];
+
+  const handleMouseOverOnDepartment = () => {
+    setIsHover(true);
+  };
+
+  const handleMouseLeveOnDepartment = () => {};
+
+  const handleMouseLeaveOnCategory = () => {
+    setIsHover(false);
+  };
+
+  const handleOnclickOnCategory = (event: any) => {
+    const name = event.target.innerText;
+    const category: any = categories.rows.find((el) => el.name === name);
+    history.push(`/category/${name + "/" + category.category_id}`);
+  };
 
   return (
-    <DepWrapper>
-      <Dep>
-        <h1
-          onMouseOver={() => {
-            setIsHover(true);
-            setReleventCats(relevCats);
-          }}
-          onMouseLeave={() => {
-            setIsHover(false);
-            // setReleventCats([]);
-          }}
-        >
-          {el.name}{" "}
-          {<FontAwesomeIcon icon={!isHover ? faChevronDown : faChevronUp} />}
-        </h1>
-        {releventCats.length > 0 && (
-          <Categories
-            onMouseLeave={() => {
-              // console.log("Working");
-              setReleventCats([]);
-            }}
-          >
-            {releventCats.map((cat, i) => (
-              <CategoryName
-                key={i}
-                onClick={() => {
-                  history.push(`/category/${cat.name + "/" + cat.category_id}`);
-                  setReleventCats([]);
-                }}
-              >
-                {cat.name}
-              </CategoryName>
-            ))}
-          </Categories>
-        )}
-      </Dep>
-    </DepWrapper>
+    <DepartmentWrapper>
+      <h1
+        onMouseOver={handleMouseOverOnDepartment}
+        onMouseLeave={handleMouseLeveOnDepartment}
+      >
+        {el.name}{" "}
+        {<FontAwesomeIcon icon={!isHover ? faChevronDown : faChevronUp} />}
+      </h1>
+
+      {categories.categoriesStatus === 200 && isHover && (
+        <Categories onMouseLeave={handleMouseLeaveOnCategory}>
+          {(categories.rows as Array<RowsObj>)
+            .map((category, i) => {
+              return category.department_id === el.department_id ? (
+                <CategoryName key={i} onClick={handleOnclickOnCategory}>
+                  {category.name}
+                </CategoryName>
+              ) : undefined;
+            })
+            .filter((el: any) => el)}
+        </Categories>
+      )}
+    </DepartmentWrapper>
   );
 }
 
-const DepWrapper = styled.div`
+const DepartmentWrapper = styled.div`
   position: relative;
-`;
-
-const Dep = styled.div`
   display: flex;
   justify-content: center;
   width: 130px;

@@ -44,11 +44,11 @@ function ProductUI() {
   useEffect(() => {
     (async (productId) => {
       try {
-        const data = await getProductById(productId);
+        const data: any = await getProductById(productId);
 
-        if (data.thumbnail) {
-          setMainImage(data.thumbnail);
-          setProductData(data);
+        if (data.result.thumbnail) {
+          setMainImage(data.result.thumbnail);
+          setProductData(data.result);
           setProductLoader(false);
         }
       } catch (error) {

@@ -41,7 +41,7 @@ function ShoppingCart() {
     (async () => {
       cartId &&
         !productsList.length &&
-        (await dispatch(setProductsInShoppingCart(cartId)));
+        (await dispatch(setProductsInShoppingCart(cartId.id)));
       categories.rows.length && setCartLoaderVisible(false);
     })();
 

@@ -24,6 +24,7 @@ function HeaderElement() {
 
   const showDepartments =
     location.pathname !== "/shoppingCart" && location.pathname !== "/login";
+
   const {
     departments,
     customer,
@@ -38,15 +39,16 @@ function HeaderElement() {
 
   useEffect(() => {
     (async () => {
-      !customer.name && accessToken && (await dispatch(setUsesrDetails()));
+      if (!customer.customer_status && accessToken) {
+        dispatch(setUsesrDetails());
+      }
     })();
-  }, [customer.name, accessToken, dispatch]);
+  }, [accessToken, dispatch]);
 
   useEffect(() => {
     (async () => {
       await dispatch(setDepartments());
       await dispatch(setCategories());
-      // console.log("header function");
 
       setLoader(false);
     })();
@@ -62,11 +64,11 @@ function HeaderElement() {
     history.push("/");
   };
 
-  // console.log(customer, accessToken);
+  // console.log({ customer, accessToken });
 
   return (
     <>
-      {loader ? (
+      {departmentStatus !== 200 ? (
         <HeaderLoader />
       ) : (
         <Header>
@@ -91,18 +93,20 @@ function HeaderElement() {
               )}
             </SystemWrapper>
           </SearchHead>
-          {isDepartmentVisible && departmentStatus ? (
-            <DepartmentWrapper>
-              {departments.length > 0 &&
-                departments.map((el, i) => <Department el={el} key={i} />)}
-            </DepartmentWrapper>
-          ) : (
-            <FakeDeparmentBox></FakeDeparmentBox>
-          )}
+
+          <DepartmentWrapper isHeight={departmentStatus === 200}>
+            {isDepartmentVisible &&
+              departmentStatus === 200 &&
+              departments.map((el, i) => <Department el={el} key={i} />)}
+          </DepartmentWrapper>
         </Header>
       )}
     </>
   );
+}
+
+interface Props {
+  isHeight: boolean;
 }
 
 const Header = styled.header`
@@ -114,7 +118,7 @@ const SearchHead = styled.div`
   background-color: blue;
   display: flex;
   justify-content: space-between;
-  // position: fixed;
+  position: fixed;
   top: 0;
   width: 100%;
   z-index: 10;
@@ -123,14 +127,12 @@ const SearchHead = styled.div`
 const HomeWrapper = styled.div`
   flex-basis: 62%;
   display: flex;
-  background-color: blue;
 `;
 
 const Logo = styled.img`
   margin: 5px 5em;
   width: 90px;
   height: 48px;
-
   border-radius: 3px;
 
   &:hover {
@@ -141,7 +143,6 @@ const Logo = styled.img`
 const SystemWrapper = styled.div`
   display: flex;
   flex: 1;
-  justify-content: flex-end;
 `;
 
 const Button = styled.button`
@@ -171,16 +172,12 @@ const Cart = styled(Button)`
 `;
 
 const DepartmentWrapper = styled.div`
-  // margin-top: 3.5em;
+  margin-top: 3.8em;
+  height: ${(props: Props) => (props.isHeight ? "fit-content" : "35px")};
   display: flex;
   flex-direction: row;
   justify-content: space-evenly;
-  font-family: Roboto, Arial, sans-serif;
   background-color: #fff;
-`;
-
-const FakeDeparmentBox = styled.div`
-  height: 36.5px;
 `;
 
 export default HeaderElement;

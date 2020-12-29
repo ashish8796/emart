@@ -12,7 +12,6 @@ interface ProductProps {
 
 function CreateProduct({ product, first }: ProductProps) {
   const history = useHistory();
-  const [productLoader, setProductLoader] = useState(true);
 
   const imgSrc = require(`./../../assets/images/product_images/${product.thumbnail}`)
     .default;
@@ -25,38 +24,36 @@ function CreateProduct({ product, first }: ProductProps) {
 
   return (
     <>
-      {"price" in product && (
-        <ProductWrapper
-          first={first}
-          onClick={() => {
-            history.push(`/product/${product.name}/${product.product_id}`);
-          }}
-        >
-          <ProductImage src={imgSrc} alt={product.thumbnail} />
-          <ProductName>{product.name} </ProductName>
-          {/* <ProductDescription>{product.description}</ProductDescription> */}
-          <ProductDiscountedPrice>
-            <RupeeIcon
-              src={require("./../../assets/images/rupee-indian.svg").default}
-            />
-            <p>{productDiscountedPrice}</p>
-          </ProductDiscountedPrice>
-          <ProductPrice>
-            <span>
-              <FontAwesomeIcon icon={faRupeeSign} />
-            </span>
-            {productPrice}
-          </ProductPrice>
+      <ProductWrapper
+        first={first}
+        onClick={() => {
+          history.push(`/product/${product.name}/${product.product_id}`);
+        }}
+      >
+        <ProductImage src={imgSrc} alt={product.thumbnail} />
+        <ProductName>{product.name} </ProductName>
+        {/* <ProductDescription>{product.description}</ProductDescription> */}
+        <ProductDiscountedPrice>
+          <RupeeIcon
+            src={require("./../../assets/images/rupee-indian.svg").default}
+          />
+          <p>{productDiscountedPrice}</p>
+        </ProductDiscountedPrice>
+        <ProductPrice>
+          <span>
+            <FontAwesomeIcon icon={faRupeeSign} />
+          </span>
+          {productPrice}
+        </ProductPrice>
 
-          <SaveMoney>
-            Save{" "}
-            <span>
-              <FontAwesomeIcon icon={faRupeeSign} />
-            </span>
-            {productPrice - productDiscountedPrice}
-          </SaveMoney>
-        </ProductWrapper>
-      )}
+        <SaveMoney>
+          Save{" "}
+          <span>
+            <FontAwesomeIcon icon={faRupeeSign} />
+          </span>
+          {productPrice - productDiscountedPrice}
+        </SaveMoney>
+      </ProductWrapper>
     </>
   );
 }

@@ -22,8 +22,8 @@ function ConfirmOrder() {
   const [shippingOption, setShippingOption] = useState<Array<any>>([]);
 
   const getShippingResionById = async () => {
-    const data = await getShippingOption(customer.shipping_region_id);
-    setShippingOption(data);
+    const data: any = await getShippingOption(customer.shipping_region_id);
+    setShippingOption(data.result);
   };
 
   useEffect(() => {
