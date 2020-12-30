@@ -9,14 +9,16 @@ export const registerUser = (userDetails: UserDetails) => async (dispatch: Dispa
   try {
     const data: any = await registerNewUser(userDetails);
     console.log(data)
+
+    registerData = data === "Failed to fetch" ? { customer: customerObj, status: data, accessToken: "" } : { ...data.result, status: data.status }
+
     dispatch({
       type: REGISTER_USER,
-      payload: data === "Failed to fetch" ? { customer: customerObj, customer_status: false, accessToken: "" } : { ...data.result, status: data.status }
+      payload: registerData
     })
-    registerData = data;
-  } catch (error) {
-  }
-  return registerData;
+
+    return registerData;
+  } catch (error) { }
 }
 
 export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dispatch) => {
@@ -27,8 +29,7 @@ export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dis
   };
   try {
     const data: any = await loginUser(loginDetails);
-    // console.log(data)
-    loginData = data === "Failed to fetch" ? { customer: customerObj, status: false, accessToken: "" } : { ...data.result, status: data.status }
+    loginData = data === "Failed to fetch" ? { customer: customerObj, status: data, accessToken: "" } : { ...data.result, status: data.status }
 
     dispatch({
       type: LOGIN_USER,

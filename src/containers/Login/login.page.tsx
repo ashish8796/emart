@@ -5,7 +5,7 @@ import styled from "styled-components";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 import { loginTheUser } from "../../store/actions/user.action";
 import { Customer } from "../../store/reducers/user.reducer";
-import BadRequest from "./BadRequest";
+import { BadRequest } from "./LoginSignUpError";
 
 interface LoginPageProps {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -116,6 +116,7 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
           setPassword={setPassword}
           setBadRequest={setBadRequest}
           badRequest={badRequest}
+          calledIn="login"
         />
       )}
     </>

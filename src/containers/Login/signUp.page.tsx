@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { registerUser } from "../../store/actions/user.action";
+import { BadRequest } from "./LoginSignUpError";
 
 interface SignUpProps {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -13,7 +14,8 @@ function SignUp({ setIsLogin }: SignUpProps) {
   const [name, setName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [email, setEmail] = useState<string>("");
-  const [isSignUpClicked, setIsSignUpClicked] = useState(false);
+  const [isLoad, setIsLoad] = useState(false);
+  const [badRequest, setBadRequest] = useState<boolean | number | string>("");
 
   const handleLogInClick = () => {
     setIsLogin(true);
@@ -45,10 +47,16 @@ function SignUp({ setIsLogin }: SignUpProps) {
 
   const handleSignUpForm = async (event: { preventDefault: () => void }) => {
     event.preventDefault();
-    setIsSignUpClicked(true);
+
+    setIsLoad(true);
+
     const userDetails = { name, email, password };
-    const data = await dispatch(registerUser(userDetails));
-    "accessToken" in data && setIsLogin(true);
+    const registerData: any = await dispatch(registerUser(userDetails));
+
+    setIsLoad(false);
+    console.log({ registerData });
+    setBadRequest(registerData.status);
+    registerData.status === 200 && setIsLogin(true);
   };
 
   useEffect(() => {
@@ -62,70 +70,85 @@ function SignUp({ setIsLogin }: SignUpProps) {
       setPassword("");
       setFlipHeading(false);
 
-      setIsSignUpClicked(false);
+      setIsLoad(false);
     };
   }, []);
 
   return (
-    <SignUpWrapper>
-      <Heading style={{ visibility: flipHeading ? "visible" : "hidden" }}>
-        Sign up
-      </Heading>
+    <>
+      <SignUpWrapper>
+        <Heading style={{ visibility: flipHeading ? "visible" : "hidden" }}>
+          Sign up
+        </Heading>
 
-      <SignUpForm
-        className="animate__animated animate__flip"
-        onSubmit={handleSignUpForm}
-      >
-        <Input
-          type="text"
-          name="name"
-          id="full-name"
-          placeholder="Ashish    Saini"
-          required
-          onChange={handleName}
-        />
-        <label htmlFor="first-name">First & last name</label>
-
-        <Input
-          type="email"
-          id="email"
-          placeholder="******@gmail.com"
-          required
-          onChange={handleEmail}
-        />
-        <label htmlFor="email">E-mail</label>
-
-        <Input
-          type="password"
-          id="password"
-          required
-          onChange={handlePassword}
-        />
-        <label htmlFor="passward">Password</label>
-
-        <TermsAndConditions>
-          <input
-            type="checkbox"
-            name="checkbox"
-            id="checkbox"
-            onChange={handleCheck}
+        <SignUpForm
+          className="animate__animated animate__flip"
+          onSubmit={handleSignUpForm}
+        >
+          <Input
+            type="text"
+            name="name"
+            id="full-name"
+            placeholder="Ashish    Saini"
             required
+            onChange={handleName}
           />
-          <p>Please accept term and conditions.</p>
-        </TermsAndConditions>
+          <label htmlFor="first-name">First & last name</label>
 
-        <Submit type="submit" id="submit" onSubmit={handleSignUpForm}>
-          <Rotate isLoad={isSignUpClicked}></Rotate> SIGN ME UP
-        </Submit>
-      </SignUpForm>
+          <Input
+            type="email"
+            id="email"
+            placeholder="******@gmail.com"
+            required
+            onChange={handleEmail}
+            value={email}
+          />
+          <label htmlFor="email">E-mail</label>
 
-      {/* <!-- Log-in Link --> */}
-      <LogInButton className="animate__animated animate__flip">
-        Already Registered? <span onClick={handleLogInClick}>Log In</span>
-      </LogInButton>
-    </SignUpWrapper>
+          <Input
+            type="password"
+            id="password"
+            required
+            onChange={handlePassword}
+            value={password}
+          />
+          <label htmlFor="passward">Password</label>
+
+          <TermsAndConditions>
+            <input
+              type="checkbox"
+              name="checkbox"
+              id="checkbox"
+              onChange={handleCheck}
+              required
+            />
+            <p>Please accept term and conditions.</p>
+          </TermsAndConditions>
+
+          <Submit type="submit" id="submit" onSubmit={handleSignUpForm}>
+            <Rotate isLoad={isLoad}></Rotate> SIGN ME UP
+          </Submit>
+        </SignUpForm>
+
+        {/* <!-- Log-in Link --> */}
+        <LogInButton className="animate__animated animate__flip">
+          Already Registered? <span onClick={handleLogInClick}>Log In</span>
+        </LogInButton>
+      </SignUpWrapper>
+
+      {badRequest && (
+        <BadRequest
+          setUserName={setEmail}
+          setPassword={setPassword}
+          setBadRequest={setBadRequest}
+          badRequest={badRequest}
+          calledIn="signUp"
+        />
+      )}
+    </>
   );
 }
+
 type Loder = {
   isLoad: boolean;
 };

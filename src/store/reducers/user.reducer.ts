@@ -15,7 +15,7 @@ export type Customer = {
   eve_phone: string,
   mob_phone: string,
   credit_card: string,
-  customer_status: number | boolean
+  customer_status: number | boolean | string
 }
 
 export interface UserState {

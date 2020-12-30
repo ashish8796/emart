@@ -9,13 +9,15 @@ interface BadRequestProps {
     React.SetStateAction<boolean | number | string>
   >;
   badRequest: boolean | number | string;
+  calledIn: string;
 }
 
-function BadRequest({
+export function BadRequest({
   setUserName,
   setPassword,
   setBadRequest,
   badRequest,
+  calledIn,
 }: BadRequestProps) {
   const handleOkButton = () => {
     setUserName("");
@@ -27,10 +29,14 @@ function BadRequest({
     <Overlay>
       {badRequest === 400 && (
         <BadRequestBox className="animate__animated animate__zoomIn">
-          <p>
-            Email Id or Password does not match. <br></br>Please try again with
-            correct Id or Password.
-          </p>
+          {calledIn === "login" ? (
+            <p>
+              Email Id or Password does not match. <br></br>Please try again
+              with correct Id or Password.
+            </p>
+          ) : (
+            <p>Please enter valid Email Id.</p>
+          )}
           <OkButton onClick={handleOkButton}>OK</OkButton>
         </BadRequestBox>
       )}
@@ -87,4 +93,4 @@ const OkButton = styled.button`
   }
 `;
 
-export default BadRequest;
+// export default BadRequest;
