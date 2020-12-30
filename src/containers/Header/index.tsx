@@ -64,11 +64,16 @@ function HeaderElement() {
     history.push("/");
   };
 
+  let networkError = false;
+  if (departmentStatus === "Fetch to Failed") {
+    networkError = true;
+  }
+
   // console.log({ customer, accessToken });
 
   return (
     <>
-      {departmentStatus !== 200 ? (
+      {departmentStatus !== 200 || networkError ? (
         <HeaderLoader />
       ) : (
         <Header>

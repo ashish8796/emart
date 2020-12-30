@@ -47,7 +47,7 @@ function OptionNavBar({ customer }: OptionNavBarProps) {
   return (
     <LoginWrapper>
       {" "}
-      {customer.name ? (
+      {customer.customer_status === 200 ? (
         <>
           <p
             onMouseOver={() => {

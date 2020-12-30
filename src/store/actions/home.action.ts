@@ -10,7 +10,7 @@ export const setDepartments = () => async (dispatch: Dispatch, _: any, apiClient
     // console.log(data)
     dispatch({
       type: SET_DEPARTMENT,
-      payload: data !== "Failed to fetch" ? { departments: data.result, departmentStatus: data.status } : { departments: [], departmentStatus: false }
+      payload: data !== "Failed to fetch" ? { departments: data.result, departmentStatus: data.status } : { departments: [], departmentStatus: data }
     })
   } catch (e) {
     console.log(e)

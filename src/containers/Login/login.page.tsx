@@ -4,6 +4,8 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 import { loginTheUser } from "../../store/actions/user.action";
+import { Customer } from "../../store/reducers/user.reducer";
+import BadRequest from "./BadRequest";
 
 interface LoginPageProps {
   setIsLogin: React.Dispatch<React.SetStateAction<boolean>>;
@@ -16,6 +18,7 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
   const [userName, setUserName] = useState<string>("");
   const [password, setPassword] = useState<string>("");
   const [isLoder, setIsLoder] = useState(false);
+  const [badRequest, setBadRequest] = useState<boolean | number | string>("");
 
   const handleSignUpClick = () => {
     setIsLogin(false);
@@ -34,11 +37,13 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
     }
 
     const loginDetails = { email: userName, password };
-    const data = await dispatch(loginTheUser(loginDetails));
+    const loginData: any = await dispatch(loginTheUser(loginDetails));
+    // console.log(loginData);
 
     dispatch(setIsDepartmentVisible(true));
-
-    "accessToken" in data && history.push("/");
+    setIsLoder(false);
+    setBadRequest(loginData.status);
+    loginData.status === 200 && history.push("/");
   };
 
   const handleUsername = (event: {
@@ -69,11 +74,7 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
   return (
     <>
       <LoginWrapper>
-        <LoginHeading
-          style={{ visibility: flipHeading ? "visible" : "hidden" }}
-        >
-          Log In
-        </LoginHeading>
+        <LoginHeading flipHeading={flipHeading}>Log In</LoginHeading>
 
         <LoginForm
           className="animate__animated animate__flip"
@@ -84,6 +85,7 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
             id="log-in-username"
             required
             onChange={handleUsername}
+            value={userName}
           />
           <LoginLabel htmlFor="log-in-username">E-mail</LoginLabel>
 
@@ -92,6 +94,7 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
             id="log-in-password"
             required
             onChange={handlePassword}
+            value={password}
           />
           <LoginLabel htmlFor="password">Password</LoginLabel>
 
@@ -106,8 +109,21 @@ function LoginPage({ setIsLogin }: LoginPageProps) {
           <span onClick={handleSignUpClick}>Sign Up</span>
         </SignUpButton>
       </LoginWrapper>
+
+      {badRequest && (
+        <BadRequest
+          setUserName={setUserName}
+          setPassword={setPassword}
+          setBadRequest={setBadRequest}
+          badRequest={badRequest}
+        />
+      )}
     </>
   );
+}
+
+interface Props {
+  flipHeading: boolean;
 }
 
 const LoginWrapper = styled.div`
@@ -124,6 +140,7 @@ const LoginWrapper = styled.div`
 const LoginHeading = styled.h1`
   color: #fff;
   font-size: 40px;
+  visibility: ${(props: Props) => (props.flipHeading ? "visible" : "hidden")};
   margin: 4em 1.3em 0 1.3em;
   animation-duration: 0.8s;
 `;
@@ -223,4 +240,5 @@ const SignUpButton = styled.p`
     }
   }
 `;
+
 export default LoginPage;

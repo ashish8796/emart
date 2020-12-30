@@ -28,7 +28,7 @@ export interface HomeState {
     }
   }
 
-  departmentStatus: boolean | number
+  departmentStatus: string | number
 }
 
 
@@ -42,7 +42,7 @@ const initialState: HomeState = {
   },
   prodByDept: {}
   ,
-  departmentStatus: true
+  departmentStatus: ""
 }
 
 function homeReducer(state = initialState, action: MainAction) {

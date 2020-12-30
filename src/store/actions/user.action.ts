@@ -1,6 +1,6 @@
 import { Dispatch } from "redux";
 import { getUserDetails, loginUser, putCreditCart, putUserAddress, putUserDetails, registerNewUser } from "../../services/api";
-import { customerObj } from "../reducers/user.reducer";
+import { Customer, customerObj } from "../reducers/user.reducer";
 import { LOGIN_USER, LOG_OUT_USER, REGISTER_USER, SET_CUSTOMER_STATUS, SET_USER_ADDRESS, SET_USER_CREDIT_CARD, SET_USER_DETAILS, UPDATE_USER_DETAILS } from "./actionTypes";
 import { LoginDetails, UserDetails } from "./tsTypes";
 
@@ -20,19 +20,22 @@ export const registerUser = (userDetails: UserDetails) => async (dispatch: Dispa
 }
 
 export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dispatch) => {
-  let loginData;
+  let loginData: {
+    customer: Customer;
+    status: boolean | number;
+    accessToken: string;
+  };
   try {
     const data: any = await loginUser(loginDetails);
     // console.log(data)
+    loginData = data === "Failed to fetch" ? { customer: customerObj, status: false, accessToken: "" } : { ...data.result, status: data.status }
+
     dispatch({
       type: LOGIN_USER,
-      payload: data === "Failed to fetch" ? { customer: customerObj, customer_status: false, accessToken: "" } : { ...data.result, status: data.status },
+      payload: loginData,
     })
-    loginData = data.result
-  } catch (error) {
-
-  }
-  return loginData;
+    return data === "Failed to fetch" ? { status: data } : loginData;
+  } catch (error) { }
 }
 
 export const setUsesrDetails = () => async (dispatch: Dispatch) => {

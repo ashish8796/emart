@@ -129,6 +129,7 @@ function SignUp({ setIsLogin }: SignUpProps) {
 type Loder = {
   isLoad: boolean;
 };
+
 const SignUpWrapper = styled.div`
   font-family: "Maven Pro", sans-serif;
   color: #fff;
