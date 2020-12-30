@@ -6,6 +6,7 @@ import { getShippingOption } from "../../services/api";
 import { createOrder, setAllOrders } from "../../store/actions/orders.action";
 import { State } from "../../store/actions/tsTypes";
 import { CreateOrderLoader } from "../Home/contentLoader";
+import NetworkError from "../Home/NetworkError";
 
 function ConfirmOrder() {
   const dispatch = useDispatch();
@@ -19,11 +20,19 @@ function ConfirmOrder() {
     value: "",
     id: undefined,
   });
-  const [shippingOption, setShippingOption] = useState<Array<any>>([]);
+  const [shippingOption, setShippingOption] = useState<{
+    result: any;
+    status: number | string;
+  }>({ result: null, status: "" });
+
+  const [networkError, setNetworkError] = useState<boolean>(false);
 
   const getShippingResionById = async () => {
     const data: any = await getShippingOption(customer.shipping_region_id);
-    setShippingOption(data.result);
+    if (data.status === "Failed to fetch") {
+      setNetworkError(true);
+    }
+    setShippingOption(data);
   };
 
   useEffect(() => {
@@ -41,65 +50,84 @@ function ConfirmOrder() {
       tax_id: 2,
     };
 
-    const orderId = await dispatch(createOrder(orderData));
-    const allOrdersData = await dispatch(setAllOrders());
-    orderId && allOrdersData.length > 0 && history.push("/orders");
+    const orderedData: any = await dispatch(createOrder(orderData));
+    const allOrdersData: any = await dispatch(setAllOrders());
+    if (
+      orderedData.createdOrderStatus === 200 &&
+      allOrdersData.status === 200
+    ) {
+      history.push("/orders");
+    } else if (
+      orderedData.createdOrderStatus === "Failed to fetch" ||
+      allOrdersData.status === "Failed to fetch"
+    ) {
+      setNetworkError(true);
+    }
   };
+
+  const responseStatusArr = [200, 400, "Failed to fetch"];
 
   return (
     <>
-      {!(shippingOption.length > 0) ? (
+      {!responseStatusArr.includes(shippingOption.status) ? (
         <CreateOrderLoader />
       ) : (
         <>
-          <DeliveryAddress>
-            <section>
-              <AddressHeading>Shipping Address</AddressHeading>
-              <p>{customer.address_1},</p>
-              <p>{customer.address_2 && customer.address_2 + " ,"}</p>
-              <p>
-                {customer.city} (<span>{customer.postal_code}</span>),
-              </p>
-              <p>
-                {customer.country} ({customer.region})
-              </p>
+          {shippingOption.status === 200 && (
+            <>
+              <DeliveryAddress>
+                <section>
+                  <AddressHeading>Shipping Address</AddressHeading>
+                  <p>{customer.address_1},</p>
+                  <p>{customer.address_2 && customer.address_2 + " ,"}</p>
+                  <p>
+                    {customer.city} (<span>{customer.postal_code}</span>),
+                  </p>
+                  <p>
+                    {customer.country} ({customer.region})
+                  </p>
 
-              <Contact>Contact Number</Contact>
-              <p>{customer.mob_phone}</p>
-            </section>
-            <DeliveryOptionBox>
-              <p>Select Delivery Option</p>
-              {shippingOption.length > 0 &&
-                shippingOption.map((obj, i) => (
-                  <div key={i}>
-                    <input
-                      type="radio"
-                      value={obj.shipping_type.replace(/\([^\)\(]*\)/, "")}
-                      checked={
-                        selectedOption.value ===
-                        `${obj.shipping_type.replace(/\([^\)\(]*\)/, "")}`
-                      }
-                      onChange={handleOnChange}
-                      id={obj.shipping_id.toString()}
-                    />
-                    <p>
-                      <span>
-                        {" "}
-                        {obj.shipping_type.replace(/\([^\)\(]*\)/, "")}
-                      </span>
-                      <span>
-                        Shipping Cost: &#8377;{Number(obj.shipping_cost) * 5}
-                      </span>
-                    </p>
-                  </div>
-                ))}
-            </DeliveryOptionBox>
-          </DeliveryAddress>
-          <DeliveryOption></DeliveryOption>
+                  <Contact>Contact Number</Contact>
+                  <p>{customer.mob_phone}</p>
+                </section>
 
-          <ConfirmOrderBox>
-            <button onClick={handleConfirmOrder}>Confirm Order</button>
-          </ConfirmOrderBox>
+                <DeliveryOptionBox>
+                  <p>Select Delivery Option</p>
+
+                  {shippingOption.result.map((obj: any, i: number) => (
+                    <div key={i}>
+                      <input
+                        type="radio"
+                        value={obj.shipping_type.replace(/\([^\)\(]*\)/, "")}
+                        checked={
+                          selectedOption.value ===
+                          `${obj.shipping_type.replace(/\([^\)\(]*\)/, "")}`
+                        }
+                        onChange={handleOnChange}
+                        id={obj.shipping_id.toString()}
+                      />
+
+                      <p>
+                        <span>
+                          {" "}
+                          {obj.shipping_type.replace(/\([^\)\(]*\)/, "")}
+                        </span>
+                        <span>
+                          Shipping Cost: &#8377;{Number(obj.shipping_cost) * 5}
+                        </span>
+                      </p>
+                    </div>
+                  ))}
+                </DeliveryOptionBox>
+              </DeliveryAddress>
+
+              <ConfirmOrderBox>
+                <button onClick={handleConfirmOrder}>Confirm Order</button>
+              </ConfirmOrderBox>
+            </>
+          )}
+
+          {networkError && <NetworkError />}
         </>
       )}
     </>
@@ -160,8 +188,6 @@ const Contact = styled.p`
   font-weight: bold;
   margin-top: 30px;
 `;
-
-const DeliveryOption = styled.div``;
 
 const ConfirmOrderBox = styled.div`
   // border: 2px solid red;

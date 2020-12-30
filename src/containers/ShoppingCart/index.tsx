@@ -5,20 +5,21 @@ import styled from "styled-components";
 import { setProductsInShoppingCart } from "../../store/actions/shoppingCart.action";
 import { State } from "../../store/actions/tsTypes";
 import { CartLoader } from "../Home/contentLoader";
+import NetworkError from "../Home/NetworkError";
 import CreateProductInCart from "./CreateProductInCart";
 import EmptyCart from "./EmptyCart";
 
 function ShoppingCart() {
   const history = useHistory();
   const dispatch = useDispatch();
-  const { cartId, productsList, accessToken, categories } = useSelector(
+  const { cartId, productsList, customer, cartProductStatus } = useSelector(
     (state: State) => ({
       ...state.cart,
       ...state.user,
       ...state.home,
     })
   );
-  const [IsCartLoaderVisible, setCartLoaderVisible] = useState<boolean>(true);
+  const [isCartLoaderVisible, setCartLoaderVisible] = useState<boolean>(true);
 
   const convertPrice = (price: string) => {
     return Math.ceil(Number(price) * 75);
@@ -39,24 +40,23 @@ function ShoppingCart() {
 
   useEffect(() => {
     (async () => {
-      cartId &&
-        !productsList.length &&
+      cartId.cartIdStatus === 200 &&
         (await dispatch(setProductsInShoppingCart(cartId.id)));
-      categories.rows.length && setCartLoaderVisible(false);
+      setCartLoaderVisible(false);
     })();
 
-    // return () => {
-    //   setCartLoaderVisible(false);
-    // };
-  }, [cartId, productsList.length, dispatch, categories.rows]);
+    return () => {
+      setCartLoaderVisible(false);
+    };
+  }, [cartId, dispatch]);
 
   return (
     <>
-      {IsCartLoaderVisible ? (
+      {isCartLoaderVisible ? (
         <CartLoader />
       ) : (
         <CartWrapper>
-          {productsList.length && accessToken ? (
+          {customer.customer_status === 200 && productsList.length > 0 ? (
             <>
               <ProductSection>
                 {productsList.map((product, i) => (
@@ -106,6 +106,17 @@ function ShoppingCart() {
             </>
           ) : (
             <EmptyCart />
+          )}
+
+          {cartProductStatus === "Failed to fetch" && <NetworkError />}
+
+          {cartProductStatus === 500 && (
+            <EmptyFeild>
+              <p>
+                No Card Id. <br />
+                Please try again.
+              </p>
+            </EmptyFeild>
           )}
         </CartWrapper>
       )}
@@ -189,5 +200,7 @@ const BalanceSection = styled.section`
 const Amount = styled.span`
   font-weight: bold;
 `;
+
+const EmptyFeild = styled.article``;
 
 export default ShoppingCart;

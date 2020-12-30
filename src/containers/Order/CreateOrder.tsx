@@ -13,6 +13,7 @@ import Address from "../User/Address";
 import Credential from "../User/Credential";
 import ContactNums from "../User/ContactNumber";
 import ConfirmOrder from "./ConfirmOrder";
+import NetworkError from "../Home/NetworkError";
 
 function CreateOrder() {
   const dispatch = useDispatch();
@@ -47,7 +48,7 @@ function CreateOrder() {
     setShowLoder(true);
 
     const addressObj = addressRef.current?.getAddressState();
-    console.log(addressObj);
+    // console.log(addressObj);
 
     const credentialObj = credentialRef.current?.getCredentialState();
 
@@ -69,7 +70,7 @@ function CreateOrder() {
       // );
       const userData: any = await dispatch(updateUserDetails(userDetails));
 
-      if (userData.address_1 && userData.mob_phone) {
+      if (userData.status === 200) {
         setAddShippingDetails(false);
         setShowLoder(false);
       }
@@ -78,35 +79,41 @@ function CreateOrder() {
 
   return (
     <CreateOrderBox>
-      <UserName>
-        <p>
-          LOGIN{" "}
-          <span>
-            <FontAwesomeIcon icon={faCheck} />
-          </span>
-        </p>
+      {customer.customer_status === 200 && (
+        <>
+          <UserName>
+            <p>
+              LOGIN{" "}
+              <span>
+                <FontAwesomeIcon icon={faCheck} />
+              </span>
+            </p>
 
-        <p>
-          <span>{customer.name}</span> (<span>{customer.email}</span>)
-        </p>
-      </UserName>
-      {addShippingDetails ? (
-        <OrderForm onSubmit={handleOrderForm}>
-          <Address ref={addressRef} />
+            <p>
+              <span>{customer.name}</span> (<span>{customer.email}</span>)
+            </p>
+          </UserName>
+          {addShippingDetails ? (
+            <OrderForm onSubmit={handleOrderForm}>
+              <Address ref={addressRef} />
 
-          <div>
-            <Credential ref={credentialRef} />
+              <div>
+                <Credential ref={credentialRef} />
 
-            <ContactNums ref={contactNumRef} />
-          </div>
+                <ContactNums ref={contactNumRef} />
+              </div>
 
-          <Submit type={"submit"} onSubmit={handleOrderForm}>
-            <Loder showLoder={showLoder}></Loder> Next
-          </Submit>
-        </OrderForm>
-      ) : (
-        <ConfirmOrder />
+              <Submit type={"submit"} onSubmit={handleOrderForm}>
+                <Loder showLoder={showLoder}></Loder> Next
+              </Submit>
+            </OrderForm>
+          ) : (
+            <ConfirmOrder />
+          )}
+        </>
       )}
+
+      {customer.customer_status === "Failed to fetch" && <NetworkError />}
     </CreateOrderBox>
   );
 }
@@ -114,7 +121,6 @@ function CreateOrder() {
 const CreateOrderBox = styled.div`
   position: relative;
   font-family: Roboto, Arial, sans-serif;
-  // border: 2px solid red;
   padding: 30px 30px 0 30px;
   margin: 30px;
   background-color: #fff;

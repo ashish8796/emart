@@ -37,13 +37,13 @@ function BuyingOption({ attribute, productId }: BuyingOptionProps) {
 
     if (attribute.size && attribute.color) {
       setLoader(true);
-      if (!cartId) {
+      if (cartId.cartIdStatus !== 200) {
         shoppingCartId = await dispatch(setShoppingCartId());
       }
 
       await dispatch(
         addProductInShoppingCart({
-          cartId: !cartId ? shoppingCartId : cartId,
+          cartId: cartId.cartIdStatus === 200 ? cartId.id : shoppingCartId,
           productId,
           attribute: attribute.color + "-" + attribute.size,
         })

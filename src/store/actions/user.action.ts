@@ -35,7 +35,7 @@ export const loginTheUser = (loginDetails: LoginDetails) => async (dispatch: Dis
       type: LOGIN_USER,
       payload: loginData,
     })
-    return data === "Failed to fetch" ? { status: data } : loginData;
+    return loginData;
   } catch (error) { }
 }
 
@@ -89,14 +89,11 @@ export const updateUserDetails = (obj: any) => async (dispatch: Dispatch) => {
   let userDetails;
   try {
     const data: any = await putUserDetails(obj);
-    userDetails = data;
+    userDetails = data === "Failed to fetch" ? { customer: customerObj, status: data } : { ...data.result, status: data.status };
     dispatch({
       type: UPDATE_USER_DETAILS,
-      payload: data === "Failed to fetch" ? { customer: customerObj, status: false } : { ...data.result, status: data.status }
+      payload: userDetails
     })
-
-  } catch (error) {
-
-  }
-  return userDetails;
+    return userDetails;
+  } catch (error) { }
 }

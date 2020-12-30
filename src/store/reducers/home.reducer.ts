@@ -1,4 +1,4 @@
-import { SET_CATEGORIES, SET_DEPARTMENT, SET_INTERNET_ERROR, SET_PROD_BY_DEPT_ID } from "../actions/actionTypes";
+import { SET_CATEGORIES, SET_DEPARTMENT, SET_PROD_BY_DEPT_ID } from "../actions/actionTypes";
 import { SetCategories, SetDepartment, SetProdByDeptId } from "../actions/tsTypes";
 import { Product } from "./category.reducer";
 
@@ -68,11 +68,11 @@ function homeReducer(state = initialState, action: MainAction) {
       }
     }
 
-    case SET_INTERNET_ERROR: {
-      return {
-        ...state, departmentStatus: action.payload
-      }
-    }
+    // case SET_INTERNET_ERROR: {
+    //   return {
+    //     ...state, departmentStatus: action.payload
+    //   }
+    // }
 
     default: return state;
   }

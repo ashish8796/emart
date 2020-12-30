@@ -2,7 +2,10 @@ import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
 import { deleteProductfromCart } from "../../services/api";
-import { removeProductFromCart } from "../../store/actions/shoppingCart.action";
+import {
+  setInternetError,
+  setProductsInShoppingCart,
+} from "../../store/actions/shoppingCart.action";
 import { CartProcuct, State } from "../../store/actions/tsTypes";
 import ProductQuantity from "./ProductQuantity";
 
@@ -21,8 +24,14 @@ function CreateProductInCart({ product }: CreateProductInCartProps) {
 
   const handleRemoveClick = async () => {
     setLoader(true);
-    await deleteProductfromCart(product.item_id);
-    dispatch(removeProductFromCart(cartId.id));
+    const deleteObj = await deleteProductfromCart(product.item_id);
+    if (deleteObj?.status === 200) {
+      await dispatch(setProductsInShoppingCart(cartId.id));
+      setLoader(false);
+    } else if (deleteObj?.status === 400) {
+    } else if (deleteObj?.status === "Failed to fetch") {
+      dispatch(setInternetError(deleteObj?.status));
+    }
   };
 
   useEffect(() => {

@@ -3,18 +3,16 @@ import { getAllOrders, getOrderInfoById, getShortDetailOfOrder, postCreateOrder 
 import { CREATE_ORDER, SET_ALL_ORDERS, SET_ORDER_DETAILS_BY_ID, SET_SHORT_DETAIL_OF_ORDER } from "./actionTypes";
 
 export const createOrder = (orderData: any) => async (disptach: Dispatch) => {
-  let orderId;
+  let createdOrderData;
   try {
     const data: any = await postCreateOrder(orderData);
-    orderId = data.result;
+    createdOrderData = data !== "Failed to Fetch" ? { orderId: data.result, createdOrderStatus: data.status } : { orderId: undefined, createdOrderStatus: data }
     disptach({
       type: CREATE_ORDER,
-      payload: data !== "Failed to Fetch" ? { orderId: data.result, createdOrderStatus: data.status } : { orderId: undefined, createdOrderStatus: false },
+      payload: createdOrderData,
     })
-  } catch (error) {
-
-  }
-  return orderId;
+    return createdOrderData;
+  } catch (error) { }
 }
 
 export const setOrderDetails = (orderId: number) => async (dispatch: Dispatch) => {
@@ -24,6 +22,7 @@ export const setOrderDetails = (orderId: number) => async (dispatch: Dispatch) =
       type: SET_ORDER_DETAILS_BY_ID,
       payload: data !== "Failed to Fetch" ? { ...data.result, singleOrderStatus: data.status } : { singleOrderStatus: false }
     })
+
   } catch (error) {
 
   }
@@ -33,18 +32,18 @@ export const setAllOrders = () => async (dispatch: Dispatch) => {
   let ordersData;
   try {
     const data: any = await getAllOrders();
-    ordersData = data.result;
+    ordersData = data !== "Failed to Fetch" ? { result: data.result, status: data.status } : {
+      result: [], status: data
+    };
     dispatch({
       type: SET_ALL_ORDERS,
-      payload: data !== "Failed to Fetch" ? { result: data.result, status: data.status } : {
-        result: [], status: false
-      }
+      payload: ordersData
     })
+    return ordersData;
   } catch (error) {
     console.log(error)
 
   }
-  return ordersData;
 }
 
 export const setShortDetailOfOrder = (orderId: number) => async (dispatch: Dispatch) => {

@@ -22,14 +22,13 @@ function CreateProduct({ product, first }: ProductProps) {
 
   const productPrice = Math.ceil(Number(product.price) * 75);
 
+  const handleClickOnProduct = () => {
+    history.push(`/product/${product.name}/${product.product_id}`);
+  };
+
   return (
     <>
-      <ProductWrapper
-        first={first}
-        onClick={() => {
-          history.push(`/product/${product.name}/${product.product_id}`);
-        }}
-      >
+      <ProductWrapper first={first} onClick={handleClickOnProduct}>
         <ProductImage src={imgSrc} alt={product.thumbnail} />
         <ProductName>{product.name} </ProductName>
         {/* <ProductDescription>{product.description}</ProductDescription> */}

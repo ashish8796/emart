@@ -3,12 +3,12 @@ import { CreateOrder } from "../actions/tsTypes";
 
 export interface OrderState {
   orderId: number | undefined
-  orderDetailsById: { singleOrderStatus: boolean | number }
+  orderDetailsById: { singleOrderStatus: boolean | number | string }
   orderDetails: object
   allOrders: object[]
-  shortDetailOfOrder: { shortDetailStatus: boolean | number }
-  createdOrderStatus: boolean | number
-  ordersStatus: boolean | number
+  shortDetailOfOrder: { shortDetailStatus: boolean | number | string }
+  createdOrderStatus: boolean | number | string
+  ordersStatus: boolean | number | string
 
 }
 

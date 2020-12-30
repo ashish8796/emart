@@ -17,7 +17,6 @@ class API {
       console.log(response);
 
       const result = response.ok && await response.json();
-      console.log(result)
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
@@ -37,7 +36,6 @@ class API {
       console.log(response)
 
       const result = response.ok && await response.json();
-      console.log(result)
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
@@ -53,9 +51,12 @@ class API {
         headers: headers,
 
       });
-      return await response.json();
+      console.log(response);
+      return { status: response.status }
     } catch (e) {
-      console.log(e);
+      const error = String(e).split(":")[1].trim()
+      // console.log(error);
+      return { status: error };
     }
   }
 
@@ -67,7 +68,6 @@ class API {
         body: JSON.stringify(data)
       });
       const result = response.ok && await response.json();
-      console.log(result)
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
