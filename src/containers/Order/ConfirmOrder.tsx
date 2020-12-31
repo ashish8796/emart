@@ -7,6 +7,7 @@ import { createOrder, setAllOrders } from "../../store/actions/orders.action";
 import { State } from "../../store/actions/tsTypes";
 import { CreateOrderLoader } from "../Home/contentLoader";
 import NetworkError from "../Home/NetworkError";
+import DeliveryOption from "./DeliveryOption";
 
 function ConfirmOrder() {
   const dispatch = useDispatch();
@@ -25,23 +26,17 @@ function ConfirmOrder() {
     status: number | string;
   }>({ result: null, status: "" });
 
-  const [networkError, setNetworkError] = useState<boolean>(false);
+  const [networkError, setNetworkError] = useState<string | number>(401);
 
   const getShippingResionById = async () => {
     const data: any = await getShippingOption(customer.shipping_region_id);
-    if (data.status === "Failed to fetch") {
-      setNetworkError(true);
-    }
+    // setNetworkError(data.status);
     setShippingOption(data);
   };
 
   useEffect(() => {
     getShippingResionById();
   }, []);
-
-  const handleOnChange = (event: any) => {
-    setSelectedOption({ value: event.target.value, id: event.target.id });
-  };
 
   const handleConfirmOrder = async () => {
     const orderData = {
@@ -50,19 +45,21 @@ function ConfirmOrder() {
       tax_id: 2,
     };
 
-    const orderedData: any = await dispatch(createOrder(orderData));
-    const allOrdersData: any = await dispatch(setAllOrders());
-    if (
-      orderedData.createdOrderStatus === 200 &&
-      allOrdersData.status === 200
-    ) {
-      history.push("/orders");
-    } else if (
-      orderedData.createdOrderStatus === "Failed to fetch" ||
-      allOrdersData.status === "Failed to fetch"
-    ) {
-      setNetworkError(true);
-    }
+    // const orderedData: any = await dispatch(createOrder(orderData));
+    // const allOrdersData: any = await dispatch(setAllOrders());
+    // if (
+    //   orderedData.createdOrderStatus === 200 &&
+    //   allOrdersData.status === 200
+    // ) {
+    //   history.push("/orders");
+    // } else if (allOrdersData.status === 401) {
+    //   setNetworkError(allOrdersData.status);
+    // } else if (
+    //   orderedData.createdOrderStatus === "Failed to fetch" ||
+    //   allOrdersData.status === "Failed to fetch"
+    // ) {
+    //   setNetworkError("Failed to fetch");
+    // }
   };
 
   const responseStatusArr = [200, 400, "Failed to fetch"];
@@ -90,35 +87,11 @@ function ConfirmOrder() {
                   <Contact>Contact Number</Contact>
                   <p>{customer.mob_phone}</p>
                 </section>
-
-                <DeliveryOptionBox>
-                  <p>Select Delivery Option</p>
-
-                  {shippingOption.result.map((obj: any, i: number) => (
-                    <div key={i}>
-                      <input
-                        type="radio"
-                        value={obj.shipping_type.replace(/\([^\)\(]*\)/, "")}
-                        checked={
-                          selectedOption.value ===
-                          `${obj.shipping_type.replace(/\([^\)\(]*\)/, "")}`
-                        }
-                        onChange={handleOnChange}
-                        id={obj.shipping_id.toString()}
-                      />
-
-                      <p>
-                        <span>
-                          {" "}
-                          {obj.shipping_type.replace(/\([^\)\(]*\)/, "")}
-                        </span>
-                        <span>
-                          Shipping Cost: &#8377;{Number(obj.shipping_cost) * 5}
-                        </span>
-                      </p>
-                    </div>
-                  ))}
-                </DeliveryOptionBox>
+                <DeliveryOption
+                  shippingOption={shippingOption}
+                  selectedOption={selectedOption}
+                  setSelectedOption={setSelectedOption}
+                />
               </DeliveryAddress>
 
               <ConfirmOrderBox>
@@ -127,7 +100,18 @@ function ConfirmOrder() {
             </>
           )}
 
-          {networkError && <NetworkError />}
+          {networkError === "Failed to fetch" && <NetworkError />}
+          {networkError === 401 && (
+            <>
+              <UnAuthOverlay></UnAuthOverlay>
+              <UnAuthErrorBox>
+                <div>
+                  <p>Unauthorized Access. Please login again.</p>
+                  <button>OK</button>
+                </div>
+              </UnAuthErrorBox>
+            </>
+          )}
         </>
       )}
     </>
@@ -146,38 +130,6 @@ const DeliveryAddress = styled.div`
   }
 `;
 
-const DeliveryOptionBox = styled.section`
-  margin-left: 5em;
-
-  p:first-child {
-    color: #585656;
-    font-weight: bold;
-  }
-
-  div {
-    display: flex;
-    flex-direction: row;
-    margin: 20px 0;
-  }
-
-  input {
-    margin-right: 10px;
-
-    &:hover {
-      cursor: pointer;
-    }
-  }
-
-  p {
-    display: flex;
-    flex-direction: column;
-  }
-
-  span {
-    margin: 3px 0 5px 0;
-  }
-`;
-
 const AddressHeading = styled.p`
   color: #585656;
   font-weight: bold;
@@ -190,7 +142,6 @@ const Contact = styled.p`
 `;
 
 const ConfirmOrderBox = styled.div`
-  // border: 2px solid red;
   position: relative;
   margin-top: 3em;
   height: 60px;
@@ -208,6 +159,58 @@ const ConfirmOrderBox = styled.div`
     border-radius: 3px;
 
     &:hover {
+      cursor: pointer;
+    }
+  }
+`;
+
+const UnAuthOverlay = styled.article`
+  position: fixed;
+  z-index: 50;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+`;
+
+const UnAuthErrorBox = styled.article`
+  top: 60px;
+  position: fixed;
+  z-index: 100;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  backdrop-filter: blur(4px);
+
+  div {
+    padding: 10px;
+    text-align: center;
+    margin: 10em auto;
+    width: 300px;
+    height: 150px;
+    border: 2px solid red;
+    border-radius: 5px;
+    background-color: #fff;
+  }
+
+  p {
+    margin-top: 2em;
+    font-size: 18px;
+  }
+
+  button {
+    margin-top: 20px;
+    width: 100px;
+    padding: 8px 10px;
+    font-size: 18px;
+    outline: none;
+    border: none;
+    background: #f37121;
+    color: #fff;
+    border-radius: 3px;
+    font-weight: bold;
+
+    &: hover {
       cursor: pointer;
     }
   }

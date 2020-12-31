@@ -105,7 +105,10 @@ function ShoppingCart() {
               </BalanceSection>
             </>
           ) : (
-            <EmptyCart />
+            <EmptyCart
+              customerStatus={customer.customer_status}
+              productsListLength={productsList.length}
+            />
           )}
 
           {cartProductStatus === "Failed to fetch" && <NetworkError />}

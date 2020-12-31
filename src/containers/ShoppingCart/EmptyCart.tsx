@@ -4,7 +4,13 @@ import { useHistory } from "react-router-dom";
 import styled from "styled-components";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 
-function EmptyCart() {
+interface EmptyCartProps {
+  customerStatus: string | number | boolean;
+  productsListLength: number;
+  productsStatus?: number | string | boolean;
+}
+
+function EmptyCart({ customerStatus, productsListLength }: EmptyCartProps) {
   const history = useHistory();
   const dispatch = useDispatch();
   const handleLogin = () => {
@@ -24,7 +30,7 @@ function EmptyCart() {
           src={require("./../../assets/images/cart_image/shopNow.png").default}
           alt="Shop Now"
         />
-        {localStorage.hasOwnProperty("emart-token") ? (
+        {customerStatus === 200 && productsListLength === 0 ? (
           <LogedIn>
             <p>Your Cart is empty!</p>
             <p>Add items to it now.</p>
@@ -33,7 +39,7 @@ function EmptyCart() {
         ) : (
           <LogedOut>
             <p>Missing Cart items?</p>
-            <p>Login to see the items you added previously</p>
+            <p>Login to see the items you added previously.</p>
             <LoginButton onClick={handleLogin}>Login</LoginButton>
           </LogedOut>
         )}
