@@ -6,7 +6,7 @@ export const createOrder = (orderData: any) => async (disptach: Dispatch) => {
   let createdOrderData;
   try {
     const data: any = await postCreateOrder(orderData);
-    createdOrderData = data !== "Failed to Fetch" ? { orderId: data.result, createdOrderStatus: data.status } : { orderId: undefined, createdOrderStatus: data }
+    createdOrderData = data !== "Failed to fetch" ? { orderId: data.result, createdOrderStatus: data.status } : { orderId: undefined, createdOrderStatus: data }
     disptach({
       type: CREATE_ORDER,
       payload: createdOrderData,
@@ -20,7 +20,7 @@ export const setOrderDetails = (orderId: number) => async (dispatch: Dispatch) =
     const data: any = await getOrderInfoById(orderId)
     dispatch({
       type: SET_ORDER_DETAILS_BY_ID,
-      payload: data !== "Failed to Fetch" ? { ...data.result, singleOrderStatus: data.status } : { singleOrderStatus: false }
+      payload: data !== "Failed to fetch" ? { [orderId]: data.result, status: data.status } : { [orderId]: [], status: data.status }
     })
 
   } catch (error) {
@@ -32,7 +32,7 @@ export const setAllOrders = () => async (dispatch: Dispatch) => {
   let ordersData;
   try {
     const data: any = await getAllOrders();
-    ordersData = data !== "Failed to Fetch" ? { result: data.result, status: data.status } : {
+    ordersData = data !== "Failed to fetch" ? { result: data.result, status: data.status } : {
       result: [], status: data
     };
     dispatch({
@@ -51,7 +51,7 @@ export const setShortDetailOfOrder = (orderId: number) => async (dispatch: Dispa
     const data: any = await getShortDetailOfOrder(orderId);
     dispatch({
       type: SET_SHORT_DETAIL_OF_ORDER,
-      payload: data !== "Failed to Fetch" ? { ...data.result, shortDetailStatus: data.status } : { shortDetailStatus: false }
+      payload: data !== "Failed to fetch" ? { ...data.result, shortDetailStatus: data.status } : { shortDetailStatus: false }
     })
   } catch (error) {
 

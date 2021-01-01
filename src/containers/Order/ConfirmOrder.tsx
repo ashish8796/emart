@@ -26,11 +26,11 @@ function ConfirmOrder() {
     status: number | string;
   }>({ result: null, status: "" });
 
-  const [networkError, setNetworkError] = useState<string | number>(401);
+  const [networkError, setNetworkError] = useState<string | number>("");
 
   const getShippingResionById = async () => {
     const data: any = await getShippingOption(customer.shipping_region_id);
-    // setNetworkError(data.status);
+    setNetworkError(data.status);
     setShippingOption(data);
   };
 
@@ -45,21 +45,12 @@ function ConfirmOrder() {
       tax_id: 2,
     };
 
-    // const orderedData: any = await dispatch(createOrder(orderData));
-    // const allOrdersData: any = await dispatch(setAllOrders());
-    // if (
-    //   orderedData.createdOrderStatus === 200 &&
-    //   allOrdersData.status === 200
-    // ) {
-    //   history.push("/orders");
-    // } else if (allOrdersData.status === 401) {
-    //   setNetworkError(allOrdersData.status);
-    // } else if (
-    //   orderedData.createdOrderStatus === "Failed to fetch" ||
-    //   allOrdersData.status === "Failed to fetch"
-    // ) {
-    //   setNetworkError("Failed to fetch");
-    // }
+    const orderedData: any = await dispatch(createOrder(orderData));
+    setNetworkError(orderedData.createdOrderStatus);
+
+    if (orderedData.createdOrderStatus === 200) {
+      history.push("/orders");
+    }
   };
 
   const responseStatusArr = [200, 400, "Failed to fetch"];
@@ -101,17 +92,6 @@ function ConfirmOrder() {
           )}
 
           {networkError === "Failed to fetch" && <NetworkError />}
-          {networkError === 401 && (
-            <>
-              <UnAuthOverlay></UnAuthOverlay>
-              <UnAuthErrorBox>
-                <div>
-                  <p>Unauthorized Access. Please login again.</p>
-                  <button>OK</button>
-                </div>
-              </UnAuthErrorBox>
-            </>
-          )}
         </>
       )}
     </>
@@ -159,58 +139,6 @@ const ConfirmOrderBox = styled.div`
     border-radius: 3px;
 
     &:hover {
-      cursor: pointer;
-    }
-  }
-`;
-
-const UnAuthOverlay = styled.article`
-  position: fixed;
-  z-index: 50;
-  top: 0;
-  left: 0;
-  right: 0;
-  bottom: 0;
-`;
-
-const UnAuthErrorBox = styled.article`
-  top: 60px;
-  position: fixed;
-  z-index: 100;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  backdrop-filter: blur(4px);
-
-  div {
-    padding: 10px;
-    text-align: center;
-    margin: 10em auto;
-    width: 300px;
-    height: 150px;
-    border: 2px solid red;
-    border-radius: 5px;
-    background-color: #fff;
-  }
-
-  p {
-    margin-top: 2em;
-    font-size: 18px;
-  }
-
-  button {
-    margin-top: 20px;
-    width: 100px;
-    padding: 8px 10px;
-    font-size: 18px;
-    outline: none;
-    border: none;
-    background: #f37121;
-    color: #fff;
-    border-radius: 3px;
-    font-weight: bold;
-
-    &: hover {
       cursor: pointer;
     }
   }
