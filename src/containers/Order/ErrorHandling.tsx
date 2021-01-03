@@ -1,13 +1,28 @@
 import React from "react";
+import { useDispatch } from "react-redux";
+import { useHistory } from "react-router-dom";
 import styled from "styled-components";
+import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 
 interface UnAuthErrorProps {
   setNetworkError: React.Dispatch<React.SetStateAction<string | number>>;
+  networkError: string | number;
 }
 
-export function UnAuthError({ setNetworkError }: UnAuthErrorProps) {
+export function UnAuthError({
+  setNetworkError,
+  networkError,
+}: UnAuthErrorProps) {
+  const history = useHistory();
+  const dispatch = useDispatch();
+
   const handleOnClick = () => {
     setNetworkError("");
+    if (networkError === 500) {
+      dispatch(setIsDepartmentVisible(false));
+      localStorage.removeItem("accessToken");
+      history.push("/login");
+    }
   };
   return (
     <>
@@ -39,12 +54,13 @@ const UnAuthErrorBox = styled.article`
   right: 0;
   bottom: 0;
   backdrop-filter: blur(4px);
+  font-family: Roboto, Arial, sans-serif;
 
   div {
     padding: 10px;
     text-align: center;
     margin: 10em auto;
-    width: 300px;
+    width: 350px;
     height: 150px;
     border: 2px solid red;
     border-radius: 5px;

@@ -99,7 +99,7 @@ function HeaderElement() {
             </SystemWrapper>
           </SearchHead>
 
-          <DepartmentWrapper isHeight={departmentStatus === 200}>
+          <DepartmentWrapper isHeight={isDepartmentVisible}>
             {isDepartmentVisible &&
               departmentStatus === 200 &&
               departments.map((el, i) => <Department el={el} key={i} />)}

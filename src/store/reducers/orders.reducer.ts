@@ -1,16 +1,21 @@
 import { CREATE_ORDER, SET_ALL_ORDERS, SET_ORDER_DETAILS_BY_ID, SET_SHORT_DETAIL_OF_ORDER } from "../actions/actionTypes";
 import { CreateOrder } from "../actions/tsTypes";
 
+export interface OrderDetailsByIdTypes {
+  orderId: { products: [], status: boolean | number | string }
+}
+
 export interface OrderState {
   orderId: number | undefined
-  orderDetailsById: { orderId: { products: [], status: boolean | number | string } }
+  orderDetailsById: OrderDetailsByIdTypes
   orderDetails: object
   allOrders: object[]
   shortDetailOfOrder: { shortDetailStatus: boolean | number | string }
   createdOrderStatus: boolean | number | string
   ordersStatus: boolean | number | string
-
 }
+
+
 
 const initialState: OrderState = {
   orderId: undefined,

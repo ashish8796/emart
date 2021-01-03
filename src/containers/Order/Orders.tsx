@@ -23,37 +23,61 @@ function AllOrders() {
   useEffect(() => {
     (async () => {
       const orderData: any = await dispatch(setAllOrders());
+      console.log(orderData);
+
       setNetworkError(orderData.status);
     })();
   }, [dispatch]);
 
+  useEffect(() => {
+    if (customer.customer_status === 500) {
+      console.log(customer.customer_status);
+
+      setNetworkError(customer.customer_status);
+    }
+  }, [customer.customer_status]);
+
+  console.log(customer.customer_status);
+
   return (
     <>
-      <OrdersContainer>
-        <UserName>
-          <p>
-            LOGIN{" "}
-            <span>
-              <FontAwesomeIcon icon={faCheck} />
-            </span>
-          </p>
+      {customer.customer_status === 200 && (
+        <OrdersContainer>
+          <UserName>
+            <p>
+              LOGIN{" "}
+              <span>
+                <FontAwesomeIcon icon={faCheck} />
+              </span>
+            </p>
 
-          <p>
-            <span>{customer.name}</span> (<span>{customer.email}</span>)
-          </p>
-        </UserName>
-        {ordersStatus === 200 && (
-          <AllOrdersBox>
-            {allOrders.map((order, i) => (
-              <ShowOrder order={order} key={i} />
-            ))}
-          </AllOrdersBox>
-        )}
-        {networkError === 401 && (
-          <UnAuthError setNetworkError={setNetworkError} />
-        )}
-        {networkError === "Failed to fetch" && <NetworkError />}
-      </OrdersContainer>
+            <p>
+              <span>{customer.name}</span> (<span>{customer.email}</span>)
+            </p>
+          </UserName>
+          {ordersStatus === 200 && (
+            <AllOrdersBox>
+              {allOrders.map((order, i) => (
+                <ShowOrder order={order} key={i} />
+              ))}
+            </AllOrdersBox>
+          )}
+          {networkError === 401 && (
+            <UnAuthError
+              setNetworkError={setNetworkError}
+              networkError={networkError}
+            />
+          )}
+          {networkError === "Failed to fetch" && <NetworkError />}
+        </OrdersContainer>
+      )}
+
+      {networkError === 500 && (
+        <UnAuthError
+          setNetworkError={setNetworkError}
+          networkError={networkError}
+        />
+      )}
     </>
   );
 }
