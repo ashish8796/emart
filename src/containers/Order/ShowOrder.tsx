@@ -23,7 +23,7 @@ function ShowOrder({ order }: ShowOrderProps) {
     })();
   }, [order.order_id]);
 
-  const orderId: keyof typeof orderDetailsById = order.order_id;
+  const orderId = order?.order_id;
 
   return (
     <>
