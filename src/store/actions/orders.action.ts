@@ -20,7 +20,7 @@ export const setOrderDetails = (orderId: number) => async (dispatch: Dispatch) =
     const data: any = await getOrderInfoById(orderId)
     dispatch({
       type: SET_ORDER_DETAILS_BY_ID,
-      payload: data !== "Failed to fetch" ? { [orderId]: data.result, status: data.status } : { [orderId]: [], status: data.status }
+      payload: data !== "Failed to fetch" ? { [orderId]: { products: data.result, status: data.status } } : { [orderId]: { products: [], status: data.status } }
     })
 
   } catch (error) {

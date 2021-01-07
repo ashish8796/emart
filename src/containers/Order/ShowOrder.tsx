@@ -5,6 +5,7 @@ import styled from "styled-components";
 import { getOrderInfoById } from "../../services/api";
 import { setOrderDetails } from "../../store/actions/orders.action";
 import { State } from "../../store/actions/tsTypes";
+import { OrderDetailsByIdTypes } from "../../store/reducers/orders.reducer";
 import OrderedProduct from "./OrderedProduct";
 
 interface ShowOrderProps {
@@ -14,22 +15,27 @@ interface ShowOrderProps {
 function ShowOrder({ order }: ShowOrderProps) {
   const dispatch = useDispatch();
   const { orderDetailsById } = useSelector((state: State) => state.order);
-  // const [orderData, setOrderData] = useState<Array<any>>([]);
+
+  // const orderDetailsById = someData.orderDetailsById;
+  const [orderData, setOrderData] = useState<Array<any>>([]);
 
   useEffect(() => {
     (async () => {
-      const data: any = await dispatch(setOrderDetails(order.order_id));
-      // data.result.length > 0 && setOrderData(data.result);
+      const data: any = await dispatch(getOrderInfoById(order.order_id));
+      if (data.status === 200) {
+        // setOrderData({pdata});
+      }
     })();
   }, [order.order_id]);
 
-  const orderId = order?.order_id;
+  const orderId: number | string = order.order_id;
+  console.log({ orderDetailsById, id: order.order_id });
 
   return (
     <>
-      {orderDetailsById[orderId].status === 200 && (
+      {/* {orderData.orderId.status === 200 && ( */}
         <ShowOrderContainer>
-          {orderDetailsById[orderId].products.map((product, i) => (
+          {orderDetailsById.orderId.products.map((product, i) => (
             <OrderedProduct product={product} key={i} />
           ))}
         </ShowOrderContainer>
