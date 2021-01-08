@@ -12,6 +12,7 @@ export interface Product {
   thumbnail: string;
   image: string,
   image_2: string,
+  status: number | string;
 }
 
 export interface CategoryProductList {

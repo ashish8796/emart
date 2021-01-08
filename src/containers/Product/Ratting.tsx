@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getReviewsByProductId } from "../../services/api";
+import NetworkError from "../Home/NetworkError";
 
 interface Reviews {
-  name: string;
-  review: string;
-  rating: number;
-  created_on: string;
+  result: [
+    { name: string; review: string; rating: number; created_on: string }
+  ];
+  status: number | string;
 }
 
 interface RattingProps {
@@ -14,29 +15,34 @@ interface RattingProps {
 }
 
 function Ratting({ productId }: RattingProps) {
-  const [reviews, setReviews] = useState<Array<Reviews>>([]);
+  const [reviews, setReviews] = useState<Reviews>({
+    result: [{ name: "", review: "", rating: 0, created_on: "" }],
+    status: "",
+  });
 
   const averageRating =
-    reviews.length > 0 &&
-    reviews.reduce((acc, user) => (acc += user.rating), 0) / reviews.length;
+    reviews.status === 200 &&
+    reviews.result.reduce((acc, user) => (acc += user.rating), 0) /
+      reviews.result.length;
 
   useEffect(() => {
     (async (productId) => {
-      try {
-        const reviews: any = await getReviewsByProductId(productId);
+      const reviews: any = await getReviewsByProductId(productId);
 
-        setReviews(reviews.result);
-      } catch (error) {
-        console.log(error);
-      }
+      setReviews({ result: reviews.result, status: reviews.status });
     })(productId);
   }, [productId]);
 
   return (
-    <RatingContainer>
-      <Rating>{averageRating && averageRating.toFixed(1)}&#9733; </Rating>
-      <span>{reviews.length} Ratings</span>
-    </RatingContainer>
+    <>
+      {reviews.status === 200 && (
+        <RatingContainer>
+          <Rating>{averageRating && averageRating.toFixed(1)}&#9733; </Rating>
+          <span>{reviews.result.length} Ratings</span>
+        </RatingContainer>
+      )}
+      {reviews.status === "Failed to fetch" && <NetworkError />}
+    </>
   );
 }
 

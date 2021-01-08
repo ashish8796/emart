@@ -1,11 +1,17 @@
 import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getAttributesByProductId } from "../../services/api";
+import NetworkError from "../Home/NetworkError";
 
 interface Attribute {
-  attribute_name: string;
-  attribute_value_id: number;
-  attribute_value: string;
+  result: [
+    {
+      attribute_name: string;
+      attribute_value_id: number;
+      attribute_value: string;
+    }
+  ];
+  status: number | string;
 }
 
 interface ProductAttributeProps {
@@ -19,64 +25,69 @@ function ProductAttribute({
   attribute,
   setAttribute,
 }: ProductAttributeProps) {
-  const [allAttributes, setAllArributes] = useState<Array<Attribute>>([]);
+  const [allAttributes, setAllArributes] = useState<Attribute>({
+    result: [
+      { attribute_name: "", attribute_value_id: 0, attribute_value: "" },
+    ],
+    status: "",
+  });
 
   useEffect(() => {
     (async (productId) => {
-      try {
-        const attributes: any = await getAttributesByProductId(productId);
+      const attributes: any = await getAttributesByProductId(productId);
 
-        setAllArributes(attributes.result);
-      } catch (error) {
-        console.log(error);
-      }
+      setAllArributes(attributes);
     })(productId);
   }, [productId]);
 
   return (
     <>
-      <AttributeWrapper>
-        <Colors>
-          <h1>Colors</h1>
-          {allAttributes.map(
-            (cv, i) =>
-              cv.attribute_name === "Color" && (
-                <ColorTag
-                  selectColor={cv.attribute_value === attribute.color}
-                  key={i}
-                  onClick={() => {
-                    setAttribute((state: any) => ({
-                      ...state,
-                      color: cv.attribute_value,
-                    }));
-                  }}
-                >
-                  {cv.attribute_value}
-                </ColorTag>
-              )
-          )}
-        </Colors>
-        <Size>
-          <h1>Size</h1>
-          {allAttributes.map(
-            (cv, i) =>
-              cv.attribute_name === "Size" && (
-                <SizeTag
-                  mark={cv.attribute_value === attribute.size}
-                  key={i}
-                  onClick={() => {
-                    setAttribute((state: any) => ({
-                      ...state,
-                      size: cv.attribute_value,
-                    }));
-                  }}
-                >
-                  {cv.attribute_value}
-                </SizeTag>
-              )
-          )}
-        </Size>
-      </AttributeWrapper>
+      {allAttributes.status === 200 && (
+        <AttributeWrapper>
+          <Colors>
+            <h1>Colors</h1>
+            {allAttributes.result.map(
+              (cv, i) =>
+                cv.attribute_name === "Color" && (
+                  <ColorTag
+                    selectColor={cv.attribute_value === attribute.color}
+                    key={i}
+                    onClick={() => {
+                      setAttribute((state: any) => ({
+                        ...state,
+                        color: cv.attribute_value,
+                      }));
+                    }}
+                  >
+                    {cv.attribute_value}
+                  </ColorTag>
+                )
+            )}
+          </Colors>
+          <Size>
+            <h1>Size</h1>
+            {allAttributes.result.map(
+              (cv, i) =>
+                cv.attribute_name === "Size" && (
+                  <SizeTag
+                    mark={cv.attribute_value === attribute.size}
+                    key={i}
+                    onClick={() => {
+                      setAttribute((state: any) => ({
+                        ...state,
+                        size: cv.attribute_value,
+                      }));
+                    }}
+                  >
+                    {cv.attribute_value}
+                  </SizeTag>
+                )
+            )}
+          </Size>
+        </AttributeWrapper>
+      )}
+
+      {allAttributes.status === "Failed to fetch" && <NetworkError />}
     </>
   );
 }

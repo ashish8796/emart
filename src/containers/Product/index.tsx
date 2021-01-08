@@ -6,6 +6,7 @@ import { getProductById } from "../../services/api";
 // import { State } from "../../store/actions/tsTypes";
 import { Product } from "../../store/reducers/category.reducer";
 import { ProductLoader } from "../Home/contentLoader";
+import NetworkError from "../Home/NetworkError";
 import ProductAttribute from "./Attribute";
 import BuyingOption from "./BuyingOption";
 import Ratting from "./Ratting";
@@ -26,12 +27,13 @@ function ProductUI() {
     thumbnail: "",
     image: "",
     image_2: "",
+    status: "",
   });
 
   const [attribute, setAttribute] = useState({ color: "", size: "" });
   const productId = location.pathname.split("/").pop();
   const [mainImage, setMainImage] = useState("");
-  const [productLoader, setProductLoader] = useState(true);
+  // const [productLoader, setProductLoader] = useState(true);
 
   const convertPrice = (price: string) => {
     return Math.ceil(Number(price) * 75);
@@ -43,16 +45,12 @@ function ProductUI() {
 
   useEffect(() => {
     (async (productId) => {
-      try {
-        const data: any = await getProductById(productId);
+      const data: any = await getProductById(productId);
 
-        if (data.result.thumbnail) {
-          setMainImage(data.result.thumbnail);
-          setProductData(data.result);
-          setProductLoader(false);
-        }
-      } catch (error) {
-        console.log(error);
+      if (data.result.thumbnail) {
+        setMainImage(data.result.thumbnail);
+        setProductData({ ...data.result, status: data.status });
+        // setProductLoader(false);
       }
     })(productId);
   }, [productId]);
@@ -82,13 +80,13 @@ function ProductUI() {
 
   return (
     <>
-      {productLoader ? (
+      {productData.status !== 200 ? (
         <Loader>
           <ProductLoader />
         </Loader>
       ) : (
         <ProductContainer>
-          {productData.name && (
+          {productData.status === 200 ? (
             <>
               <SectionA>
                 <AllImages>
@@ -143,6 +141,8 @@ function ProductUI() {
                 </div>
               </SectionB>
             </>
+          ) : (
+            <NetworkError />
           )}
         </ProductContainer>
       )}

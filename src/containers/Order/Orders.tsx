@@ -37,7 +37,7 @@ function AllOrders() {
     }
   }, [customer.customer_status]);
 
-  console.log(customer.customer_status);
+  console.log({ networkError });
 
   return (
     <>

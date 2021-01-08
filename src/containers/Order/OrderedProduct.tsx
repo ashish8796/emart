@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react";
 import styled from "styled-components";
 import { getProductDetailById } from "../../services/api";
 import { OrdersLoader } from "../Home/contentLoader";
+import NetworkError from "../Home/NetworkError";
 // import { State } from "../../store/actions/tsTypes";
 
 interface OrderedProductProps {
@@ -12,23 +13,27 @@ interface OrderedProductProps {
 function OrderedProduct({ product }: OrderedProductProps) {
   // const dispatch = useDispatch();
   // const { customer } = useSelector((state: State) => state.user);
-  const [productData, setProductData] = useState<Array<any>>([]);
+  const [productData, setProductData] = useState<{
+    result: Array<any>;
+    status: number | string;
+  }>({ result: [], status: "" });
 
   useEffect(() => {
     (async () => {
       const data: any = await getProductDetailById(product.product_id);
-      data.result.length > 0 && setProductData(data.result);
+      // console.log(data);
+      setProductData(data);
     })();
   }, [product.product_id]);
 
   // console.log({ product, productData });
   return (
     <ProductWrapper>
-      {productData.length > 0 ? (
+      {productData.status === 200 ? (
         <OrderedProductDiv>
           <img
             src={
-              require(`./../../assets/images/product_images/${productData[0].image}`)
+              require(`./../../assets/images/product_images/${productData.result[0]?.image}`)
                 .default
             }
             alt={`${product.name}`}
@@ -46,6 +51,8 @@ function OrderedProduct({ product }: OrderedProductProps) {
             <Cost>&#8377; {Math.ceil(product.unit_cost * 75)} </Cost>
           </div>
         </OrderedProductDiv>
+      ) : productData.status === "Failed to fetch" ? (
+        <NetworkError />
       ) : (
         <OrdersLoader />
       )}
