@@ -17,13 +17,16 @@ function ShowOrder({ order }: ShowOrderProps) {
   const { orderDetailsById } = useSelector((state: State) => state.order);
 
   // const orderDetailsById = someData.orderDetailsById;
-  const [orderData, setOrderData] = useState<Array<any>>([]);
+  const [orderData, setOrderData] = useState<{
+    result: [];
+    status: string | number;
+  }>({ result: [], status: "" });
 
   useEffect(() => {
     (async () => {
       const data: any = await dispatch(getOrderInfoById(order.order_id));
       if (data.status === 200) {
-        // setOrderData({pdata});
+        setOrderData({ result: data.result, status: data.status });
       }
     })();
   }, [order.order_id]);
@@ -33,7 +36,7 @@ function ShowOrder({ order }: ShowOrderProps) {
 
   return (
     <>
-      {/* {orderData.orderId.status === 200 && ( */}
+      {orderData.status === 200 && (
         <ShowOrderContainer>
           {orderDetailsById.orderId.products.map((product, i) => (
             <OrderedProduct product={product} key={i} />
