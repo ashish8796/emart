@@ -1,12 +1,7 @@
 import React, { useEffect, useState } from "react";
-// import { useDispatch, useSelector } from "react-redux";
-// import { useDispatch } from "react-redux";
 import styled from "styled-components";
 import { getOrderInfoById } from "../../services/api";
 import NetworkError from "../Home/NetworkError";
-// import { setOrderDetails } from "../../store/actions/orders.action";
-// import { State } from "../../store/actions/tsTypes";
-// import { OrderDetailsByIdTypes } from "../../store/reducers/orders.reducer";
 import OrderedProduct from "./OrderedProduct";
 
 interface ShowOrderProps {
@@ -14,10 +9,6 @@ interface ShowOrderProps {
 }
 
 function ShowOrder({ order }: ShowOrderProps) {
-  // const dispatch = useDispatch();
-  // const { orderDetailsById } = useSelector((state: State) => state.order);
-
-  // const orderDetailsById = someData.orderDetailsById;
   const [orderData, setOrderData] = useState<{
     result: [];
     status: string | number;
