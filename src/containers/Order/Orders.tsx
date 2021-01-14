@@ -18,27 +18,18 @@ function AllOrders() {
   }));
   const [networkError, setNetworkError] = useState<string | number>("");
 
-  // console.log(allOrders.length);
-
   useEffect(() => {
     (async () => {
-      const orderData: any = await dispatch(setAllOrders());
-      console.log(orderData);
-
-      setNetworkError(orderData.status);
-      //aifjeieja
+      if (customer.customer_status === 200) {
+        const orderData: any = await dispatch(setAllOrders());
+        console.log(orderData);
+        setNetworkError(orderData.status);
+      }
     })();
-  }, [dispatch]);
-
-  useEffect(() => {
-    if (customer.customer_status === 500) {
-      console.log(customer.customer_status);
-
-      setNetworkError(customer.customer_status);
-    }
-  }, [customer.customer_status]);
+  }, [dispatch, customer.customer_status]);
 
   console.log({ networkError });
+  console.log(customer.customer_status);
 
   return (
     <>
