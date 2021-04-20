@@ -23,9 +23,7 @@ function Department({ el }: Props) {
     setIsHover(true);
   };
 
-  const handleMouseLeveOnDepartment = () => {};
-
-  const handleMouseLeaveOnCategory = () => {
+  const handleMouseLeveOnDepartment = () => {
     setIsHover(false);
   };
 
@@ -36,17 +34,17 @@ function Department({ el }: Props) {
   };
 
   return (
-    <DepartmentWrapper>
-      <h1
-        onMouseOver={handleMouseOverOnDepartment}
-        onMouseLeave={handleMouseLeveOnDepartment}
-      >
+    <DepartmentWrapper
+      onMouseOver={handleMouseOverOnDepartment}
+      onMouseLeave={handleMouseLeveOnDepartment}
+    >
+      <h1>
         {el.name}{" "}
         {<FontAwesomeIcon icon={!isHover ? faChevronDown : faChevronUp} />}
       </h1>
 
       {categories.categoriesStatus === 200 && isHover && (
-        <Categories onMouseLeave={handleMouseLeaveOnCategory}>
+        <Categories>
           {(categories.rows as Array<RowsObj>)
             .map((category, i) => {
               return category.department_id === el.department_id ? (

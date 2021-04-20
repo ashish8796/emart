@@ -30,14 +30,21 @@ function CreateProduct({ product, first }: ProductProps) {
     <>
       <ProductWrapper first={first} onClick={handleClickOnProduct}>
         <ProductImage src={imgSrc} alt={product.thumbnail} />
-        <ProductName>{product.name} </ProductName>
+        <ProductName>
+          {product.name.length > 11
+            ? product.name.slice(0, 11) + "..."
+            : product.name}{" "}
+        </ProductName>
+
         {/* <ProductDescription>{product.description}</ProductDescription> */}
+
         <ProductDiscountedPrice>
           <RupeeIcon
             src={require("./../../assets/images/rupee-indian.svg").default}
           />
           <p>{productDiscountedPrice}</p>
         </ProductDiscountedPrice>
+
         <ProductPrice>
           <span>
             <FontAwesomeIcon icon={faRupeeSign} />
@@ -64,7 +71,7 @@ const ProductWrapper = styled.div`
   border: 2px solid #d4d4d4;
   border-radius: 3px;
   font-family: Roboto, Arial, sans-serif;
-  margin-left: ${(state: WrapperProps) => (state.first ? "6em" : "20px")};
+  /* margin-left: ${(state: WrapperProps) => (state.first ? "6em" : "20px")}; */
   span {
     margin-left: 5px;
   }
