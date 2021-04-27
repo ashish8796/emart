@@ -28,9 +28,6 @@ function AllOrders() {
     })();
   }, [dispatch, customer.customer_status]);
 
-  console.log({ networkError });
-  console.log(customer.customer_status);
-
   return (
     <>
       {customer.customer_status === 200 && (
@@ -76,7 +73,6 @@ function AllOrders() {
 
 const OrdersContainer = styled.div`
   font-family: Roboto, Arial, sans-serif;
-  // border: 2px solid red;
   padding: 20px 30px;
   margin: 30px;
   background-color: #fff;
@@ -89,7 +85,6 @@ const FlexStyle = styled.div`
 
 const UserName = styled(FlexStyle)`
   flex-direction: row;
-  // margin: 10px 0;
 
   p:first-child {
     margin: 0 20px 20px 0;

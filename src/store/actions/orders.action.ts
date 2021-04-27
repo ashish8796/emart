@@ -6,7 +6,11 @@ export const createOrder = (orderData: any) => async (disptach: Dispatch) => {
   let createdOrderData;
   try {
     const data: any = await postCreateOrder(orderData);
-    createdOrderData = data !== "Failed to fetch" ? { orderId: data.result, createdOrderStatus: data.status } : { orderId: undefined, createdOrderStatus: data }
+
+    createdOrderData = data !== "Failed to fetch" ? { orderId: data.result, createdOrderStatus: data.status } : { orderId: undefined, createdOrderStatus: data };
+
+    console.log(createdOrderData)
+
     disptach({
       type: CREATE_ORDER,
       payload: createdOrderData,

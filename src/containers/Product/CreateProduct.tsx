@@ -32,12 +32,14 @@ function CreateProduct({ product, first }: ProductProps) {
         <ProductImage src={imgSrc} alt={product.thumbnail} />
         <ProductName>{product.name} </ProductName>
         {/* <ProductDescription>{product.description}</ProductDescription> */}
+
         <ProductDiscountedPrice>
           <RupeeIcon
             src={require("./../../assets/images/rupee-indian.svg").default}
           />
           <p>{productDiscountedPrice}</p>
         </ProductDiscountedPrice>
+
         <ProductPrice>
           <span>
             <FontAwesomeIcon icon={faRupeeSign} />

@@ -1,26 +1,30 @@
 import { LoginDetails, UserDetails } from "../store/actions/tsTypes";
 
-const accessToken: string | null | undefined = localStorage.getItem('emart-token');
-const headers = new Headers({
-  "content-type": "application/json",
-  "Access-Control-Allow-Origin": "*"
-});
-accessToken && headers.append("USER-KEY", accessToken);
-
-
 class API {
   mainUrl: string = "https://backendapi.turing.com"
 
+  makeHeader = function () {
+    const accessToken: string | null | undefined = localStorage.getItem('emart-token')
+
+    const headers = new Headers({
+      "content-type": "application/json",
+      "Access-Control-Allow-Origin": "*"
+    })
+
+    accessToken && headers.append("USER-KEY", accessToken);
+
+    return headers
+  }
+
   async get(url: string) {
+
     try {
-      const response = await fetch(this.mainUrl + url, { headers });
-      console.log(response);
+      const response = await fetch(this.mainUrl + url, { headers: this.makeHeader() });
 
       const result = response.ok && await response.json();
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
-      // console.log(error);
       return error;
     }
   }
@@ -29,17 +33,14 @@ class API {
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "POST",
-        headers: headers,
+        headers: this.makeHeader(),
         body: JSON.stringify(data)
       });
-
-      console.log(response)
 
       const result = response.ok && await response.json();
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
-      // console.log(error);
       return error;
     }
   }
@@ -48,14 +49,12 @@ class API {
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "DELETE",
-        headers: headers,
+        headers: this.makeHeader(),
 
       });
-      console.log(response);
       return { status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
-      // console.log(error);
       return { status: error };
     }
   }
@@ -64,14 +63,13 @@ class API {
     try {
       const response = await fetch(this.mainUrl + url, {
         method: "PUT",
-        headers: headers,
+        headers: this.makeHeader(),
         body: JSON.stringify(data)
       });
       const result = response.ok && await response.json();
       return { result, status: response.status }
     } catch (e) {
       const error = String(e).split(":")[1].trim()
-      // console.log(error);
       return error;
     }
   }

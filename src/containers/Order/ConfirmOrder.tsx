@@ -28,6 +28,8 @@ function ConfirmOrder() {
 
   const [networkError, setNetworkError] = useState<string | number>("");
 
+  const [load, setLoad] = useState<boolean>(false);
+
   const getShippingResionById = async () => {
     const data: any = await getShippingOption(customer.shipping_region_id);
     setNetworkError(data.status);
@@ -39,15 +41,19 @@ function ConfirmOrder() {
   }, []);
 
   const handleConfirmOrder = async () => {
+    console.log("button working");
+    setLoad(true);
     const orderData = {
-      cart_id: cartId,
+      cart_id: cartId.id,
       shipping_id: selectedOption.id,
       tax_id: 2,
     };
 
     const orderedData: any = await dispatch(createOrder(orderData));
-    setNetworkError(orderedData.createdOrderStatus);
 
+    console.log(orderData);
+    setNetworkError(orderedData.createdOrderStatus);
+    setLoad(false);
     if (orderedData.createdOrderStatus === 200) {
       history.push("/orders");
     }
@@ -57,7 +63,7 @@ function ConfirmOrder() {
 
   return (
     <>
-      {!responseStatusArr.includes(shippingOption.status) ? (
+      {!responseStatusArr.includes("Failed to fetch") ? (
         <CreateOrderLoader />
       ) : (
         <>
@@ -86,12 +92,16 @@ function ConfirmOrder() {
               </DeliveryAddress>
 
               <ConfirmOrderBox>
-                <button onClick={handleConfirmOrder}>Confirm Order</button>
+                <button onClick={handleConfirmOrder}>
+                  <Loader isLoad={load}></Loader> Confirm Order
+                </button>
               </ConfirmOrderBox>
             </>
           )}
 
-          {networkError === "Failed to fetch" && <NetworkError />}
+          {networkError === "Failed to fetch" && (
+            <NetworkError setNetworkError={setNetworkError} />
+          )}
         </>
       )}
     </>
@@ -105,6 +115,7 @@ const DeliveryAddress = styled.div`
   section {
     width: 40%;
   }
+
   p {
     margin-bottom: 8px;
   }
@@ -133,13 +144,40 @@ const ConfirmOrderBox = styled.div`
     outline: none;
     border: none;
     font-size: 20px;
-    padding: 10px 20px;
+    padding: 10px 35px 10px 15px;
+
     background: #fc8621;
     color: #fff;
     border-radius: 3px;
 
     &:hover {
       cursor: pointer;
+    }
+  }
+`;
+
+type Loder = {
+  isLoad: boolean;
+};
+
+const Loader = styled.div`
+  display: inline-block;
+  width: 18px;
+  height: 18px;
+  margin: 0 5px -3px -10px;
+  border: 2px solid #fc8621;
+  border-top: 2px solid ${(state: Loder) => (state.isLoad ? "#fff" : "#fc8621")};
+  border-right: 2px solid
+    ${(state: Loder) => (state.isLoad ? "#fff" : "#fc8621")};
+  border-radius: 50%;
+  animation: rotate 0.8s linear infinite;
+
+  @keyframes rotate {
+    0% {
+      transform: rotate(0deg);
+    }
+    100% {
+      transform: rotate(360deg);
     }
   }
 `;

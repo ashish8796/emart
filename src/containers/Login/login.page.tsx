@@ -194,6 +194,7 @@ const LoginSubmit = styled.button`
     box-shadow: 4px 6px 4px 2px #022f3b;
   }
 `;
+
 type Loder = {
   isLoad: boolean;
 };
