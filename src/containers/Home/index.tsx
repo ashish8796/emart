@@ -11,6 +11,8 @@ function Home() {
     ...state.user,
   }));
 
+  console.log(departments);
+
   return (
     <>
       {departmentStatus !== "Fetch to Failed" ? (
