@@ -2,6 +2,7 @@
   "name": "emart-demo",
   "version": "0.1.0",
   "private": true,
+  "homepage": ".",
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^1.2.32",
     "@fortawesome/free-solid-svg-icons": "^5.15.1",
@@ -55,6 +56,7 @@
     ]
   },
   "devDependencies": {
+    "netlify-cli": "^5.2.0",
     "redux-devtools-extension": "^2.13.8"
   }
 }

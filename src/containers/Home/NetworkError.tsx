@@ -2,12 +2,12 @@ import React from "react";
 import styled from "styled-components";
 
 interface NetworkErrorProps {
-  setNetworkError: React.Dispatch<React.SetStateAction<string | number>>;
+  setNetworkError?: React.Dispatch<React.SetStateAction<string | number>>;
 }
 
 function NetworkError({ setNetworkError }: NetworkErrorProps) {
   const handleCancelButton = () => {
-    setNetworkError("");
+    // setNetworkError("");
   };
 
   return (
