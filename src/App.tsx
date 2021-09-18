@@ -20,7 +20,7 @@ function App() {
       <Router>
         <HeaderElement />
         <Switch>
-          <Route path="/product/:slug/:product_id" component={ProductUI} />
+          {/* <Route path="/product/:slug/:product_id" component={ProductUI} /> */}
 
           <Route path="/create-order" component={CreateOrder} />
 
