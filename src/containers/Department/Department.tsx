@@ -6,14 +6,15 @@ import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
 import { RowsObj } from "../../store/reducers/home.reducer";
-import { useHistory } from "react-router-dom";
+// import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 
 interface Props {
   el: RowsObj;
 }
 
 function Department({ el }: Props) {
-  const history = useHistory();
+  const router = useRouter();
   const [isHover, setIsHover] = useState(false);
   const [releventCats, setReleventCats] = useState<Array<RowsObj>>([]);
 
@@ -30,7 +31,7 @@ function Department({ el }: Props) {
   const handleOnclickOnCategory = (event: any) => {
     const name = event.target.innerText;
     const category: any = categories.rows.find((el) => el.name === name);
-    history.push(`/category/${name + "/" + category.category_id}`);
+    router.push(`/category/${name + "/" + category.category_id}`);
   };
 
   return (

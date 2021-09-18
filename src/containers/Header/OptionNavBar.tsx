@@ -9,9 +9,9 @@ import {
   faUserCircle,
 } from "@fortawesome/free-solid-svg-icons";
 import { useDispatch } from "react-redux";
-import { useHistory } from "react-router-dom";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 import { setLogOutUser } from "../../store/actions/user.action";
+import { useRouter } from "next/router";
 
 interface OptionNavBarProps {
   customer: any;
@@ -19,29 +19,29 @@ interface OptionNavBarProps {
 
 function OptionNavBar({ customer }: OptionNavBarProps) {
   const dispatch = useDispatch();
-  const history = useHistory();
+  const router = useRouter();
   const [isOptionVisible, setIsOptionVisible] = useState(false);
 
   const handleOrdersClick = () => {
     dispatch(setIsDepartmentVisible(false));
-    history.push("/orders");
+    router.push("/orders");
   };
 
   const handleLogOutClick = () => {
     localStorage.removeItem("emart-token");
     localStorage.removeItem("secondry_cart_id");
     dispatch(setLogOutUser());
-    history.push("/login");
+    router.push("/login");
   };
 
   const handleLoginClick = () => {
     dispatch(setIsDepartmentVisible(false));
-    history.push("/login");
+    router.push("/login");
   };
 
   const handleProfileClick = () => {
     dispatch(setIsDepartmentVisible(false));
-    history.push("/account");
+    router.push("/account");
   };
 
   return (

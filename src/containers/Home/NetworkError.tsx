@@ -16,10 +16,7 @@ function NetworkError({ setNetworkError }: NetworkErrorProps) {
         <div>
           <CancelButton onClick={handleCancelButton}>X</CancelButton>
           <img
-            src={
-              require("./../../assets/images/connection_image/images.png")
-                .default
-            }
+            src="/assets/images/connection_image/images.png"
             alt="internet down"
           />
           <p>Slow Internet!. Please Retry.</p>

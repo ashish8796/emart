@@ -10,21 +10,28 @@ export interface ScreenState {
 let key = "isDepartmentVisible";
 
 const initialState: ScreenState = {
-  isDepartmentVisible: key in localStorage ? localStorage.getItem(key) === "true" && true : true,
-}
+  isDepartmentVisible:
+    typeof window !== "undefined" && key in localStorage
+      ? localStorage.getItem(key) === "true" && true
+      : true,
+};
 
-type MainAction = IsDepartmentVisible
+type MainAction = IsDepartmentVisible;
 
 function screenReducer(state = initialState, action: MainAction) {
   switch (action.type) {
     case SET_IS_DEPARTMENT_VISIBLE: {
-      localStorage.setItem("isDepartmentVisible", JSON.stringify(action.payload))
+      localStorage.setItem(
+        "isDepartmentVisible",
+        JSON.stringify(action.payload)
+      );
 
-      console.log(action.payload)
-      return { ...state, isDepartmentVisible: action.payload }
+      console.log(action.payload);
+      return { ...state, isDepartmentVisible: action.payload };
     }
 
-    default: return state
+    default:
+      return state;
   }
 }
 

@@ -10,7 +10,7 @@ import {
   setDepartments,
   setProdByDeptId,
 } from "../../store/actions/home.action";
-import { useHistory, useLocation } from "react-router-dom";
+import { useRouter } from "next/router";
 import { setUsesrDetails } from "../../store/actions/user.action";
 import { setIsDepartmentVisible } from "../../store/actions/screen.action";
 import OptionNavBar from "./OptionNavBar";
@@ -18,12 +18,11 @@ import { HeaderLoader } from "../Home/contentLoader";
 
 function HeaderElement() {
   const dispatch = useDispatch();
-  const history = useHistory();
-  const location = useLocation();
+  const router = useRouter();
   const [loader, setLoader] = useState(true);
 
   const showDepartments =
-    location.pathname !== "/shoppingCart" && location.pathname !== "/login";
+    router.pathname !== "/shoppingCart" && router.pathname !== "/login";
 
   const {
     departments,
@@ -56,12 +55,12 @@ function HeaderElement() {
 
   const handleCartClick = () => {
     dispatch(setIsDepartmentVisible(false));
-    history.push("/cart");
+    router.push("/cart");
   };
 
   const handleHomeClick = () => {
     dispatch(setIsDepartmentVisible(true));
-    history.push("/");
+    router.push("/");
   };
 
   let networkError = false;
@@ -80,7 +79,7 @@ function HeaderElement() {
           <SearchHead>
             <HomeWrapper>
               <Logo
-                src={require("./../../assets/images/freeLogo.jpeg").default}
+                src="/assets/images/freeLogo.jpeg"
                 alt="logo"
                 onClick={handleHomeClick}
               />

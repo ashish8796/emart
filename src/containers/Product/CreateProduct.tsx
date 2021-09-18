@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faRupeeSign } from "@fortawesome/free-solid-svg-icons";
-import { useHistory } from "react-router-dom";
+import { useRouter } from "next/router";
 import { Product } from "../../store/reducers/category.reducer";
 
 interface ProductProps {
@@ -11,10 +11,9 @@ interface ProductProps {
 }
 
 function CreateProduct({ product, first }: ProductProps) {
-  const history = useHistory();
+  const router = useRouter();
 
-  const imgSrc = require(`./../../assets/images/product_images/${product.thumbnail}`)
-    .default;
+  const imgSrc = `./assets/images/product_images/${product.thumbnail}`;
 
   const productDiscountedPrice = Math.ceil(
     Number(product.discounted_price) * 75
@@ -23,7 +22,7 @@ function CreateProduct({ product, first }: ProductProps) {
   const productPrice = Math.ceil(Number(product.price) * 75);
 
   const handleClickOnProduct = () => {
-    history.push(`/product/${product.name}/${product.product_id}`);
+    router.push(`/product/${product.name}/${product.product_id}`);
   };
 
   return (
@@ -39,9 +38,7 @@ function CreateProduct({ product, first }: ProductProps) {
         {/* <ProductDescription>{product.description}</ProductDescription> */}
 
         <ProductDiscountedPrice>
-          <RupeeIcon
-            src={require("./../../assets/images/rupee-indian.svg").default}
-          />
+          <RupeeIcon src="/assets/images/rupee-indian.svg" />
           <p>{productDiscountedPrice}</p>
         </ProductDiscountedPrice>
 
