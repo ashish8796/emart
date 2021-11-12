@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import styled from "styled-components";
-
+import Link from "next/link";
 import { faChevronDown, faChevronUp } from "@fortawesome/free-solid-svg-icons";
 import { useSelector } from "react-redux";
 import { State } from "../../store/actions/tsTypes";
@@ -28,12 +28,6 @@ function Department({ el }: Props) {
     setIsHover(false);
   };
 
-  const handleOnclickOnCategory = (event: any) => {
-    const name = event.target.innerText;
-    const category: any = categories.rows.find((el) => el.name === name);
-    router.push(`/category/${name + "/" + category.category_id}`);
-  };
-
   return (
     <DepartmentWrapper
       onMouseOver={handleMouseOverOnDepartment}
@@ -49,9 +43,11 @@ function Department({ el }: Props) {
           {(categories.rows as Array<RowsObj>)
             .map((category, i) => {
               return category.department_id === el.department_id ? (
-                <CategoryName key={i} onClick={handleOnclickOnCategory}>
-                  {category.name}
-                </CategoryName>
+                <Link
+                  href={`/category/${category.name}/${category.category_id}`}
+                >
+                  <CategoryName key={i}>{category.name}</CategoryName>
+                </Link>
               ) : undefined;
             })
             .filter((el: any) => el)}
@@ -97,7 +93,7 @@ const Categories = styled.div`
   background-color: #fff;
 `;
 
-const CategoryName = styled.p`
+const CategoryName = styled.a`
   font-weight: normal;
   margin: 10px 8px;
   font-family: Roboto, Arial, sans-serif;
